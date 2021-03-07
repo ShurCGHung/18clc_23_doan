@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ProGallery</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="photo_string">This is photo tab</string>
+    <string name="album_string">This is album tab</string>
+    <string name="highlight_string">This is highlight tab</string>
 </resources>
