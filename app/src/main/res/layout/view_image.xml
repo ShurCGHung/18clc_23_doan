@@ -38,6 +38,24 @@
                     android:background=""
                     android:src="@drawable/abc_vector_test" />
 
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:textSize="20dp"
+                    android:text="Photo Name" />
+
+                <ImageButton
+                    android:id="@+id/imageMoreOver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background=""
+                    android:src="@drawable/ic_menu_moreoverflow_material_light">
+
+                </ImageButton>
+
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -69,30 +87,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:weightSum="4">
 
-                <Button
-                    android:id="@+id/button4"
+                <ImageButton
+                    android:id="@+id/btnInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="start|fill_vertical"
-                    android:text="Edit" />
+                    android:background="0"
+                    android:src="@drawable/ic_info_outline" />
 
-                <Button
-                    android:id="@+id/button5"
+                <ImageButton
+                    android:id="@+id/btnFavorite"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Favorite" />
+                    android:background="0"
+                    android:src="@drawable/ic_qs_auto_rotate" />
 
-                <Button
-                    android:id="@+id/button6"
+                <ImageButton
+                    android:id="@+id/btnEdit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="end|fill_vertical"
-                    android:text="Delete" />
+                    android:background="0"
+                    android:src="@drawable/ic_mode_edit"/>
+
+                <ImageButton
+                    android:id="@+id/btnShare"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="0"
+                    android:src="@drawable/ic_menu_share_material" />
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
