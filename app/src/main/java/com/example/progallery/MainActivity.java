@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 if (position == 0) {
-                    return new PhotosFragment();
+                    return new PhotosFragmentList();
                 } else if (position == 1) {
                     return new AlbumsFragment();
                 } else {

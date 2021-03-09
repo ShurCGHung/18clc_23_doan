@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-public class PhotoAdapter extends BaseAdapter {
+public class PhotoGridAdapter extends BaseAdapter {
     Context context;
     int[] photos;
     LayoutInflater inflater;
 
-    public PhotoAdapter(Context context, int[] photos) {
+    public PhotoGridAdapter(Context context, int[] photos) {
         this.context = context;
         this.photos = photos;
         this.inflater = (LayoutInflater.from(context));
