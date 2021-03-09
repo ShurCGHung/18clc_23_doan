@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import java.util.Objects;
+
 public class AlbumsFragment extends Fragment {
     GridView gridView;
 
@@ -31,7 +33,7 @@ public class AlbumsFragment extends Fragment {
 
         gridView = (GridView) view.findViewById(R.id.album_grid_view);
 
-        AlbumAdapter albumAdapter = new AlbumAdapter(getActivity().getApplicationContext(), photos);
+        AlbumAdapter albumAdapter = new AlbumAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photos);
         gridView.setAdapter(albumAdapter);
 
         return view;
