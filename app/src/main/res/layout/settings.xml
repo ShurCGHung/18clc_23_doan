@@ -33,7 +33,7 @@
                 android:layout_height="match_parent">
 
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/btnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
-                    android:text="Settings"
+                    android:text="@string/settings"
                     android:textSize="25dp" />
 
             </LinearLayout>
