@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">ProGallery</string>
-    <string name="photo_name">This is Photo Name</string>
+    <string name="photo_video_name">This is Photo/Video Name</string>
     <string name="loading_video">Loading Video</string>
     <string name="settings">Settings</string>
-    <string name="image_details">This is image details</string>
+    <string name="image_video_details">This is image/video details</string>
 
 </resources>

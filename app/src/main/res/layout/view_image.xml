@@ -45,7 +45,7 @@
                     android:layout_weight="1"
                     android:paddingLeft="10dp"
                     android:textSize="20dp"
-                    android:text="@string/photo_name" />
+                    android:text="@string/photo_video_name" />
 
                 <ImageButton
                     android:id="@+id/imageMoreOver"
