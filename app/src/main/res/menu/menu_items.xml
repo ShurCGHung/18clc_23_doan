@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btnSlideshow"
+        android:title="Slideshow" />
+    <item
+        android:id="@+id/btnAddAlbum"
+        android:title="Add to album" />
+    <item
+        android:id="@+id/btnRename"
+        android:title="Rename" />
+    <item
+        android:id="@+id/btnSetAs"
+        android:title="Set as..." />
+    <item
+        android:id="@+id/btnCopy"
+        android:title="Copy" />
+    <item
+        android:id="@+id/btnEdit"
+        android:title="Edit" />
+    <item
+        android:id="@+id/btnDelete"
+        android:title="Delete" />
+    <item
+        android:id="@+id/btnMoveToVault"
+        android:title="Move to Vault" />
+    <item
+        android:id="@+id/btnShowInfo"
+        android:title="Information" />
+</menu>

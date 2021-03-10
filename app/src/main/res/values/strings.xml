@@ -11,6 +11,11 @@
     <string name="highlight_string">This is highlight tab</string>
 
     <string name="photo_desc">Placeholder photo</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="photo_video_name">This is Photo/Video Name</string>
+    <string name="loading_video">Loading Video</string>
+    <string name="settings">Settings</string>
+    <string name="image_video_details">This is image/video details</string>
+    <string name="camera">This is a camera</string>
+
 </resources>
