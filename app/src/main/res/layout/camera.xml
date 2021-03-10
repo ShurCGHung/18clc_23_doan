@@ -5,23 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <SurfaceView
-            android:id="@+id/cameraView"
+        <FrameLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <SurfaceView
+                android:id="@+id/cameraView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_centerInParent="true"
+            android:layout_gravity="center|center_horizontal"
+            android:text="@string/camera"
+            android:textSize="40dp"
+            android:textColor="@android:color/white" />
 
         <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="match_parent"
+            android:id="@+id/btnBackToPhoto"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_marginLeft="25dp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/baseline_camera_black_48" />
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            app:srcCompat="@drawable/baseline_photo_library_white_48" />
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/btnCapture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            app:srcCompat="@drawable/baseline_camera_white_48" />
+
+        <ImageButton
+            android:id="@+id/btnChangeMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="25dp"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            app:srcCompat="@drawable/baseline_settings_white_48" />
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
