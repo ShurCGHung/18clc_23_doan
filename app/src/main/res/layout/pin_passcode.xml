@@ -20,4 +20,15 @@
         android:background="@android:color/holo_purple"
         ></com.goodiebag.pinview.Pinview>
 
+    <Button
+        android:id="@+id/checkPin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pinView"
+        android:background="@android:color/transparent"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        style="bold"
+        android:text="Confirm" />
+
 </RelativeLayout>
