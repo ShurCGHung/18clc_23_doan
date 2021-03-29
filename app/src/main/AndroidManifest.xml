@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProGallery">
-        <activity android:name=".Camera">
+        <activity android:name=".EditImageMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
