@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProGallery">
-        <activity android:name=".EditImageMain">
+        <activity android:name=".EditImageMain"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
