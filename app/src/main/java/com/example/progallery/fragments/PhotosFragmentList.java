@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.fragments;
 
 import android.os.Bundle;
 
@@ -9,16 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.example.progallery.R;
+import com.example.progallery.adapters.PhotoListAdapter;
+
 import java.util.Objects;
 
-public class AlbumsFragment extends Fragment {
-    GridView gridView;
+public class PhotosFragmentList extends Fragment {
 
+    GridView gridView;
     int[] photos = {
             R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo, R.drawable.photo,
     };
 
-    public AlbumsFragment() {}
+    public PhotosFragmentList() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,14 +32,13 @@ public class AlbumsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_albums, container, false);
+        View view = inflater.inflate(R.layout.fragment_photos_list, container, false);
 
-        gridView = (GridView) view.findViewById(R.id.album_grid_view);
+        gridView = (GridView) view.findViewById(R.id.photo_list_view);
 
-        AlbumAdapter albumAdapter = new AlbumAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photos);
-        gridView.setAdapter(albumAdapter);
+        PhotoListAdapter photoAdapter = new PhotoListAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photos);
+        gridView.setAdapter(photoAdapter);
 
         return view;
-
     }
 }

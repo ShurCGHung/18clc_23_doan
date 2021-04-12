@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.helpers;
 
 import android.util.AttributeSet;
 import android.view.ViewGroup;

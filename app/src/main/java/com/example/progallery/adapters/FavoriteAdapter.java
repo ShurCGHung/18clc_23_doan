@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+
+import com.example.progallery.R;
 
 public class FavoriteAdapter extends BaseAdapter {
     Context context;

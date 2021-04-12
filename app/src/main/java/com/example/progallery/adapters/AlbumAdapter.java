@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-public class LocationAdapter extends BaseAdapter {
+import com.example.progallery.R;
+
+public class AlbumAdapter extends BaseAdapter {
     Context context;
     int[] photos;
     LayoutInflater inflater;
 
-    public LocationAdapter(Context context, int[] photos) {
+    public AlbumAdapter(Context context, int[] photos) {
         this.context = context;
         this.photos = photos;
         this.inflater = (LayoutInflater.from(context));
@@ -43,3 +45,4 @@ public class LocationAdapter extends BaseAdapter {
         return view;
     }
 }
+
