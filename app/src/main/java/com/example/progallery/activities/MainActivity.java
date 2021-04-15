@@ -1,21 +1,29 @@
 package com.example.progallery.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-
-import com.example.progallery.fragments.PhotosFragmentList;
 import com.example.progallery.R;
 import com.example.progallery.fragments.AlbumsFragment;
 import com.example.progallery.fragments.HighlightsFragment;
+import com.example.progallery.fragments.PhotosFragmentGrid;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int MY_READ_PERMISSION_CODE = 101;
+    ViewPager viewPager;
+    TabLayout tabLayout;
     private Toolbar toolbar;
 
     @Override
@@ -23,16 +31,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        viewPager = findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout);
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_READ_PERMISSION_CODE);
+        }
+        else {
+            init();
+        }
+
+    }
+
+    public void init() {
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), 0) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
                 if (position == 0) {
-                    return new PhotosFragmentList();
+                    return new PhotosFragmentGrid();
                 } else if (position == 1) {
                     return new AlbumsFragment();
                 } else {
@@ -45,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 return 3;
             }
         });
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager.addOnPageChangeListener((new TabLayout.TabLayoutOnPageChangeListener(tabLayout)));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -64,5 +83,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_READ_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                init();
+            } else {
+                finish();
+            }
+        }
     }
 }
