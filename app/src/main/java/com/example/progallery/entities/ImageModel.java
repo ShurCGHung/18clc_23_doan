@@ -1,13 +1,31 @@
 package com.example.progallery.entities;
 
 public class ImageModel {
-    String image;
+    String imagePath;
+    String imageName;
+    String imageDateAdded;
 
-    public String getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageDateAdded() {
+        return imageDateAdded;
+    }
+
+    public void setImageDateAdded(String imageDateAdded) {
+        this.imageDateAdded = imageDateAdded;
     }
 }
