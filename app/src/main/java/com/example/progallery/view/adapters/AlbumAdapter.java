@@ -1,4 +1,4 @@
-package com.example.progallery.adapters;
+package com.example.progallery.view.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

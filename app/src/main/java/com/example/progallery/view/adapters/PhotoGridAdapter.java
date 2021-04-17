@@ -1,6 +1,5 @@
-package com.example.progallery.adapters;
+package com.example.progallery.view.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,29 +11,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
-import com.example.progallery.entities.ImageModel;
-import com.example.progallery.helpers.Getter;
+import com.example.progallery.model.entities.Image;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoGridAdapter extends RecyclerView.Adapter<PhotoGridAdapter.PhotoGridViewHolder> {
-    Context context;
-    List<ImageModel> imageList;
+    List<Image> imageList = new ArrayList<>();
 
-    public PhotoGridAdapter(Context context) {
-        this.imageList = Getter.getAllImages(context);
-        this.context = context;
+    public PhotoGridAdapter() {
     }
 
     @NonNull
     @Override
     public PhotoGridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PhotoGridViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.griditem_photo, parent, false));
+        return new PhotoGridViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.griditem_photo, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull PhotoGridViewHolder holder, int position) {
-        Glide.with(context)
+        Glide.with(holder.imageView.getContext())
                 .load(imageList.get(position).getImagePath())
                 .placeholder(R.color.black)
                 .centerCrop()
@@ -46,7 +43,12 @@ public class PhotoGridAdapter extends RecyclerView.Adapter<PhotoGridAdapter.Phot
     public int getItemCount() {
         return imageList.size();
     }
-    
+
+    public void setImageList(List<Image> images) {
+        this.imageList = images;
+        notifyDataSetChanged();
+    }
+
     static class PhotoGridViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 

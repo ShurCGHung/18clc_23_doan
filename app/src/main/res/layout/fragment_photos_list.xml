@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.PhotosFragmentList">
+    tools:context=".view.fragments.PhotosFragmentList">
 
     <GridView
         android:id="@+id/photo_list_view"

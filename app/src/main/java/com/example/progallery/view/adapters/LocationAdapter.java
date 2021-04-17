@@ -1,4 +1,4 @@
-package com.example.progallery.adapters;
+package com.example.progallery.view.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,12 +10,12 @@ import android.widget.ImageView;
 
 import com.example.progallery.R;
 
-public class FavoriteAdapter extends BaseAdapter {
+public class LocationAdapter extends BaseAdapter {
     Context context;
     int[] photos;
     LayoutInflater inflater;
 
-    public FavoriteAdapter(Context context, int[] photos) {
+    public LocationAdapter(Context context, int[] photos) {
         this.context = context;
         this.photos = photos;
         this.inflater = (LayoutInflater.from(context));

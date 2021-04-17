@@ -1,4 +1,4 @@
-package com.example.progallery.adapters;
+package com.example.progallery.view.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,12 +10,12 @@ import android.widget.ImageView;
 
 import com.example.progallery.R;
 
-public class PhotoListAdapter extends BaseAdapter {
+public class FavoriteAdapter extends BaseAdapter {
     Context context;
     int[] photos;
     LayoutInflater inflater;
 
-    public PhotoListAdapter(Context context, int[] photos) {
+    public FavoriteAdapter(Context context, int[] photos) {
         this.context = context;
         this.photos = photos;
         this.inflater = (LayoutInflater.from(context));
@@ -39,8 +39,8 @@ public class PhotoListAdapter extends BaseAdapter {
     @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.listitem_photo, null); // inflate the layout
-        ImageView photo = (ImageView) view.findViewById(R.id.grid_image_view); // get the reference of ImageView
+        view = inflater.inflate(R.layout.griditem_album, null); // inflate the layout
+        ImageView photo = (ImageView) view.findViewById(R.id.albumView); // get the reference of ImageView
         photo.setImageResource(R.drawable.photo); // set logo images
         return view;
     }

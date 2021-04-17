@@ -1,4 +1,4 @@
-package com.example.progallery.activities;
+package com.example.progallery.view.activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -14,9 +14,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.R;
-import com.example.progallery.fragments.AlbumsFragment;
-import com.example.progallery.fragments.HighlightsFragment;
-import com.example.progallery.fragments.PhotosFragmentGrid;
+import com.example.progallery.view.fragments.AlbumsFragment;
+import com.example.progallery.view.fragments.HighlightsFragment;
+import com.example.progallery.view.fragments.PhotosFragmentGrid;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {

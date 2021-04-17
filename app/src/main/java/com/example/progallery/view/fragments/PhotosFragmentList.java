@@ -1,4 +1,4 @@
-package com.example.progallery.fragments;
+package com.example.progallery.view.fragments;
 
 import android.os.Bundle;
 
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.progallery.R;
-import com.example.progallery.adapters.PhotoListAdapter;
+import com.example.progallery.view.adapters.PhotoListAdapter;
 
 import java.util.Objects;
 

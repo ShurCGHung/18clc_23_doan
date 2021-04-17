@@ -1,4 +1,4 @@
-package com.example.progallery.fragments;
+package com.example.progallery.view.fragments;
 
 import android.os.Bundle;
 
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.progallery.helpers.ExpandableHeightGridView;
 import com.example.progallery.R;
-import com.example.progallery.adapters.AlbumAdapter;
+import com.example.progallery.view.adapters.AlbumAdapter;
 
 import java.util.Objects;
 

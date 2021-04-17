@@ -1,4 +1,4 @@
-package com.example.progallery.fragments;
+package com.example.progallery.view.fragments;
 
 import android.os.Bundle;
 
