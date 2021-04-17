@@ -9,21 +9,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.R;
-import com.example.progallery.view.fragments.AlbumsFragment;
-import com.example.progallery.view.fragments.HighlightsFragment;
-import com.example.progallery.view.fragments.PhotosFragmentGrid;
+import com.example.progallery.view.adapters.PageAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_READ_PERMISSION_CODE = 101;
     ViewPager viewPager;
     TabLayout tabLayout;
-    private Toolbar toolbar;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
         viewPager = findViewById(R.id.view_pager);
@@ -44,24 +41,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init() {
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), 0) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                if (position == 0) {
-                    return new PhotosFragmentGrid();
-                } else if (position == 1) {
-                    return new AlbumsFragment();
-                } else {
-                    return new HighlightsFragment();
-                }
-            }
+        PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager(), 0, tabLayout.getTabCount());
+        viewPager.setAdapter(pageAdapter);
 
-            @Override
-            public int getCount() {
-                return 3;
-            }
-        });
         viewPager.addOnPageChangeListener((new TabLayout.TabLayoutOnPageChangeListener(tabLayout)));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

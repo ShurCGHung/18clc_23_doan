@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.fragments.PhotosFragmentGrid">
+    tools:context=".view.fragments.PhotosFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/photo_grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        tools:listitem="@layout/griditem_photo"/>
+        tools:listitem="@layout/photo_grid_item"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -39,7 +39,7 @@ public class PhotoListAdapter extends BaseAdapter {
     @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.listitem_photo, null); // inflate the layout
+        view = inflater.inflate(R.layout.photo_list_item, null); // inflate the layout
         ImageView photo = (ImageView) view.findViewById(R.id.grid_image_view); // get the reference of ImageView
         photo.setImageResource(R.drawable.photo); // set logo images
         return view;

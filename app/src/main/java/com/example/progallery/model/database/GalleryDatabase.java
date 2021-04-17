@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Image.class, Album.class}, version = 1)
+@Database(entities = {Image.class, Album.class}, version = 1, exportSchema = false)
 public abstract class GalleryDatabase extends RoomDatabase {
     private static GalleryDatabase instance;
     private static List<Image> imageList;
