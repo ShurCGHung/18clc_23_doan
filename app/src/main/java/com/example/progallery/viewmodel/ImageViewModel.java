@@ -1,7 +1,6 @@
 package com.example.progallery.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -24,6 +23,10 @@ public class ImageViewModel extends AndroidViewModel {
 
     public void insert(Image image) {
         repository.insert(image);
+    }
+
+    public void insert(List<Image> imageList) {
+        repository.insert(imageList);
     }
 
     public void update(Image image) {

@@ -47,7 +47,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 .into(holder.imageView);
 
         if (PhotosFragment.displayOption == PhotosFragment.LIST) {
-            holder.imagePath.setText(imageList.get(position).getImagePath());
+            holder.imagePath.setText(imageList.get(position).getImageName());
             holder.imageDate.setText(imageList.get(position).getImageDateAdded());
         }
     }
@@ -72,7 +72,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             imageView = itemView.findViewById(R.id.imageView);
 
             if (PhotosFragment.displayOption == PhotosFragment.LIST) {
-                imagePath = itemView.findViewById(R.id.file_path);
+                imagePath = itemView.findViewById(R.id.file_name);
                 imageDate = itemView.findViewById(R.id.file_date);
             }
         }
