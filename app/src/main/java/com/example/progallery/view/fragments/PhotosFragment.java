@@ -28,18 +28,22 @@ import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration;
 
 import java.util.List;
 
-public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final int GRID = 0;
     public static final int LIST = 1;
     public static final int FLEX = 2;
+
     public static int displayOption;
+    private boolean showDatesBool;
+
     private ImageViewModel imageViewModel;
-    SwipeRefreshLayout layout;
-    PhotoAdapter photoAdapter;
+    private SwipeRefreshLayout layout;
+    private PhotoAdapter photoAdapter;
 
     public PhotosFragment() {
         displayOption = GRID;
         imageViewModel = null;
+        showDatesBool = false;
     }
 
     @Override
@@ -56,24 +60,49 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         MenuItem showDates = menu.findItem(R.id.show_dates);
         showDates.setVisible(displayOption == GRID);
+
+        if (showDatesBool) {
+            showDates.setTitle(R.string.hide_dates);
+        } else {
+            showDates.setTitle(R.string.show_dates);
+        }
+
+        if (displayOption == GRID) {
+            MenuItem item = menu.findItem(R.id.grid);
+            item.setChecked(true);
+        } else if (displayOption == LIST) {
+            MenuItem item = menu.findItem(R.id.list);
+            item.setChecked(true);
+        } else if (displayOption == FLEX) {
+            MenuItem item = menu.findItem(R.id.flex);
+            item.setChecked(true);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         item.setChecked(true);
-        if (id == R.id.grid) {
+        if (id == R.id.grid && displayOption != GRID) {
             displayOption = GRID;
-        } else if (id == R.id.list) {
+            recreateFragment();
+        } else if (id == R.id.list && displayOption != LIST) {
             displayOption = LIST;
-        } else if (id == R.id.flex) {
+            recreateFragment();
+        } else if (id == R.id.flex && displayOption != FLEX) {
             displayOption = FLEX;
+            recreateFragment();
+        } else if (id == R.id.show_dates) {
+            showDatesBool = !showDatesBool;
         }
+        return true;
+    }
+
+    private void recreateFragment() {
         this.getFragmentManager().beginTransaction()
                 .detach(PhotosFragment.this)
                 .attach(PhotosFragment.this)
                 .commit();
-        return true;
     }
 
     @Override
@@ -133,7 +162,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         loadView();
     }
 
-    public void loadView(){
+    public void loadView() {
         layout.setRefreshing(true);
         List<Image> refetch = FetchStorage.getAllImages(getContext());
         imageViewModel.insert(refetch);

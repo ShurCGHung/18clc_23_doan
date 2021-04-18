@@ -65,5 +65,5 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-
+    implementation 'com.github.luizgrp:SectionedRecyclerViewAdapter:v3.2.0'
 }

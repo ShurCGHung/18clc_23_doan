@@ -25,7 +25,7 @@ public class FetchStorage {
 
             Date date = new java.util.Date(dateAddedOfImage * 1000L);
 
-            SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.ENGLISH);
+            SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
             sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+7"));
             String formattedDate = sdf.format(date);
