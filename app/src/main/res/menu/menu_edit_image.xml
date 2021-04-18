@@ -10,5 +10,6 @@
         android:orderInCategory="101"
         app:showAsAction="always"
         android:enabled="true"
+        android:icon="@drawable/ic_save"
         android:title="SAVE"/>
 </menu>

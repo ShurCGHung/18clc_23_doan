@@ -40,9 +40,12 @@ dependencies {
     implementation 'com.github.GoodieBag:Pinview:v1.4'
 
     //noinspection GradleCompatible
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.karumi:dexter:4.1.0'
     implementation 'info.androidhive:imagefilters:1.0.7'
+
+    // Photo Editor API
+    implementation 'ja.burhanrashid52:photoeditor:0.2.1'
 }

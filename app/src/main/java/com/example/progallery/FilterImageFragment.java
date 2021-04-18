@@ -17,6 +17,7 @@ import com.example.progallery.Adapter.ThumbnailAdapter;
 import com.example.progallery.Interface.FilterFragmentListener;
 import com.example.progallery.Utils.BitmapUtils;
 import com.example.progallery.Utils.SpaceItemDecoration;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zomato.photofilters.FilterPack;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.utils.ThumbnailItem;
@@ -30,12 +31,20 @@ import java.util.List;
  * Use the {@link FilterImageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FilterImageFragment extends Fragment implements FilterFragmentListener {
+public class FilterImageFragment extends BottomSheetDialogFragment implements FilterFragmentListener {
     RecyclerView recyclerView;
     ThumbnailAdapter adapter;
     List<ThumbnailItem> thumbnailItemList;
 
     FilterFragmentListener listener;
+
+    static FilterImageFragment instance;
+    public static FilterImageFragment getInstance() {
+        if (instance == null) {
+            instance = new FilterImageFragment();
+        }
+        return instance;
+    }
 
     public void setListener(FilterFragmentListener listener) {
         this.listener = listener;

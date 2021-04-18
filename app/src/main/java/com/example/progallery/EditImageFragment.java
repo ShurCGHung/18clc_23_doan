@@ -10,16 +10,25 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.example.progallery.Interface.EditImageFragmentListener;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EditImageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditImageFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
+public class EditImageFragment extends BottomSheetDialogFragment implements SeekBar.OnSeekBarChangeListener {
 
     private EditImageFragmentListener editListener;
     SeekBar seekbar_brightness, seekbar_saturation, seekbar_contrast;
+
+    static EditImageFragment instance;
+    public static EditImageFragment getInstance() {
+        if (instance == null) {
+            instance = new EditImageFragment();
+        }
+        return instance;
+    }
 
     public void setEditListener(EditImageFragmentListener editListener) {
         this.editListener = editListener;
