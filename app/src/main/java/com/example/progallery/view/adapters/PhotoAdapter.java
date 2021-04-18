@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
 import com.example.progallery.model.entities.Image;
@@ -34,7 +35,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             return new PhotoViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.photo_list_item, parent, false));
         }
-        return null;
+        else {
+            return null;
+        }
     }
 
     @Override
@@ -43,6 +46,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 .load(imageList.get(position).getImagePath())
                 .placeholder(R.color.black)
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .transition(DrawableTransitionOptions.withCrossFade(500))
                 .into(holder.imageView);
 

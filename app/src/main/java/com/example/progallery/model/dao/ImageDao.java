@@ -6,7 +6,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import com.example.progallery.model.entities.Image;
 
@@ -23,6 +22,12 @@ public interface ImageDao {
     @Delete
     void delete(Image image);
 
+    @Query("DELETE FROM image_table WHERE imagePath IN (:imageList)")
+    void delete(List<String> imageList);
+
     @Query("SELECT * FROM image_table ORDER BY imageDateAdded DESC")
     LiveData<List<Image>> getAllImages();
+
+    @Query("SELECT * FROM image_table ORDER BY imageDateAdded DESC")
+    List<Image> getAllImagesSync();
 }

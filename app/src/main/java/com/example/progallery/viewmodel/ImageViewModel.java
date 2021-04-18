@@ -12,8 +12,8 @@ import com.example.progallery.model.repository.ImageRepository;
 import java.util.List;
 
 public class ImageViewModel extends AndroidViewModel {
-    private ImageRepository repository;
-    private LiveData<List<Image>> allImages;
+    private final ImageRepository repository;
+    private final LiveData<List<Image>> allImages;
 
     public ImageViewModel(@NonNull Application application) {
         super(application);
@@ -35,6 +35,14 @@ public class ImageViewModel extends AndroidViewModel {
 
     public void delete(Image image) {
         repository.delete(image);
+    }
+
+    public void delete(List<String> imageList) {
+        repository.delete(imageList);
+    }
+
+    public void getAll() {
+        repository.getAll();
     }
 
     public LiveData<List<Image>> getAllImages() {

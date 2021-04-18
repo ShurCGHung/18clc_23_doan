@@ -3,10 +3,10 @@ package com.example.progallery.helpers;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import com.example.progallery.model.entities.Image;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,9 +24,7 @@ public class FetchStorage {
             long dateAddedOfImage = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_ADDED));
 
             Date date = new java.util.Date(dateAddedOfImage * 1000L);
-
-            SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
+            SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
             sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+7"));
             String formattedDate = sdf.format(date);
 
@@ -35,5 +33,10 @@ public class FetchStorage {
         }
         cursor.close();
         return images;
+    }
+
+    public static boolean isExist(String filePath){
+        File file = new File(filePath);
+        return file.exists();
     }
 }

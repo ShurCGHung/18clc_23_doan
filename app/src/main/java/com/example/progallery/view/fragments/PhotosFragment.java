@@ -1,6 +1,7 @@
 package com.example.progallery.view.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,10 +24,12 @@ import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.FetchStorage;
 import com.example.progallery.model.entities.Image;
 import com.example.progallery.view.adapters.PhotoAdapter;
+import com.example.progallery.view.adapters.SectionedPhotoAdapter;
 import com.example.progallery.viewmodel.ImageViewModel;
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public static final int GRID = 0;
@@ -39,6 +42,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private ImageViewModel imageViewModel;
     private SwipeRefreshLayout layout;
     private PhotoAdapter photoAdapter;
+    private SectionedPhotoAdapter photoAdapterByDate;
 
     public PhotosFragment() {
         displayOption = GRID;
@@ -94,11 +98,13 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             recreateFragment();
         } else if (id == R.id.show_dates) {
             showDatesBool = !showDatesBool;
+            recreateFragment();
         }
         return true;
     }
 
     private void recreateFragment() {
+        assert this.getFragmentManager() != null;
         this.getFragmentManager().beginTransaction()
                 .detach(PhotosFragment.this)
                 .attach(PhotosFragment.this)
@@ -118,16 +124,25 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         RecyclerView recyclerView = view.findViewById(R.id.photo_grid_view);
         recyclerView.setHasFixedSize(true);
 
-        photoAdapter = new PhotoAdapter();
-        recyclerView.setAdapter(photoAdapter);
+        if (showDatesBool) {
+            photoAdapterByDate = new SectionedPhotoAdapter();
+            recyclerView.setAdapter(photoAdapterByDate);
+        } else {
+            photoAdapter = new PhotoAdapter();
+            recyclerView.setAdapter(photoAdapter);
+        }
 
         if (displayOption == GRID) {
             View tempView = inflater.inflate(R.layout.photo_grid_item, container, false);
             ImageView tempImage = tempView.findViewById(R.id.imageView);
             int columnWidth = tempImage.getLayoutParams().width;
-            int numColumn = ColumnCalculator.calculateNoOfColumns(getContext(), columnWidth);
+            int numColumn = ColumnCalculator.calculateNoOfColumns(Objects.requireNonNull(getContext()), columnWidth);
 
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numColumn));
+            GridLayoutManager glm = new GridLayoutManager(getContext(), numColumn);
+            if (showDatesBool) {
+                photoAdapterByDate.setLayoutManager(glm);
+            }
+            recyclerView.setLayoutManager(glm);
             recyclerView.addItemDecoration(new LayoutMarginDecoration(numColumn, getResources().getDimensionPixelSize(R.dimen._10sdp)));
         } else if (displayOption == LIST) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -142,7 +157,11 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         imageViewModel.getAllImages().observe(this, new Observer<List<Image>>() {
             @Override
             public void onChanged(List<Image> imageList) {
-                photoAdapter.setImageList(imageList);
+                if (showDatesBool) {
+                    photoAdapterByDate.setImageList(imageList);
+                } else {
+                    photoAdapter.setImageList(imageList);
+                }
             }
         });
 
@@ -164,9 +183,9 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     public void loadView() {
         layout.setRefreshing(true);
-        List<Image> refetch = FetchStorage.getAllImages(getContext());
+        List<Image> refetch = FetchStorage.getAllImages(Objects.requireNonNull(getContext()));
+        imageViewModel.getAll();
         imageViewModel.insert(refetch);
-        photoAdapter.setImageList(refetch);
         layout.setRefreshing(false);
     }
 }
