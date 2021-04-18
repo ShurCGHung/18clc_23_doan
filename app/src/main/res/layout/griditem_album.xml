@@ -28,7 +28,7 @@
             android:layout_height="50dp"
             android:layout_gravity="top|end"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_baseline_more_vert_24"
+            android:src="@drawable/ic_more_vert"
             android:contentDescription="@string/photo_desc" />
 
         <TextView

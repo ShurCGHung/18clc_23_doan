@@ -16,6 +16,6 @@
         <item name="actionMenuTextColor">@color/color_option_menu</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopUpOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 </resources>

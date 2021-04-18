@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/baseline_more_vert_20"
+                    android:src="@drawable/ic_more_vert"
                     android:paddingRight="10dp">
 
                 </ImageButton>
@@ -97,7 +97,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/baseline_info_20"/>
+                    android:src="@drawable/ic_info"/>
 
                 <ImageButton
                     android:id="@+id/btnFavorite"
@@ -105,7 +105,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/baseline_favorite_border_white_20"/>
+                    android:src="@drawable/ic_favorite_border"/>
 
                 <ImageButton
                     android:id="@+id/btnEdit"
@@ -113,7 +113,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/baseline_edit_white_20"/>
+                    android:src="@drawable/ic_edit"/>
 
                 <ImageButton
                     android:id="@+id/btnShare"
@@ -121,7 +121,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/baseline_share_white_20"/>
+                    android:src="@drawable/ic_share"/>
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
