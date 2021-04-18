@@ -1,7 +1,6 @@
 package com.example.progallery.Adapter;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.progallery.Inteface.FilterFragmentListener;
+import com.example.progallery.Interface.FilterFragmentListener;
 import com.example.progallery.R;
 import com.zomato.photofilters.utils.ThumbnailItem;
 
 import java.util.List;
-import java.util.logging.Filter;
 
 public class ThumbnailAdapter extends RecyclerView.Adapter<ThumbnailAdapter.MyViewHolder> {
 
