@@ -25,6 +25,11 @@ public class NonSwipeable extends ViewPager {
     }
 
     @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return false;
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent ev) {
         return false;
     }
@@ -33,7 +38,7 @@ public class NonSwipeable extends ViewPager {
         try {
             Class<?> viewpager = ViewPager.class;
             Field scroller = viewpager.getDeclaredField("mScroller");
-            scroller.setAccessible(false);
+            scroller.setAccessible(true);
             scroller.set(this, new MyScroller(getContext()));
         } catch (NoSuchFieldException ex) {
             ex.printStackTrace();

@@ -158,14 +158,15 @@ public class BitmapUtils {
                     src.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
                 } finally {
                     outputStream.close();
-                    long id = ContentUris.parseId(uri);
-                    Bitmap miniThumb = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MINI_KIND, null);
-                    storeThumbnail(cr, miniThumb, id, 50f, 50f, MediaStore.Images.Thumbnails.MINI_KIND);
                 }
+
+                long id = ContentUris.parseId(uri);
+                Bitmap miniThumb = MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MINI_KIND, null);
+                storeThumbnail(cr, miniThumb, id, 50f, 50f, MediaStore.Images.Thumbnails.MINI_KIND);
             }
             else {
-                 cr.delete(uri, null, null);
-                 uri = null;
+                cr.delete(uri, null, null);
+                uri = null;
             }
 
         } catch (FileNotFoundException e) {
@@ -180,7 +181,7 @@ public class BitmapUtils {
         return stringURL;
     }
 
-    private static Bitmap storeThumbnail(ContentResolver cr, Bitmap source, long id, float width, float height, int kind) {
+    private static final Bitmap storeThumbnail(ContentResolver cr, Bitmap source, long id, float width, float height, int kind) {
         Matrix matrix = new Matrix();
 
         float scaleX = width/source.getWidth();
