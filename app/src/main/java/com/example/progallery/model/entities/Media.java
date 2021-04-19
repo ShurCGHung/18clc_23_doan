@@ -14,13 +14,15 @@ public class Media {
     private String mediaDateAdded;
     private String mediaWidth;
     private String mediaHeight;
+    private String mediaType;
 
-    public Media(@NonNull String mediaPath, String mediaName, String mediaDateAdded, String mediaHeight, String mediaWidth) {
+    public Media(@NonNull String mediaPath, String mediaName, String mediaDateAdded, String mediaHeight, String mediaWidth, String mediaType) {
         this.mediaPath = mediaPath;
         this.mediaName = mediaName;
         this.mediaDateAdded = mediaDateAdded;
         this.mediaHeight = mediaHeight;
         this.mediaWidth = mediaWidth;
+        this.mediaType = mediaType;
     }
 
     @NonNull
@@ -62,5 +64,19 @@ public class Media {
 
     public void setMediaHeight(String mediaHeight) {
         this.mediaHeight = mediaHeight;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return mediaPath + " " + mediaName +  " " + mediaType + "\n";
     }
 }
