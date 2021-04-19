@@ -1,6 +1,6 @@
 package com.example.progallery.helpers;
 
-import com.example.progallery.model.entities.Image;
+import com.example.progallery.model.entities.Media;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class Converter {
-    public static LinkedHashMap<String, List<Image>> toHashMap(List<Image> imageList) {
-        LinkedHashMap<String, List<Image>> groupedData = new LinkedHashMap<>();
-        for (Image image : imageList) {
-            String hashMapKey = image.getImageDateAdded();
+    public static LinkedHashMap<String, List<Media>> toHashMap(List<Media> mediaList) {
+        LinkedHashMap<String, List<Media>> groupedData = new LinkedHashMap<>();
+        for (Media media : mediaList) {
+            String hashMapKey = media.getMediaDateAdded();
             if (groupedData.containsKey(hashMapKey)) {
-                Objects.requireNonNull(groupedData.get(hashMapKey)).add(image);
+                Objects.requireNonNull(groupedData.get(hashMapKey)).add(media);
             } else {
-                List<Image> list = new ArrayList<>();
-                list.add(image);
+                List<Media> list = new ArrayList<>();
+                list.add(media);
                 groupedData.put(hashMapKey, list);
             }
         }

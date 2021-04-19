@@ -1,45 +1,44 @@
 package com.example.progallery.model.repository;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.example.progallery.helpers.FetchStorage;
-import com.example.progallery.model.dao.ImageDao;
+import com.example.progallery.model.dao.MediaDao;
 import com.example.progallery.model.database.GalleryDatabase;
-import com.example.progallery.model.entities.Image;
+import com.example.progallery.model.entities.Media;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ImageRepository {
-    private ImageDao imageDao;
-    private LiveData<List<Image>> allImages;
+public class MediaRepository {
+    private MediaDao mediaDao;
+    private LiveData<List<Media>> allMedias;
 
-    public ImageRepository(Application application) {
+    public MediaRepository(Application application) {
         GalleryDatabase galleryDatabase = GalleryDatabase.getInstance(application);
-        imageDao = galleryDatabase.imageDao();
+        mediaDao = galleryDatabase.mediaDao();
         getAll();
-        allImages = imageDao.getAllImages();
+        allMedias = mediaDao.getAllMedias();
     }
 
-    public void insert(Image image) {
+    public void insert(Media media) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            imageDao.insert(image);
+            mediaDao.insert(media);
 
 //            new Handler(Looper.getMainLooper()).post(() -> {
 //            });
         });
     }
 
-    public void insert(List<Image> imageList) {
+    public void insert(List<Media> mediaList) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            imageDao.insert(imageList);
+            mediaDao.insert(mediaList);
 
 //            new Handler(Looper.getMainLooper()).post(() -> {
 //            });
@@ -49,10 +48,10 @@ public class ImageRepository {
     public void getAll() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            List<Image> temp = imageDao.getAllImagesSync();
+            List<Media> temp = mediaDao.getAllMediasSync();
             List<String> notExistFile = new ArrayList<>();
-            for (Image image : temp) {
-                String path = image.getImagePath();
+            for (Media media : temp) {
+                String path = media.getMediaPath();
                 if (!FetchStorage.isExist(path)) {
                     notExistFile.add(path);
                 }
@@ -63,30 +62,30 @@ public class ImageRepository {
         });
     }
 
-    public void update(Image image) {
+    public void update(Media media) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            imageDao.insert(image);
+            mediaDao.insert(media);
 
 //            new Handler(Looper.getMainLooper()).post(() -> {
 //            });
         });
     }
 
-    public void delete(Image image) {
+    public void delete(Media media) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            imageDao.delete(image);
+            mediaDao.delete(media);
 
 //            new Handler(Looper.getMainLooper()).post(() -> {
 //            });
         });
     }
 
-    public void delete(List<String> imageList) {
+    public void delete(List<String> mediaList) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            imageDao.delete(imageList);
+            mediaDao.delete(mediaList);
 
 //            new Handler(Looper.getMainLooper()).post(() -> {
 //            });
@@ -94,7 +93,7 @@ public class ImageRepository {
     }
 
 
-    public LiveData<List<Image>> getAllImages() {
-        return allImages;
+    public LiveData<List<Media>> getAllMedias() {
+        return allMedias;
     }
 }

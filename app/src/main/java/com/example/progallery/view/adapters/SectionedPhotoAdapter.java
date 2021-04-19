@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.sectionedrecyclerview.SectionedRecyclerViewAdapter;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Converter;
-import com.example.progallery.model.entities.Image;
+import com.example.progallery.model.entities.Media;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,16 +24,16 @@ import java.util.Objects;
 
 public class SectionedPhotoAdapter extends SectionedRecyclerViewAdapter<RecyclerView.ViewHolder> {
     ArrayList<String> dates = new ArrayList<>();
-    HashMap<String, List<Image>> hashMap = new HashMap<>();
+    HashMap<String, List<Media>> hashMap = new HashMap<>();
 
     public SectionedPhotoAdapter() {
     }
 
-    public void setImageList(List<Image> images) {
+    public void setImageList(List<Media> media) {
         dates.clear();
 
-        hashMap = Converter.toHashMap(images);
-        for (Map.Entry<String, List<Image>> pair : hashMap.entrySet()) {
+        hashMap = Converter.toHashMap(media);
+        for (Map.Entry<String, List<Media>> pair : hashMap.entrySet()) {
             dates.add((String) pair.getKey());
         }
         notifyDataSetChanged();
@@ -62,7 +61,7 @@ public class SectionedPhotoAdapter extends SectionedRecyclerViewAdapter<Recycler
         ContentViewHolder contentViewHolder = (ContentViewHolder) viewHolder;
 
         Glide.with(contentViewHolder.imageView.getContext())
-                .load(Objects.requireNonNull(hashMap.get(dates.get(i))).  get(i1).getImagePath())
+                .load(Objects.requireNonNull(hashMap.get(dates.get(i))).  get(i1).getMediaPath())
                 .placeholder(R.color.black)
                 .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade(500))

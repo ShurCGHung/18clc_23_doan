@@ -6,8 +6,6 @@ import android.util.DisplayMetrics;
 public class ColumnCalculator {
     public static int calculateNoOfColumns(Context context, int columnWidthPixels) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        //float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
-        //return (int) (screenWidthDp / columnWidthDp + 0.5);
         int screenPixels = displayMetrics.widthPixels;
         return  screenPixels / columnWidthPixels;
     }

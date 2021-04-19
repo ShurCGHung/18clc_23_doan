@@ -20,10 +20,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.FetchStorage;
-import com.example.progallery.model.entities.Image;
+import com.example.progallery.model.entities.Media;
 import com.example.progallery.view.adapters.PhotoAdapter;
 import com.example.progallery.view.adapters.SectionedPhotoAdapter;
-import com.example.progallery.viewmodel.ImageViewModel;
+import com.example.progallery.viewmodel.MediaViewModel;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
@@ -41,14 +41,14 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public static int displayOption;
     public static boolean showDatesBool;
 
-    private ImageViewModel imageViewModel;
+    private MediaViewModel mediaViewModel;
     private SwipeRefreshLayout layout;
     private PhotoAdapter photoAdapter;
     private SectionedPhotoAdapter photoAdapterByDate;
 
     public PhotosFragment() {
         displayOption = GRID;
-        imageViewModel = null;
+        mediaViewModel = null;
         showDatesBool = false;
     }
 
@@ -171,15 +171,15 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }
 
         // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
-        // imageViewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
+        // mediaViewModel = new ViewModelProvider(getActivity()).get(MediaViewModel.class);
 
         ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
-        imageViewModel = new ViewModelProvider(this, factory).get(ImageViewModel.class);
-        imageViewModel.getAllImages().observe(this, imageList -> {
+        mediaViewModel = new ViewModelProvider(this, factory).get(MediaViewModel.class);
+        mediaViewModel.getAllImages().observe(this, mediaList -> {
             if (showDatesBool) {
-                photoAdapterByDate.setImageList(imageList);
+                photoAdapterByDate.setImageList(mediaList);
             } else {
-                photoAdapter.setImageList(imageList);
+                photoAdapter.setMediaList(mediaList);
             }
         });
 
@@ -198,9 +198,9 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     public void loadView() {
         layout.setRefreshing(true);
-        List<Image> refetch = FetchStorage.getAllImages(Objects.requireNonNull(getContext()));
-        imageViewModel.getAll();
-        imageViewModel.insert(refetch);
+        List<Media> refetch = FetchStorage.getAllMedias(Objects.requireNonNull(getContext()));
+        mediaViewModel.getAll();
+        mediaViewModel.insert(refetch);
         layout.setRefreshing(false);
     }
 }
