@@ -48,4 +48,7 @@ dependencies {
 
     // Photo Editor API
     implementation 'ja.burhanrashid52:photoeditor:0.2.1'
+
+    // Emojicon Text View (Display emoji from String)
+    implementation 'com.github.rockerhieu:emojicon:v1.4.2'
 }

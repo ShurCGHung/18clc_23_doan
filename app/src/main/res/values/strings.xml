@@ -21,5 +21,9 @@
     <string name="opacity">Opacity</string>
     <string name="brush_state_eraser">Eraser</string>
     <string name="brush_state_paint">Brush</string>
+    <string name="brush_btn">Brush</string>
+    <string name="btn_emoji">Emoji</string>
+    <string name="text_for_image">Text</string>
+    <string name="enter_some_text">Enter some text</string>
 
 </resources>
