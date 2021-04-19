@@ -66,4 +66,6 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     implementation 'com.afollestad:sectioned-recyclerview:0.2.3'
+
+    implementation 'com.google.android:flexbox:2.0.1'
 }

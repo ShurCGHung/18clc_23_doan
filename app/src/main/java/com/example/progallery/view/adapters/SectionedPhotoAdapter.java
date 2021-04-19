@@ -64,7 +64,6 @@ public class SectionedPhotoAdapter extends SectionedRecyclerViewAdapter<Recycler
         Glide.with(contentViewHolder.imageView.getContext())
                 .load(Objects.requireNonNull(hashMap.get(dates.get(i))).  get(i1).getImagePath())
                 .placeholder(R.color.black)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade(500))
                 .into(contentViewHolder.imageView);

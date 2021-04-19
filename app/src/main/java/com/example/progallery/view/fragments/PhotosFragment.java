@@ -1,7 +1,6 @@
 package com.example.progallery.view.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +24,10 @@ import com.example.progallery.model.entities.Image;
 import com.example.progallery.view.adapters.PhotoAdapter;
 import com.example.progallery.view.adapters.SectionedPhotoAdapter;
 import com.example.progallery.viewmodel.ImageViewModel;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayoutManager;
 import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration;
 
 import java.util.List;
@@ -37,7 +39,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public static final int FLEX = 2;
 
     public static int displayOption;
-    private boolean showDatesBool;
+    public static boolean showDatesBool;
 
     private ImageViewModel imageViewModel;
     private SwipeRefreshLayout layout;
@@ -58,6 +60,13 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.view_image_menu, menu);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("displayOption", String.valueOf(displayOption));
+        outState.putString("showDatesBool", String.valueOf(showDatesBool));
     }
 
     @Override
@@ -114,6 +123,12 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // Restore last state
+            displayOption = Integer.parseInt(savedInstanceState.getString("displayOption"));
+            showDatesBool = Boolean.parseBoolean(savedInstanceState.getString("showDatesBool"));
+        }
+
         setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
@@ -147,30 +162,30 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         } else if (displayOption == LIST) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.addItemDecoration(new LayoutMarginDecoration(1, getResources().getDimensionPixelSize(R.dimen._10sdp)));
+        } else if (displayOption == FLEX) {
+            FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
+            layoutManager.setFlexWrap(FlexWrap.WRAP);
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setAlignItems(AlignItems.STRETCH);
+            recyclerView.setLayoutManager(layoutManager);
         }
 
         // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
         // imageViewModel = new ViewModelProvider(getActivity()).get(ImageViewModel.class);
 
-        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(this.getActivity().getApplication());
+        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
         imageViewModel = new ViewModelProvider(this, factory).get(ImageViewModel.class);
-        imageViewModel.getAllImages().observe(this, new Observer<List<Image>>() {
-            @Override
-            public void onChanged(List<Image> imageList) {
-                if (showDatesBool) {
-                    photoAdapterByDate.setImageList(imageList);
-                } else {
-                    photoAdapter.setImageList(imageList);
-                }
+        imageViewModel.getAllImages().observe(this, imageList -> {
+            if (showDatesBool) {
+                photoAdapterByDate.setImageList(imageList);
+            } else {
+                photoAdapter.setImageList(imageList);
             }
         });
 
-        layout.post(new Runnable() {
-            @Override
-            public void run() {
-                layout.setRefreshing(true);
-                loadView();
-            }
+        layout.post(() -> {
+            layout.setRefreshing(true);
+            loadView();
         });
 
         return view;
