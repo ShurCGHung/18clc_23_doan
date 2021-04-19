@@ -3,6 +3,7 @@ package com.example.progallery;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,8 +21,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.Adapter.ViewPagerAdapter;
+import com.example.progallery.Interface.AddTextFragmentListener;
 import com.example.progallery.Interface.BrushFragmentListener;
 import com.example.progallery.Interface.EditImageFragmentListener;
+import com.example.progallery.Interface.EmojiFragmentListener;
 import com.example.progallery.Interface.FilterFragmentListener;
 import com.example.progallery.Utils.BitmapUtils;
 import com.google.android.material.snackbar.Snackbar;
@@ -43,7 +46,7 @@ import ja.burhanrashid52.photoeditor.OnSaveBitmap;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 
-public class EditImageMain extends AppCompatActivity implements FilterFragmentListener, EditImageFragmentListener, BrushFragmentListener {
+public class EditImageMain extends AppCompatActivity implements FilterFragmentListener, EditImageFragmentListener, BrushFragmentListener, EmojiFragmentListener, AddTextFragmentListener {
     public static final String pictureName = "flash.jpg";
     public static final int PERMISSION_PICK_IMAGE = 1000;
 
@@ -57,7 +60,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
     FilterImageFragment filterImageFragment;
     EditImageFragment editImageFragment;
 
-    CardView btnFilters, btnEditImage, btnBrush;
+    CardView btnFilters, btnEditImage, btnBrush, btnEmoji, btnText;
 
     int brightnessFinal = 0;
     float saturationFinal = 1.0f;
@@ -82,12 +85,15 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
         photoEditorView = (PhotoEditorView) findViewById(R.id.imageView2);
         photoEditor = new PhotoEditor.Builder(this, photoEditorView)
                 .setPinchTextScalable(true)
+                .setDefaultEmojiTypeface(Typeface.createFromAsset(getAssets(), "emojione-android.ttf"))
                 .build();
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
 
         btnFilters = (CardView) findViewById(R.id.btnFilters);
         btnEditImage = (CardView) findViewById(R.id.btnEditImage);
         btnBrush = (CardView) findViewById(R.id.btnBrushImage);
+        btnEmoji = (CardView) findViewById(R.id.btnEmoji);
+        btnText = (CardView) findViewById(R.id.btnAddTextToImage);
 
         btnFilters.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +121,24 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
                 BrushFragment brushFragment = BrushFragment.getInstance();
                 brushFragment.setListener(EditImageMain.this);
                 brushFragment.show(getSupportFragmentManager(), brushFragment.getTag());
+            }
+        });
+
+        btnEmoji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EmojiFragment emojiFragment = EmojiFragment.getInstance();
+                emojiFragment.setListener(EditImageMain.this);
+                emojiFragment.show(getSupportFragmentManager(), emojiFragment.getTag());
+            }
+        });
+
+        btnText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddTextToImageFragment addTextFragment = AddTextToImageFragment.getInstance();
+                addTextFragment.setListener(EditImageMain.this);
+                addTextFragment.show(getSupportFragmentManager(), addTextFragment.getTag());
             }
         });
 
@@ -327,5 +351,15 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
         } else {
             photoEditor.setBrushDrawingMode(true);
         }
+    }
+
+    @Override
+    public void onEmojiSelected(String emoji) {
+        photoEditor.addEmoji(emoji);
+    }
+
+    @Override
+    public void onAddTextButtonClick(String text, int color) {
+        photoEditor.addText(text, color);
     }
 }

@@ -14,7 +14,7 @@
         android:id="@+id/imageView2"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
-        android:layout_height="360dp" />
+        android:layout_height="400dp" />
 
     <HorizontalScrollView
         android:layout_alignParentBottom="true"
@@ -125,7 +125,79 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Brush"
+                        android:text="@string/brush_btn"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:gravity="center_horizontal" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnEmoji"
+                android:padding="16dp"
+                android:layout_marginLeft="6dp"
+                app:cardBackgroundColor="@color/cardview_dark_background"
+                app:cardElevation="8dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp">
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_tag_faces"
+                        app:tint="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/btn_emoji"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:gravity="center_horizontal" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnAddTextToImage"
+                android:padding="16dp"
+                android:layout_marginLeft="6dp"
+                app:cardBackgroundColor="@color/cardview_dark_background"
+                app:cardElevation="8dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp">
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_text_fields"
+                        app:tint="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_for_image"
                         android:textStyle="bold"
                         android:textColor="@color/white"
                         android:textSize="16sp"
