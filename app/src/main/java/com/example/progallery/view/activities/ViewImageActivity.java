@@ -5,12 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.progallery.R;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
 
@@ -19,7 +19,7 @@ public class ViewImageActivity extends AppCompatActivity {
 
     private Toolbar topToolbar;
     private Toolbar bottomToolbar;
-    private ImageView imageView;
+    private PhotoView imageView;
     private String mediaPath;
 
     @Override
