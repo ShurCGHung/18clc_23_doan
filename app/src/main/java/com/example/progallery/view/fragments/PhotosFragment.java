@@ -2,6 +2,7 @@ package com.example.progallery.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,10 +21,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
+import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.FetchStorage;
 import com.example.progallery.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
 import com.example.progallery.view.activities.ViewImageActivity;
+import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
 import com.example.progallery.view.adapters.SectionedPhotoAdapter;
 import com.example.progallery.viewmodel.MediaViewModel;
@@ -155,8 +158,12 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 public void onMediaClick(Media media) {
                     if (Integer.parseInt(media.getMediaType()) == 1) {
                         Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
-                        intent.putExtra(ViewImageActivity.EXTRA_PATH, media.getMediaPath());
-                        startActivityForResult(intent, OPEN_MEDIA_REQUEST);
+                        intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                        startActivity(intent);
+                    } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                        Intent intent = new Intent(PhotosFragment.this.getContext(), ViewVideoActivity.class);
+                        intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                        startActivity(intent);
                     }
                 }
             });
@@ -166,10 +173,14 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             recyclerView.setAdapter(photoAdapter);
 
             photoAdapter.setMediaListener(media -> {
-                if (Integer.parseInt(media.getMediaType()) == 1) {
+                if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
                     Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
-                    intent.putExtra(ViewImageActivity.EXTRA_PATH, media.getMediaPath());
-                    startActivityForResult(intent, OPEN_MEDIA_REQUEST);
+                    intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                    startActivity(intent);
+                } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                    Intent intent = new Intent(PhotosFragment.this.getContext(), ViewVideoActivity.class);
+                    intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                    startActivity(intent);
                 }
             });
         }

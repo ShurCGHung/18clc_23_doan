@@ -2,24 +2,27 @@ package com.example.progallery.view.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.ToolbarAnimator;
-import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
 
-public class ViewImageActivity extends AppCompatActivity {
+public class ViewVideoActivity extends AppCompatActivity {
     private Toolbar topToolbar;
     private Toolbar bottomToolbar;
-    private PhotoView imageView;
+    private ImageView videoThumbnailView;
     private String mediaPath;
 
     @Override
@@ -31,18 +34,18 @@ public class ViewImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_image);
+        setContentView(R.layout.activity_view_video);
 
         topToolbar = findViewById(R.id.topBar);
         bottomToolbar = findViewById(R.id.bottomBar);
-        imageView = findViewById(R.id.photoViewPlaceHolder);
+        videoThumbnailView = findViewById(R.id.thumbnailView);
 
         setSupportActionBar(topToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        videoThumbnailView.setOnClickListener(new View.OnClickListener() {
             boolean flag = true;
 
             @Override
@@ -59,23 +62,27 @@ public class ViewImageActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
-
-        File imageFile = new File(mediaPath);
-        if (imageFile.exists()) {
-            Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            imageView.setImageBitmap(image);
-        }
-
-        findViewById(R.id.btnEdit).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.playButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Edit ảnh here please
-                Intent intent = new Intent(getBaseContext(), EditImageActivity.class);
-                intent.putExtra("IMAGE_PATH", mediaPath);
+                Intent intent = new Intent(ViewVideoActivity.this, DisplayVideoActivity.class);
+                intent.putExtra(Constant.EXTRA_PATH, mediaPath);
                 startActivity(intent);
             }
         });
+
+        Intent intent = getIntent();
+        mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
+
+        File videoFile = new File(mediaPath);
+        if (videoFile.exists()) {
+            Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(mediaPath, MediaStore.Images.Thumbnails.FULL_SCREEN_KIND);
+
+            Glide.with(this)
+                    .load(bmThumbnail)
+                    .placeholder(R.color.black)
+                    .transition(DrawableTransitionOptions.withCrossFade(500))
+                    .into(videoThumbnailView);
+        }
     }
 }

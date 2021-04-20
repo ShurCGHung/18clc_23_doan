@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProGallery">
+        <activity android:name=".view.activities.DisplayVideoActivity"></activity>
+        <activity android:name=".view.activities.ViewVideoActivity" />
         <activity
             android:name=".view.activities.EditImageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -27,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
