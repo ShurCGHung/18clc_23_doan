@@ -1,6 +1,7 @@
 package com.example.progallery;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.progallery.Adapter.ColorAdapter;
+import com.example.progallery.Adapter.FontAdapter;
 import com.example.progallery.Interface.AddTextFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -22,7 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
  * Use the {@link AddTextToImageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddTextToImageFragment extends BottomSheetDialogFragment implements ColorAdapter.ColorAdapterListener {
+public class AddTextToImageFragment extends BottomSheetDialogFragment implements ColorAdapter.ColorAdapterListener, FontAdapter.FontAdapterListener {
 
     int colorSelected = Color.parseColor("#000000"); // Black by default
 
@@ -41,8 +43,10 @@ public class AddTextToImageFragment extends BottomSheetDialogFragment implements
     }
 
     EditText edit_add_text;
-    RecyclerView recyclerColor;
+    RecyclerView recyclerColor, textFontLayout;
     Button btn_done;
+
+    Typeface typefaceSelected = Typeface.DEFAULT;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,19 +95,26 @@ public class AddTextToImageFragment extends BottomSheetDialogFragment implements
         View itemView = inflater.inflate(R.layout.fragment_add_text_to_image, container, false);
 
         edit_add_text = (EditText) itemView.findViewById(R.id.edit_add_text);
-        recyclerColor = (RecyclerView) itemView.findViewById(R.id.brushColor);
         btn_done = (Button) itemView.findViewById(R.id.btnAddTextCompleted);
 
+        recyclerColor = (RecyclerView) itemView.findViewById(R.id.brushColor);
         recyclerColor.setHasFixedSize(true);
         recyclerColor.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+        textFontLayout = (RecyclerView) itemView.findViewById(R.id.textFont);
+        textFontLayout.setHasFixedSize(true);
+        textFontLayout.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         ColorAdapter colorAdapter = new ColorAdapter(getContext(), this);
         recyclerColor.setAdapter(colorAdapter);
 
+        FontAdapter fontAdapter = new FontAdapter(getContext(), this);
+        textFontLayout.setAdapter(fontAdapter);
+
         btn_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onAddTextButtonClick(edit_add_text.getText().toString(), colorSelected);
+                listener.onAddTextButtonClick(typefaceSelected, edit_add_text.getText().toString(), colorSelected);
             }
         });
 
@@ -113,5 +124,11 @@ public class AddTextToImageFragment extends BottomSheetDialogFragment implements
     @Override
     public void onColorSelected(int color) {
         colorSelected = color;
+    }
+
+    @Override
+    public void onFontSelected(String fontName) {
+        typefaceSelected = Typeface.createFromAsset(getContext().getAssets(), new StringBuilder("fonts/")
+                .append(fontName).toString());
     }
 }
