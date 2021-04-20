@@ -182,21 +182,6 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         }
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        filterImageFragment = new FilterImageFragment();
-        filterImageFragment.setListener(this);
-
-        editImageFragment = new EditImageFragment();
-        editImageFragment.setEditListener(this);
-
-        adapter.addFragment(filterImageFragment, "FILTERS");
-        adapter.addFragment(editImageFragment, "EDIT");
-
-        viewPager.setAdapter(adapter);
-    }
-
     @Override
     public void onBrightnessChanged(int brightnessValue) {
         brightnessFinal = brightnessValue;
@@ -244,15 +229,6 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         photoEditorView.getSource().setImageBitmap(filter.processFilter(filteredBitmap));
         finalBitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
-    }
-
-    private void resetControl() {
-        if (editImageFragment != null) {
-            editImageFragment.resetControl();
-        }
-        brightnessFinal = 0;
-        saturationFinal = 1.0f;
-        contrastFinal = 1.0f;
     }
 
     @Override
@@ -344,7 +320,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
             if (requestCode == PERMISSION_PICK_IMAGE) {
                 Bitmap bitmap = BitmapUtils.getBitmapFromGallery(this, data.getData(), 800, 800);
 
-                image_selected = data.getData();
+                image_selected = Uri.fromFile(new File(filepath));
 
                 // clear bitmap memory
                 originalBitmap.recycle();
