@@ -53,6 +53,7 @@ dependencies {
 
     // Rotate Image
     implementation 'com.github.yalantis:ucrop:2.2.2-native'
+
     // Responsive screen unit
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
@@ -61,25 +62,31 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.0"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
 
+    // Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
+    // Item spacing
     implementation('com.github.thekhaeng:recycler-margin:1.2.1') {
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
 
+    // Room
     implementation "androidx.room:room-runtime:2.2.6"
     annotationProcessor "androidx.room:room-compiler:2.2.6"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.3.1"
+
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:2.3.1"
 
-
+    // Refresh Layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+    // Sectioned RecyclerView
     implementation 'com.afollestad:sectioned-recyclerview:0.2.3'
 
+    // Android Flex Box
     implementation 'com.google.android:flexbox:2.0.1'
 }
