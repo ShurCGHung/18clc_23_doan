@@ -60,6 +60,9 @@ public class ViewImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Edit ảnh here please
+                Intent intent = new Intent(getBaseContext(), EditImageActivity.class);
+                intent.putExtra("IMAGE_PATH", mediaPath);
+                startActivity(intent);
             }
         });
     }

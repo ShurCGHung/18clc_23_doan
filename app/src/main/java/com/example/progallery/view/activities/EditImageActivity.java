@@ -3,6 +3,7 @@ package com.example.progallery.view.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -58,6 +59,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
     public static final String pictureName = "flash.jpg";
     public static final int PERMISSION_PICK_IMAGE = 1000;
     public static final int PERMISSION_INSERT_IMAGE = 1001;
+    private String filepath;
 
     // Load image
     static {
@@ -159,36 +161,25 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
             }
         });
 
-        loadImage();
+        filepath = getIntent().getStringExtra("IMAGE_PATH");
+
+        loadImage(filepath);
     }
 
     private void startCrop(Uri image_selected) {
-        String destinationFileName = new StringBuilder(UUID.randomUUID().toString()).append(".jpg").toString();
-
-        UCrop uCrop = UCrop.of(image_selected, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
+        UCrop uCrop = UCrop.of(image_selected, Uri.fromFile(new File(filepath)));
         uCrop.start(EditImageActivity.this);
     }
 
-    private void loadImage() {
-        originalBitmap = BitmapUtils.getBitmapFromAssets(this, pictureName, 300, 300);
-        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        photoEditorView.getSource().setImageBitmap(originalBitmap);
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        filterImageFragment = new FilterImageFragment();
-        filterImageFragment.setListener(this);
-
-        editImageFragment = new EditImageFragment();
-        editImageFragment.setEditListener(this);
-
-        adapter.addFragment(filterImageFragment, "FILTERS");
-        adapter.addFragment(editImageFragment, "EDIT");
-
-        viewPager.setAdapter(adapter);
+    private void loadImage(String filepath) {
+        File imgFile = new File(filepath);
+        if(imgFile.exists()){
+             originalBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            //Drawable d = new BitmapDrawable(getResources(), myBitmap);
+            filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            photoEditorView.getSource().setImageBitmap(originalBitmap);
+        }
     }
 
     @Override
@@ -238,15 +229,6 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         photoEditorView.getSource().setImageBitmap(filter.processFilter(filteredBitmap));
         finalBitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
-    }
-
-    private void resetControl() {
-        if (editImageFragment != null) {
-            editImageFragment.resetControl();
-        }
-        brightnessFinal = 0;
-        saturationFinal = 1.0f;
-        contrastFinal = 1.0f;
     }
 
     @Override
@@ -338,7 +320,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
             if (requestCode == PERMISSION_PICK_IMAGE) {
                 Bitmap bitmap = BitmapUtils.getBitmapFromGallery(this, data.getData(), 800, 800);
 
-                image_selected = data.getData();
+                image_selected = Uri.fromFile(new File(filepath));
 
                 // clear bitmap memory
                 originalBitmap.recycle();

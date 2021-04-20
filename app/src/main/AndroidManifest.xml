@@ -18,7 +18,7 @@
         android:theme="@style/Theme.ProGallery">
         <activity
             android:name=".view.activities.EditImageActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".view.activities.ViewImageActivity" />
         <activity android:name=".view.activities.MainActivity">
             <intent-filter>
