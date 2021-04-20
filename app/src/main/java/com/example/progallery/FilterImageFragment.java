@@ -39,7 +39,10 @@ public class FilterImageFragment extends BottomSheetDialogFragment implements Fi
     FilterFragmentListener listener;
 
     static FilterImageFragment instance;
-    public static FilterImageFragment getInstance() {
+    static Bitmap bitmap;
+
+    public static FilterImageFragment getInstance(Bitmap bitmapSave) {
+        bitmap = bitmapSave;
         if (instance == null) {
             instance = new FilterImageFragment();
         }
@@ -106,7 +109,7 @@ public class FilterImageFragment extends BottomSheetDialogFragment implements Fi
         recyclerView.addItemDecoration(new SpaceItemDecoration(space));
         recyclerView.setAdapter(adapter);
 
-        displayThumbnail(null);
+        displayThumbnail(bitmap);
 
         return itemView;
     }

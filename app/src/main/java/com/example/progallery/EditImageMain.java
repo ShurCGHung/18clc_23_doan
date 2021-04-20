@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -34,13 +35,16 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.yalantis.ucrop.UCrop;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubfilter;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import ja.burhanrashid52.photoeditor.OnSaveBitmap;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
@@ -49,6 +53,7 @@ import ja.burhanrashid52.photoeditor.PhotoEditorView;
 public class EditImageMain extends AppCompatActivity implements FilterFragmentListener, EditImageFragmentListener, BrushFragmentListener, EmojiFragmentListener, AddTextFragmentListener {
     public static final String pictureName = "flash.jpg";
     public static final int PERMISSION_PICK_IMAGE = 1000;
+    public static final int PERMISSION_INSERT_IMAGE = 1001;
 
     PhotoEditorView photoEditorView;
     PhotoEditor photoEditor;
@@ -60,11 +65,13 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
     FilterImageFragment filterImageFragment;
     EditImageFragment editImageFragment;
 
-    CardView btnFilters, btnEditImage, btnBrush, btnEmoji, btnText;
+    CardView btnFilters, btnEditImage, btnBrush, btnEmoji, btnText, btnCrop;
 
     int brightnessFinal = 0;
     float saturationFinal = 1.0f;
     float contrastFinal = 1.0f;
+
+    Uri image_selected;
 
     // Load image
     static {
@@ -94,13 +101,18 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
         btnBrush = (CardView) findViewById(R.id.btnBrushImage);
         btnEmoji = (CardView) findViewById(R.id.btnEmoji);
         btnText = (CardView) findViewById(R.id.btnAddTextToImage);
+        btnCrop = (CardView) findViewById(R.id.btnCropImage);
 
         btnFilters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FilterImageFragment filterFragment = FilterImageFragment.getInstance();
-                filterFragment.setListener(EditImageMain.this);
-                filterFragment.show(getSupportFragmentManager(), filterFragment.getTag());
+                if (filterImageFragment != null) {
+                    filterImageFragment.show(getSupportFragmentManager(), filterImageFragment.getTag());
+                } else {
+                    FilterImageFragment filterImageFragment = FilterImageFragment.getInstance(null);
+                    filterImageFragment.setListener(EditImageMain.this);
+                    filterImageFragment.show(getSupportFragmentManager(), filterImageFragment.getTag());
+                }
             }
         });
 
@@ -142,7 +154,21 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
             }
         });
 
+        btnCrop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCrop(image_selected);
+            }
+        });
+
         loadImage();
+    }
+
+    private void startCrop(Uri image_selected) {
+        String destinationFileName = new StringBuilder(UUID.randomUUID().toString()).append(".jpg").toString();
+
+        UCrop uCrop = UCrop.of(image_selected, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
+        uCrop.start(EditImageMain.this);
     }
 
     private void loadImage() {
@@ -210,7 +236,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
 
     @Override
     public void onFilterSelected(Filter filter) {
-        resetControl();
+        // resetControl();
         filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         photoEditorView.getSource().setImageBitmap(filter.processFilter(filteredBitmap));
         finalBitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -311,21 +337,56 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == PERMISSION_PICK_IMAGE) {
-            Bitmap bitmap = BitmapUtils.getBitmapFromGallery(this, data.getData(), 800, 800);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PERMISSION_PICK_IMAGE) {
+                Bitmap bitmap = BitmapUtils.getBitmapFromGallery(this, data.getData(), 800, 800);
 
-            // clear bitmap memory
-            originalBitmap.recycle();
-            finalBitmap.recycle();
-            filteredBitmap.recycle();
+                image_selected = data.getData();
 
+                // clear bitmap memory
+                originalBitmap.recycle();
+                finalBitmap.recycle();
+                filteredBitmap.recycle();
+
+                originalBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+                filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+                photoEditorView.getSource().setImageBitmap(originalBitmap);
+                bitmap.recycle();
+
+                filterImageFragment = FilterImageFragment.getInstance(originalBitmap);
+                filterImageFragment.setListener(this);
+            }
+        } else if (requestCode == PERMISSION_INSERT_IMAGE) {
+            Bitmap bitmap = BitmapUtils.getBitmapFromGallery(this, data.getData(), 250, 250);
+            photoEditor.addImage(bitmap);
+        } else if (requestCode == UCrop.REQUEST_CROP) {
+            handleCropResult(data);
+        }
+        else if (requestCode == UCrop.RESULT_ERROR) {
+            handleCropError(data);
+        }
+    }
+
+    private void handleCropError(Intent data) {
+        final Throwable cropError = UCrop.getError(data);
+        if (cropError != null) {
+            Toast.makeText(this, ""+cropError.getMessage(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleCropResult(Intent data) {
+        final Uri result = UCrop.getOutput(data);
+        if (result != null) {
+            photoEditorView.getSource().setImageURI(result);
+            Bitmap bitmap = ((BitmapDrawable) photoEditorView.getSource().getDrawable()).getBitmap();
             originalBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-            finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-            filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-            photoEditorView.getSource().setImageBitmap(originalBitmap);
-            bitmap.recycle();
-
-            filterImageFragment.displayThumbnail(originalBitmap);
+            filteredBitmap = originalBitmap;
+            finalBitmap = originalBitmap;
+        } else {
+            Toast.makeText(this, "Cannot retrieve crop image", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -359,7 +420,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
     }
 
     @Override
-    public void onAddTextButtonClick(String text, int color) {
-        photoEditor.addText(text, color);
+    public void onAddTextButtonClick(Typeface typeface, String text, int color) {
+        photoEditor.addText(typeface, text, color);
     }
 }
