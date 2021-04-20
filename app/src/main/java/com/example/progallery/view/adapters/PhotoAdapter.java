@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
+import com.example.progallery.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
 import com.example.progallery.view.fragments.PhotosFragment;
 import com.google.android.flexbox.FlexboxLayoutManager;
@@ -23,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
-    List<Media> mediaList = new ArrayList<>();
+    private List<Media> mediaList = new ArrayList<>();
+    private MediaListener mediaListener;
 
     public PhotoAdapter() {
     }
@@ -98,7 +100,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         notifyDataSetChanged();
     }
 
-    static class PhotoViewHolder extends RecyclerView.ViewHolder {
+    public void setMediaListener(MediaListener mediaListener) {
+        this.mediaListener = mediaListener;
+    }
+
+    class PhotoViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView imageName;
         TextView imageDate;
@@ -114,6 +120,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 imageType = itemView.findViewById(R.id.file_type);
             }
 
+            itemView.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (mediaListener != null && position != RecyclerView.NO_POSITION)
+                    mediaListener.onMediaClick(mediaList.get(position));
+            });
         }
     }
 }

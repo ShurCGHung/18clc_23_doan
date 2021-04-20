@@ -1,5 +1,6 @@
 package com.example.progallery.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,7 +21,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.FetchStorage;
+import com.example.progallery.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
+import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
 import com.example.progallery.view.adapters.SectionedPhotoAdapter;
 import com.example.progallery.viewmodel.MediaViewModel;
@@ -37,6 +40,8 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public static final int GRID = 0;
     public static final int LIST = 1;
     public static final int FLEX = 2;
+
+    public static final int OPEN_MEDIA_REQUEST = 3;
 
     public static int displayOption;
     public static boolean showDatesBool;
@@ -101,9 +106,11 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             recreateFragment();
         } else if (id == R.id.list && displayOption != LIST) {
             displayOption = LIST;
+            showDatesBool = false;
             recreateFragment();
         } else if (id == R.id.flex && displayOption != FLEX) {
             displayOption = FLEX;
+            showDatesBool = false;
             recreateFragment();
         } else if (id == R.id.show_dates) {
             showDatesBool = !showDatesBool;
@@ -142,9 +149,29 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         if (showDatesBool) {
             photoAdapterByDate = new SectionedPhotoAdapter();
             recyclerView.setAdapter(photoAdapterByDate);
+
+            photoAdapterByDate.setMediaListener(new MediaListener() {
+                @Override
+                public void onMediaClick(Media media) {
+                    if (Integer.parseInt(media.getMediaType()) == 1) {
+                        Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
+                        intent.putExtra(ViewImageActivity.EXTRA_PATH, media.getMediaPath());
+                        startActivityForResult(intent, OPEN_MEDIA_REQUEST);
+                    }
+                }
+            });
+
         } else {
             photoAdapter = new PhotoAdapter();
             recyclerView.setAdapter(photoAdapter);
+
+            photoAdapter.setMediaListener(media -> {
+                if (Integer.parseInt(media.getMediaType()) == 1) {
+                    Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
+                    intent.putExtra(ViewImageActivity.EXTRA_PATH, media.getMediaPath());
+                    startActivityForResult(intent, OPEN_MEDIA_REQUEST);
+                }
+            });
         }
 
         if (displayOption == GRID) {
