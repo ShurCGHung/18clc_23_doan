@@ -51,4 +51,7 @@ dependencies {
 
     // Emojicon Text View (Display emoji from String)
     implementation 'com.github.rockerhieu:emojicon:v1.4.2'
+
+    // Rotate Image
+    implementation 'com.github.yalantis:ucrop:2.2.2-native'
 }
