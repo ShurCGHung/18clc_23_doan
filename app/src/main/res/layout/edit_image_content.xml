@@ -7,8 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.activities.EditImageMain"
-    tools:showIn="@layout/edit_image_main_activity">
+    tools:context=".view.activities.EditImageActivity"
+    tools:showIn="@layout/edit_image_activity">
 
     <ja.burhanrashid52.photoeditor.PhotoEditorView
         android:id="@+id/imageView2"

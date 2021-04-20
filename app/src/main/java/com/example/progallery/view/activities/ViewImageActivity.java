@@ -55,5 +55,12 @@ public class ViewImageActivity extends AppCompatActivity {
             Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
             imageView.setImageBitmap(image);
         }
+
+        findViewById(R.id.btnEdit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Edit ảnh here please
+            }
+        });
     }
 }

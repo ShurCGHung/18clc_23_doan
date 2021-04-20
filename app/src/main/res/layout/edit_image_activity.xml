@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.activities.EditImageMain">
+    tools:context=".view.activities.EditImageActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:theme="@style/AppTheme.AppBarOverlay"
@@ -23,6 +23,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/edit_image_main_content"></include>
+    <include layout="@layout/edit_image_content"></include>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

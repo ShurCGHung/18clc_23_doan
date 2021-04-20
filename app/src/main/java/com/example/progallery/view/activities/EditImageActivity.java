@@ -21,13 +21,13 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.R;
-import com.example.progallery.view.adapters.ViewPagerAdapter;
+import com.example.progallery.helpers.BitmapUtils;
 import com.example.progallery.listeners.AddTextFragmentListener;
 import com.example.progallery.listeners.BrushFragmentListener;
 import com.example.progallery.listeners.EditImageFragmentListener;
 import com.example.progallery.listeners.EmojiFragmentListener;
 import com.example.progallery.listeners.FilterFragmentListener;
-import com.example.progallery.helpers.BitmapUtils;
+import com.example.progallery.view.adapters.ViewPagerAdapter;
 import com.example.progallery.view.fragments.AddTextToImageFragment;
 import com.example.progallery.view.fragments.BrushFragment;
 import com.example.progallery.view.fragments.EditImageFragment;
@@ -54,38 +54,32 @@ import ja.burhanrashid52.photoeditor.OnSaveBitmap;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 
-public class EditImageMain extends AppCompatActivity implements FilterFragmentListener, EditImageFragmentListener, BrushFragmentListener, EmojiFragmentListener, AddTextFragmentListener {
+public class EditImageActivity extends AppCompatActivity implements FilterFragmentListener, EditImageFragmentListener, BrushFragmentListener, EmojiFragmentListener, AddTextFragmentListener {
     public static final String pictureName = "flash.jpg";
     public static final int PERMISSION_PICK_IMAGE = 1000;
     public static final int PERMISSION_INSERT_IMAGE = 1001;
-
-    PhotoEditorView photoEditorView;
-    PhotoEditor photoEditor;
-
-    CoordinatorLayout coordinatorLayout;
-
-    Bitmap originalBitmap, filteredBitmap, finalBitmap;
-
-    FilterImageFragment filterImageFragment;
-    EditImageFragment editImageFragment;
-
-    CardView btnFilters, btnEditImage, btnBrush, btnEmoji, btnText, btnCrop;
-
-    int brightnessFinal = 0;
-    float saturationFinal = 1.0f;
-    float contrastFinal = 1.0f;
-
-    Uri image_selected;
 
     // Load image
     static {
         System.loadLibrary("NativeImageProcessor");
     }
 
+    PhotoEditorView photoEditorView;
+    PhotoEditor photoEditor;
+    CoordinatorLayout coordinatorLayout;
+    Bitmap originalBitmap, filteredBitmap, finalBitmap;
+    FilterImageFragment filterImageFragment;
+    EditImageFragment editImageFragment;
+    CardView btnFilters, btnEditImage, btnBrush, btnEmoji, btnText, btnCrop;
+    int brightnessFinal = 0;
+    float saturationFinal = 1.0f;
+    float contrastFinal = 1.0f;
+    Uri image_selected;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_image_main_activity);
+        setContentView(R.layout.edit_image_activity);
 
         Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
@@ -114,7 +108,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
                     filterImageFragment.show(getSupportFragmentManager(), filterImageFragment.getTag());
                 } else {
                     FilterImageFragment filterImageFragment = FilterImageFragment.getInstance(null);
-                    filterImageFragment.setListener(EditImageMain.this);
+                    filterImageFragment.setListener(EditImageActivity.this);
                     filterImageFragment.show(getSupportFragmentManager(), filterImageFragment.getTag());
                 }
             }
@@ -124,7 +118,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
             @Override
             public void onClick(View v) {
                 EditImageFragment editFragment = EditImageFragment.getInstance();
-                editFragment.setEditListener(EditImageMain.this);
+                editFragment.setEditListener(EditImageActivity.this);
                 editFragment.show(getSupportFragmentManager(), editFragment.getTag());
             }
         });
@@ -135,7 +129,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
                 photoEditor.setBrushDrawingMode(true);
 
                 BrushFragment brushFragment = BrushFragment.getInstance();
-                brushFragment.setListener(EditImageMain.this);
+                brushFragment.setListener(EditImageActivity.this);
                 brushFragment.show(getSupportFragmentManager(), brushFragment.getTag());
             }
         });
@@ -144,7 +138,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
             @Override
             public void onClick(View v) {
                 EmojiFragment emojiFragment = EmojiFragment.getInstance();
-                emojiFragment.setListener(EditImageMain.this);
+                emojiFragment.setListener(EditImageActivity.this);
                 emojiFragment.show(getSupportFragmentManager(), emojiFragment.getTag());
             }
         });
@@ -153,7 +147,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
             @Override
             public void onClick(View v) {
                 AddTextToImageFragment addTextFragment = AddTextToImageFragment.getInstance();
-                addTextFragment.setListener(EditImageMain.this);
+                addTextFragment.setListener(EditImageActivity.this);
                 addTextFragment.show(getSupportFragmentManager(), addTextFragment.getTag());
             }
         });
@@ -172,18 +166,18 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
         String destinationFileName = new StringBuilder(UUID.randomUUID().toString()).append(".jpg").toString();
 
         UCrop uCrop = UCrop.of(image_selected, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
-        uCrop.start(EditImageMain.this);
+        uCrop.start(EditImageActivity.this);
     }
 
     private void loadImage() {
         originalBitmap = BitmapUtils.getBitmapFromAssets(this, pictureName, 300, 300);
         filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888,true);
+        finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         photoEditorView.getSource().setImageBitmap(originalBitmap);
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter    adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         filterImageFragment = new FilterImageFragment();
         filterImageFragment.setListener(this);
@@ -318,9 +312,8 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
 
                                 }
                             });
-                        }
-                        else {
-                            Toast.makeText(EditImageMain.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(EditImageActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -366,8 +359,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
             photoEditor.addImage(bitmap);
         } else if (requestCode == UCrop.REQUEST_CROP) {
             handleCropResult(data);
-        }
-        else if (requestCode == UCrop.RESULT_ERROR) {
+        } else if (requestCode == UCrop.RESULT_ERROR) {
             handleCropError(data);
         }
     }
@@ -375,7 +367,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
     private void handleCropError(Intent data) {
         final Throwable cropError = UCrop.getError(data);
         if (cropError != null) {
-            Toast.makeText(this, ""+cropError.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "" + cropError.getMessage(), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show();
         }

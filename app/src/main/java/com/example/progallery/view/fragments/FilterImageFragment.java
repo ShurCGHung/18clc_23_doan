@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.progallery.R;
-import com.example.progallery.view.activities.EditImageMain;
+import com.example.progallery.view.activities.EditImageActivity;
 import com.example.progallery.view.adapters.ThumbnailAdapter;
 import com.example.progallery.listeners.FilterFragmentListener;
 import com.example.progallery.helpers.BitmapUtils;
@@ -122,7 +122,7 @@ public class FilterImageFragment extends BottomSheetDialogFragment implements Fi
             public void run() {
                 Bitmap thumbImg;
                 if (bitmap == null) {
-                    thumbImg = BitmapUtils.getBitmapFromAssets(getActivity(), EditImageMain.pictureName, 100, 100);
+                    thumbImg = BitmapUtils.getBitmapFromAssets(getActivity(), EditImageActivity.pictureName, 100, 100);
                 } else {
                     thumbImg = Bitmap.createScaledBitmap(bitmap, 100, 100, false);
                 }
