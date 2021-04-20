@@ -1,4 +1,4 @@
-package com.example.progallery.Adapter;
+package com.example.progallery.view.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.progallery.Interface.FilterFragmentListener;
+import com.example.progallery.listeners.FilterFragmentListener;
 import com.example.progallery.R;
 import com.zomato.photofilters.utils.ThumbnailItem;
 

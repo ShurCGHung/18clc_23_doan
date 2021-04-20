@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.view.fragments;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.progallery.Adapter.ThumbnailAdapter;
-import com.example.progallery.Interface.FilterFragmentListener;
-import com.example.progallery.Utils.BitmapUtils;
-import com.example.progallery.Utils.SpaceItemDecoration;
+import com.example.progallery.R;
+import com.example.progallery.view.activities.EditImageMain;
+import com.example.progallery.view.adapters.ThumbnailAdapter;
+import com.example.progallery.listeners.FilterFragmentListener;
+import com.example.progallery.helpers.BitmapUtils;
+import com.example.progallery.helpers.SpaceItemDecoration;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.zomato.photofilters.FilterPack;
 import com.zomato.photofilters.imageprocessors.Filter;

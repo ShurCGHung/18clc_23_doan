@@ -1,4 +1,4 @@
-package com.example.progallery.Adapter;
+package com.example.progallery.view.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

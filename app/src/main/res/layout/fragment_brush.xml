@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="14dp"
-    tools:context=".BrushFragment">
+    tools:context=".view.fragments.BrushFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

@@ -13,9 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProGallery">
-        <activity android:name=".EditImageMain"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen"
-            >
+        <activity android:name=".view.activities.EditImageMain"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
         <activity android:name=".view.activities.ViewImageActivity"/>
         <activity android:name=".view.activities.MainActivity">
             <intent-filter>

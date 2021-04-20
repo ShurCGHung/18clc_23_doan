@@ -1,6 +1,5 @@
-package com.example.progallery;
+package com.example.progallery.view.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,12 +13,10 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.ToggleButton;
 
-import com.example.progallery.Adapter.ColorAdapter;
-import com.example.progallery.Interface.BrushFragmentListener;
+import com.example.progallery.R;
+import com.example.progallery.view.adapters.ColorAdapter;
+import com.example.progallery.listeners.BrushFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

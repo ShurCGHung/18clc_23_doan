@@ -1,4 +1,4 @@
-package com.example.progallery.Utils;
+package com.example.progallery.helpers;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

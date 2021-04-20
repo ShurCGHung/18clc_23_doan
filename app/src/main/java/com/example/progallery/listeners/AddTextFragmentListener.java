@@ -1,4 +1,4 @@
-package com.example.progallery.Interface;
+package com.example.progallery.listeners;
 
 import android.graphics.Typeface;
 

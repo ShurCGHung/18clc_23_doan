@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.view.fragments;
 
 import android.os.Bundle;
 
@@ -9,7 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 
-import com.example.progallery.Interface.EditImageFragmentListener;
+import com.example.progallery.R;
+import com.example.progallery.listeners.EditImageFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**

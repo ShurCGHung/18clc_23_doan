@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.view.fragments;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -14,9 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.progallery.Adapter.ColorAdapter;
-import com.example.progallery.Adapter.FontAdapter;
-import com.example.progallery.Interface.AddTextFragmentListener;
+import com.example.progallery.R;
+import com.example.progallery.view.adapters.ColorAdapter;
+import com.example.progallery.view.adapters.FontAdapter;
+import com.example.progallery.listeners.AddTextFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**

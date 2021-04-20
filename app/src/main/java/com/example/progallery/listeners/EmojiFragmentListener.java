@@ -1,4 +1,4 @@
-package com.example.progallery.Interface;
+package com.example.progallery.listeners;
 
 public interface EmojiFragmentListener {
     void onEmojiSelected(String emoji);

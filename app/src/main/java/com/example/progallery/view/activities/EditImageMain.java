@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.view.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,15 +20,20 @@ import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.progallery.Adapter.ViewPagerAdapter;
-import com.example.progallery.Interface.AddTextFragmentListener;
-import com.example.progallery.Interface.BrushFragmentListener;
-import com.example.progallery.Interface.EditImageFragmentListener;
-import com.example.progallery.Interface.EmojiFragmentListener;
-import com.example.progallery.Interface.FilterFragmentListener;
-import com.example.progallery.Utils.BitmapUtils;
+import com.example.progallery.R;
+import com.example.progallery.view.adapters.ViewPagerAdapter;
+import com.example.progallery.listeners.AddTextFragmentListener;
+import com.example.progallery.listeners.BrushFragmentListener;
+import com.example.progallery.listeners.EditImageFragmentListener;
+import com.example.progallery.listeners.EmojiFragmentListener;
+import com.example.progallery.listeners.FilterFragmentListener;
+import com.example.progallery.helpers.BitmapUtils;
+import com.example.progallery.view.fragments.AddTextToImageFragment;
+import com.example.progallery.view.fragments.BrushFragment;
+import com.example.progallery.view.fragments.EditImageFragment;
+import com.example.progallery.view.fragments.EmojiFragment;
+import com.example.progallery.view.fragments.FilterImageFragment;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -86,7 +90,7 @@ public class EditImageMain extends AppCompatActivity implements FilterFragmentLi
         Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Filer Image");
+        getSupportActionBar().setTitle("Filter Image");
 
         // View
         photoEditorView = (PhotoEditorView) findViewById(R.id.imageView2);

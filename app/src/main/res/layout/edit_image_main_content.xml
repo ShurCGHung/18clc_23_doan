@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".EditImageMain"
+    tools:context=".view.activities.EditImageMain"
     tools:showIn="@layout/edit_image_main_activity">
 
     <ja.burhanrashid52.photoeditor.PhotoEditorView

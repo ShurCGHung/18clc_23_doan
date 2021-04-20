@@ -1,4 +1,4 @@
-package com.example.progallery.Adapter;
+package com.example.progallery.view.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
