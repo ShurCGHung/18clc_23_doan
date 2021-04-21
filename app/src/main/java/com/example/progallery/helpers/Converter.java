@@ -29,9 +29,9 @@ public class Converter {
     }
 
     public static String toPath(Context context, Uri uri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
+        String[] proj = {MediaStore.Files.FileColumns.DATA};
         Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA);
         cursor.moveToFirst();
         String path = cursor.getString(column_index);
         cursor.close();

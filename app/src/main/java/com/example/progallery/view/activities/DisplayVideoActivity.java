@@ -2,6 +2,7 @@ package com.example.progallery.view.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
+import com.example.progallery.helpers.Converter;
 import com.example.progallery.helpers.ToolbarAnimator;
 
 import java.io.File;
@@ -21,6 +23,7 @@ import java.util.Objects;
 public class DisplayVideoActivity extends AppCompatActivity {
     VideoView videoView;
     Toolbar toolbar;
+    String mediaPath;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -43,7 +46,17 @@ public class DisplayVideoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
-        String mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_VIEW.equals(action) && type != null) {
+            Uri mediaUri = intent.getData();
+            if (mediaUri != null) {
+                mediaPath = Converter.toPath(this, mediaUri);
+            }
+        } else {
+            mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
+        }
 
         MediaController mediaController = new MediaController(this);
         File videoFile = new File(mediaPath);

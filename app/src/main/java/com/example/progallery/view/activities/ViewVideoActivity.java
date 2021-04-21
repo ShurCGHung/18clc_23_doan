@@ -84,6 +84,7 @@ public class ViewVideoActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
+
         mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
 
         File videoFile = new File(mediaPath);

@@ -80,8 +80,6 @@ public class ViewImageActivity extends AppCompatActivity {
             Uri mediaUri = intent.getData();
             if (mediaUri != null) {
                 mediaPath = Converter.toPath(this, mediaUri);
-//                InputStream is = getContentResolver().openInputStream(mediaUri);
-//                imageView.setImageBitmap(BitmapFactory.decodeStream(is));
             }
         } else {
             mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
