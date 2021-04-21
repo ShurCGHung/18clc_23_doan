@@ -16,6 +16,7 @@ import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.ToolbarAnimator;
 
 import java.io.File;
+import java.util.Objects;
 
 public class DisplayVideoActivity extends AppCompatActivity {
     VideoView videoView;
@@ -31,13 +32,14 @@ public class DisplayVideoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_display_video);
 
         videoView = findViewById(R.id.videoView);
         toolbar = findViewById(R.id.topBar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
