@@ -32,8 +32,7 @@
         </activity>
 
         <activity
-            android:name=".view.activities.EditImageActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".view.activities.EditImageActivity" />
 
         <activity
             android:name=".view.activities.ViewImageActivity"

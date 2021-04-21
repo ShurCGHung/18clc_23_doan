@@ -6,6 +6,22 @@
     >
 
     <item
+        android:id="@+id/action_undo"
+        android:orderInCategory="101"
+        app:showAsAction="always"
+        android:enabled="true"
+        android:icon="@drawable/ic_undo"
+        android:title="UNDO"/>
+
+    <item
+        android:id="@+id/action_redo"
+        android:orderInCategory="101"
+        app:showAsAction="always"
+        android:enabled="true"
+        android:icon="@drawable/ic_redo"
+        android:title="REDO"/>
+
+    <item
         android:id="@+id/action_save"
         android:orderInCategory="101"
         app:showAsAction="always"

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -48,6 +49,7 @@ import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubfilter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,17 +68,19 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         System.loadLibrary("NativeImageProcessor");
     }
 
+    List<Bitmap> bitmapUndoList;
     PhotoEditorView photoEditorView;
     PhotoEditor photoEditor;
-    CoordinatorLayout coordinatorLayout;
     Bitmap originalBitmap, filteredBitmap, finalBitmap;
     FilterImageFragment filterImageFragment;
     EditImageFragment editImageFragment;
+    private MenuItem undo, redo, save;
     CardView btnFilters, btnEditImage, btnBrush, btnEmoji, btnText, btnCrop;
     int brightnessFinal = 0;
     float saturationFinal = 1.0f;
     float contrastFinal = 1.0f;
     Uri image_selected;
+    int currentShowingIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +98,6 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
                 .setPinchTextScalable(true)
                 .setDefaultEmojiTypeface(Typeface.createFromAsset(getAssets(), "emojione-android.ttf"))
                 .build();
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
 
         btnFilters = (CardView) findViewById(R.id.btnFilters);
         btnEditImage = (CardView) findViewById(R.id.btnEditImage);
@@ -102,6 +105,8 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         btnEmoji = (CardView) findViewById(R.id.btnEmoji);
         btnText = (CardView) findViewById(R.id.btnAddTextToImage);
         btnCrop = (CardView) findViewById(R.id.btnCropImage);
+        
+        bitmapUndoList = new ArrayList<>();
 
         btnFilters.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,6 +193,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         Filter filter = new Filter();
         filter.addSubFilter(new BrightnessSubFilter(brightnessValue));
         photoEditorView.getSource().setImageBitmap(filter.processFilter(finalBitmap.copy(Bitmap.Config.ARGB_8888, true)));
+        addToUndoList();
     }
 
     @Override
@@ -196,6 +202,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         Filter filter = new Filter();
         filter.addSubFilter(new ContrastSubFilter(contrastValue));
         photoEditorView.getSource().setImageBitmap(filter.processFilter(finalBitmap.copy(Bitmap.Config.ARGB_8888, true)));
+        addToUndoList();
     }
 
     @Override
@@ -204,6 +211,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         Filter filter = new Filter();
         filter.addSubFilter(new SaturationSubfilter(saturationValue));
         photoEditorView.getSource().setImageBitmap(filter.processFilter(finalBitmap.copy(Bitmap.Config.ARGB_8888, true)));
+        addToUndoList();
     }
 
     @Override
@@ -221,6 +229,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         filter.addSubFilter(new ContrastSubFilter(contrastFinal));
 
         finalBitmap = filter.processFilter(bitmap);
+        addToUndoList();
     }
 
     @Override
@@ -229,11 +238,17 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         photoEditorView.getSource().setImageBitmap(filter.processFilter(filteredBitmap));
         finalBitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        addToUndoList();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_edit_image, menu);
+
+        undo = menu.getItem(0);
+        redo = menu.getItem(1);
+        save = menu.getItem(2);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -243,74 +258,26 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         if (id == R.id.action_save) {
             saveImageToGallery();
             return true;
+        } else if (id == R.id.action_undo) {
+            // Undo
+            originalBitmap = getUndoBitmap();
+            filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            photoEditorView.getSource().setImageBitmap(originalBitmap);
+            setButtonVisibility();
+        } else if (id == R.id.action_redo) {
+            // Redo
+            originalBitmap = getRedoBitmap();
+            filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+            photoEditorView.getSource().setImageBitmap(originalBitmap);
+            setButtonVisibility();
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void saveImageToGallery() {
-        Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(new MultiplePermissionsListener() {
 
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        if (report.areAllPermissionsGranted()) {
-                            photoEditor.saveAsBitmap(new OnSaveBitmap() {
-                                @Override
-                                public void onBitmapReady(Bitmap saveBitmap) {
-                                    try {
-
-                                        photoEditorView.getSource().setImageBitmap(saveBitmap);
-
-                                        final String path = BitmapUtils.insertImage(getContentResolver(),
-                                                finalBitmap,
-                                                System.currentTimeMillis() + "_profile.jpg",
-                                                null);
-
-                                        if (!TextUtils.isEmpty(path)) {
-                                            Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                                                    "Image saved to gallery",
-                                                    Snackbar.LENGTH_LONG).setAction("OPEN", new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    openImage(path);
-                                                }
-                                            });
-                                            snackbar.show();
-                                        } else {
-                                            Snackbar snackbar = Snackbar.make(coordinatorLayout,
-                                                    "Unable to save to gallery",
-                                                    Snackbar.LENGTH_LONG);
-                                            snackbar.show();
-                                        }
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Exception e) {
-
-                                }
-                            });
-                        } else {
-                            Toast.makeText(EditImageActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                });
-    }
-
-    private void openImage(String path) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.parse(path), "image/*");
-        startActivity(intent);
     }
 
     @Override
@@ -319,8 +286,6 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
         if (resultCode == RESULT_OK) {
             if (requestCode == PERMISSION_PICK_IMAGE) {
                 Bitmap bitmap = BitmapUtils.getBitmapFromGallery(this, data.getData(), 800, 800);
-
-                image_selected = Uri.fromFile(new File(filepath));
 
                 // clear bitmap memory
                 originalBitmap.recycle();
@@ -332,6 +297,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
                 filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
                 photoEditorView.getSource().setImageBitmap(originalBitmap);
                 bitmap.recycle();
+                addToUndoList();
 
                 filterImageFragment = FilterImageFragment.getInstance(originalBitmap);
                 filterImageFragment.setListener(this);
@@ -363,6 +329,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
             originalBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
             filteredBitmap = originalBitmap;
             finalBitmap = originalBitmap;
+            addToUndoList();
         } else {
             Toast.makeText(this, "Cannot retrieve crop image", Toast.LENGTH_SHORT).show();
         }
@@ -400,5 +367,57 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
     @Override
     public void onAddTextButtonClick(Typeface typeface, String text, int color) {
         photoEditor.addText(typeface, text, color);
+    }
+
+    private void addToUndoList() {
+        try {
+            recycleBitmapList(++currentShowingIndex);
+            bitmapUndoList.add(originalBitmap.copy(originalBitmap.getConfig(), true));
+        } catch (OutOfMemoryError error) {
+            bitmapUndoList.get(1).recycle();
+            bitmapUndoList.remove(1);
+            bitmapUndoList.add(originalBitmap.copy(originalBitmap.getConfig(), true));
+        }
+    }
+
+    private void recycleBitmapList(int fromIndex) {
+        while (fromIndex < currentShowingIndex) {
+            bitmapUndoList.get(fromIndex).recycle();
+            bitmapUndoList.remove(fromIndex);
+        }
+    }
+
+    private Bitmap getUndoBitmap() {
+        if (currentShowingIndex - 1 > 0) {
+            currentShowingIndex = -1;
+        } else currentShowingIndex = 0;
+
+        return bitmapUndoList
+                .get(currentShowingIndex)
+                .copy(bitmapUndoList.get(currentShowingIndex).getConfig(), true);
+    }
+
+    private Bitmap getRedoBitmap() {
+        if (currentShowingIndex + 1 > bitmapUndoList.size()) {
+            currentShowingIndex += 1;
+        } else currentShowingIndex = bitmapUndoList.size() - 1;
+
+        return bitmapUndoList
+                .get(currentShowingIndex)
+                .copy(bitmapUndoList.get(currentShowingIndex).getConfig(), true);
+    }
+
+    private void setButtonVisibility() {
+        if (currentShowingIndex > 0) {
+            undo.setEnabled(true);
+        } else {
+            undo.setEnabled(false);
+        }
+
+        if (currentShowingIndex + 1 < bitmapUndoList.size()) {
+            redo.setEnabled(true);
+        } else {
+            redo.setEnabled(false);
+        }
     }
 }

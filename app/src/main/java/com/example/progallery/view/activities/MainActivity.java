@@ -1,10 +1,17 @@
 package com.example.progallery.view.activities;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -15,14 +22,20 @@ import com.example.progallery.R;
 import com.example.progallery.view.adapters.PageAdapter;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_READWRITE_PERMISSION_CODE = 101;
+    private static final int REQUEST_IMAGE_CAPTURE = 102;
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
+    String currentPhotoPath;
     private List<String> permission = new ArrayList<>();
 
     @Override
@@ -43,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             permission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.CAMERA);
+        }
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.RECORD_AUDIO);
         }
 
         if (permission.size() != 0) {
@@ -103,5 +124,42 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.take_media) {
+            dispatchTakePictureIntent();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extra = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extra.get("data");
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 }

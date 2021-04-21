@@ -92,4 +92,6 @@ dependencies {
 
     // PhotoView
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+
+    implementation 'com.github.iamutkarshtiwari:Ananas:1.2.3'
 }
