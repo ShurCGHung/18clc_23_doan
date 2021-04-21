@@ -8,6 +8,11 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-feature android:name="android.hardware.camera2"
+        android:required="false"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,8 +24,7 @@
         <activity android:name=".view.activities.DisplayVideoActivity"></activity>
         <activity android:name=".view.activities.ViewVideoActivity" />
         <activity
-            android:name=".view.activities.EditImageActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".view.activities.EditImageActivity" />
         <activity android:name=".view.activities.ViewImageActivity" />
         <activity android:name=".view.activities.MainActivity">
             <intent-filter>
