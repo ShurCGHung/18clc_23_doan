@@ -4,19 +4,26 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
+import com.example.progallery.helpers.FileUtils;
 import com.example.progallery.helpers.ToolbarAnimator;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
 
+import iamutkarshtiwari.github.io.ananas.editimage.EditImageActivity;
+import iamutkarshtiwari.github.io.ananas.editimage.ImageEditorIntentBuilder;
+
 public class ViewImageActivity extends AppCompatActivity {
+    public static final int ACTION_REQUEST_EDITIMAGE = 9;
     private Toolbar topToolbar;
     private Toolbar bottomToolbar;
     private PhotoView imageView;
@@ -72,10 +79,34 @@ public class ViewImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Edit ảnh here please
-                Intent intent = new Intent(getBaseContext(), EditImageActivity.class);
-                intent.putExtra("IMAGE_PATH", mediaPath);
-                startActivity(intent);
+                // Intent intent = new Intent(getBaseContext(), EditImageActivity.class);
+                // intent.putExtra("IMAGE_PATH", mediaPath);
+                // startActivity(intent);
+                EditImage();
             }
         });
+    }
+
+    private void EditImage() {
+        File outputFile = FileUtils.genEditFile();
+        try {
+            Intent intent = new ImageEditorIntentBuilder(this, mediaPath, outputFile.getAbsolutePath())
+                    .withAddText()
+                    .withPaintFeature()
+                    .withFilterFeature()
+                    .withRotateFeature()
+                    .withCropFeature()
+                    .withBrightnessFeature()
+                    .withSaturationFeature()
+                    .withBeautyFeature()
+                    .withStickerFeature()
+                    .forcePortrait(true)
+                    .build();
+
+            EditImageActivity.start(this, intent, ACTION_REQUEST_EDITIMAGE);
+        } catch (Exception e) {
+            Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show();
+            Log.e("Demo App", e.getMessage());
+        }
     }
 }
