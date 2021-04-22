@@ -25,7 +25,6 @@ import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.model.entities.Album;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.viewmodel.AlbumViewModel;
-import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -130,7 +129,6 @@ public class AlbumsFragment extends Fragment {
 
         GridLayoutManager glm = new GridLayoutManager(getContext(), numColumn);
         recyclerView.setLayoutManager(glm);
-        recyclerView.addItemDecoration(new LayoutMarginDecoration(numColumn, getResources().getDimensionPixelSize(R.dimen._10sdp)));
 
         ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
         albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);

@@ -23,18 +23,17 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.FetchStorage;
-import com.example.progallery.view.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
 import com.example.progallery.view.adapters.SectionedPhotoAdapter;
+import com.example.progallery.view.listeners.MediaListener;
 import com.example.progallery.viewmodel.MediaViewModel;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
-import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration;
 
 import java.util.List;
 import java.util.Objects;
@@ -194,10 +193,8 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 photoAdapterByDate.setLayoutManager(glm);
             }
             recyclerView.setLayoutManager(glm);
-            recyclerView.addItemDecoration(new LayoutMarginDecoration(numColumn, getResources().getDimensionPixelSize(R.dimen._10sdp)));
         } else if (displayOption == LIST) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.addItemDecoration(new LayoutMarginDecoration(1, getResources().getDimensionPixelSize(R.dimen._10sdp)));
         } else if (displayOption == FLEX) {
             FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getContext());
             layoutManager.setFlexWrap(FlexWrap.WRAP);
