@@ -45,6 +45,8 @@
     <string name="edit">Edit</string>
     <string name="move_to_vault">Move to Vault</string>
     <string name="information">Information</string>
+    <string name="camera_capture">Camera</string>
+    <string name="camera_video">Video</string>
     <string name="add_album">Add album</string>
     <string name="name_required">Name (Required)</string>
     <string name="warning">Warning</string>

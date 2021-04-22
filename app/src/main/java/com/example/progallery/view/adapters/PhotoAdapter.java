@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.signature.MediaStoreSignature;
 import com.example.progallery.R;
 import com.example.progallery.view.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
 import com.example.progallery.view.fragments.PhotosFragment;
 import com.google.android.flexbox.FlexboxLayoutManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,11 +75,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             holder.imageView.setForeground(null);
         }
 
+        File f = new File(mediaList.get(position).getMediaPath());
+
         if (PhotosFragment.displayOption != PhotosFragment.FLEX) {
             Glide.with(holder.imageView.getContext())
                     .load(mediaList.get(position).getMediaPath())
                     .placeholder(R.color.black)
                     .centerCrop()
+                    .signature(new MediaStoreSignature("", f.lastModified(), 0))
                     .transition(DrawableTransitionOptions.withCrossFade(500))
                     .into(holder.imageView);
         } else {
@@ -85,6 +90,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                     .load(mediaList.get(position).getMediaPath())
                     .placeholder(R.color.black)
                     .transition(DrawableTransitionOptions.withCrossFade(500))
+                    .signature(new MediaStoreSignature("", f.lastModified(), 0))
                     .override(Integer.parseInt(mediaList.get(position).getMediaWidth()) / 4, Integer.parseInt(mediaList.get(position).getMediaHeight()) / 4)
                     .into(holder.imageView);
         }
