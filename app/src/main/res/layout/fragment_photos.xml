@@ -10,7 +10,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/photo_grid_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:padding="@dimen/_4sdp"
         tools:listitem="@layout/photo_grid_item" />
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
