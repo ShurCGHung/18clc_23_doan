@@ -131,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
             dispatchTakePictureIntent();
             return true;
         }
+        if (id == R.id.take_video) {
+            dispatchTakeVideoIntent();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
