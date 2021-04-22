@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -130,7 +129,6 @@ public class ViewImageActivity extends AppCompatActivity {
             EditImageActivity.start(this, intent, ACTION_REQUEST_EDITIMAGE);
         } catch (Exception e) {
             Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show();
-            Log.e("Demo App", e.getMessage());
         }
     }
 }

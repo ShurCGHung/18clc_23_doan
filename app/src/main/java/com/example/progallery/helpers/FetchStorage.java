@@ -48,7 +48,9 @@ public class FetchStorage {
         Cursor cursor = cursorLoader.loadInBackground();
 
         // Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, null, "DATE_ADDED DESC");
-        while (cursor.moveToNext()) {
+        while (true) {
+            assert cursor != null;
+            if (!cursor.moveToNext()) break;
             String absolutePathOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
             String nameOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME));
             long dateAddedOfImage = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_ADDED));

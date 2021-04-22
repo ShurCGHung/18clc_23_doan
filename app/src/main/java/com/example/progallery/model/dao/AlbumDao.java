@@ -21,4 +21,7 @@ public interface AlbumDao {
 
     @Query("SELECT * FROM album_table ORDER BY dateCreated DESC")
     LiveData<List<Album>> getAllAlbums();
+
+    @Query("SELECT EXISTS(SELECT * FROM album_table WHERE albumName = :name)")
+    boolean checkExist(String name);
 }

@@ -11,4 +11,5 @@
     <color name="unselected_filter">#8A8889</color>
     <color name="color_option_menu">#FF3990</color>
     <color name="gray">#E6E6E6</color>
+    <color name="warning">#e31e1e</color>
 </resources>

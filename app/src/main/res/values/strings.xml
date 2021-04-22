@@ -47,5 +47,6 @@
     <string name="information">Information</string>
     <string name="add_album">Add album</string>
     <string name="name_required">Name (Required)</string>
+    <string name="warning">Warning</string>
 
 </resources>

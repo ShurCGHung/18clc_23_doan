@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -29,10 +31,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.concurrent.ExecutionException;
 
 public class AlbumsFragment extends Fragment {
     private AlbumViewModel albumViewModel;
     private AlbumAdapter albumAdapter;
+    private Timer timer;
 
     public AlbumsFragment() {
         albumViewModel = null;
@@ -48,30 +53,48 @@ public class AlbumsFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.add_album) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-            final View customDialog = getLayoutInflater().inflate(R.layout.album_name_dialog, null);
-            builder.setView(customDialog);
-            builder.setTitle("Create album");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    EditText editText = customDialog.findViewById(R.id.album_name_text);
-                    String albumName = editText.getText().toString();
-                    addAlbum(albumName);
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            handleAddAlbum();
         }
 
         return true;
+    }
+
+    private void handleAddAlbum() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+
+        final View customDialog = getLayoutInflater().inflate(R.layout.album_name_dialog, null);
+
+        EditText editText = customDialog.findViewById(R.id.album_name_text);
+        TextView warningText = customDialog.findViewById(R.id.warning_text);
+
+        builder.setView(customDialog);
+        builder.setTitle("Create album");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String albumName = editText.getText().toString();
+                try {
+                    boolean isExist = albumViewModel.isExist(albumName);
+                    if (isExist) {
+                        Toast.makeText(getContext(), "Existed album name", Toast.LENGTH_SHORT).show();
+                    } else {
+                        addAlbum(albumName);
+                    }
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+
+
+        dialog.show();
     }
 
     private void addAlbum(String albumName) {
@@ -115,5 +138,6 @@ public class AlbumsFragment extends Fragment {
 
         return view;
     }
+
 
 }

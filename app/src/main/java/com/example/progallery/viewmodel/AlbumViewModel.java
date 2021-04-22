@@ -10,6 +10,8 @@ import com.example.progallery.model.entities.Album;
 import com.example.progallery.model.repository.AlbumRepository;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class AlbumViewModel extends AndroidViewModel {
     private final AlbumRepository repository;
@@ -35,6 +37,11 @@ public class AlbumViewModel extends AndroidViewModel {
 
     public LiveData<List<Album>> getAllAlbums() {
         return allAlbums;
+    }
+
+    public boolean isExist(String name) throws ExecutionException, InterruptedException {
+        Future<Boolean> fb = repository.isExists(name);
+        return fb.get();
     }
 
 }
