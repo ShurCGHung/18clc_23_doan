@@ -47,7 +47,7 @@
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:paddingRight="10dp"
-                    android:src="@drawable/ic_more_vert">
+                    android:src="@drawable/ic_three_dots">
 
                 </ImageButton>
 

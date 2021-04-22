@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.progallery.R;
 import com.example.progallery.view.adapters.EmojiAdapter;
-import com.example.progallery.listeners.EmojiFragmentListener;
+import com.example.progallery.view.listeners.EmojiFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import ja.burhanrashid52.photoeditor.PhotoEditor;

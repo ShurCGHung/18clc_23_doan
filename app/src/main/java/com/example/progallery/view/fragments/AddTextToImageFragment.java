@@ -17,7 +17,7 @@ import android.widget.EditText;
 import com.example.progallery.R;
 import com.example.progallery.view.adapters.ColorAdapter;
 import com.example.progallery.view.adapters.FontAdapter;
-import com.example.progallery.listeners.AddTextFragmentListener;
+import com.example.progallery.view.listeners.AddTextFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**

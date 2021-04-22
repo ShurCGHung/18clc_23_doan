@@ -1,15 +1,12 @@
 package com.example.progallery.view.activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,28 +16,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.BitmapUtils;
-import com.example.progallery.listeners.AddTextFragmentListener;
-import com.example.progallery.listeners.BrushFragmentListener;
-import com.example.progallery.listeners.EditImageFragmentListener;
-import com.example.progallery.listeners.EmojiFragmentListener;
-import com.example.progallery.listeners.FilterFragmentListener;
-import com.example.progallery.view.adapters.ViewPagerAdapter;
+import com.example.progallery.view.listeners.AddTextFragmentListener;
+import com.example.progallery.view.listeners.BrushFragmentListener;
+import com.example.progallery.view.listeners.EditImageFragmentListener;
+import com.example.progallery.view.listeners.EmojiFragmentListener;
+import com.example.progallery.view.listeners.FilterFragmentListener;
 import com.example.progallery.view.fragments.AddTextToImageFragment;
 import com.example.progallery.view.fragments.BrushFragment;
 import com.example.progallery.view.fragments.EditImageFragment;
 import com.example.progallery.view.fragments.EmojiFragment;
 import com.example.progallery.view.fragments.FilterImageFragment;
-import com.google.android.material.snackbar.Snackbar;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.yalantis.ucrop.UCrop;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
@@ -48,12 +36,9 @@ import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubfilter;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import ja.burhanrashid52.photoeditor.OnSaveBitmap;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 
@@ -85,7 +70,7 @@ public class EditImageActivity extends AppCompatActivity implements FilterFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_image_activity);
+        setContentView(R.layout.activity_edit_image);
 
         Toolbar toolbar = findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);

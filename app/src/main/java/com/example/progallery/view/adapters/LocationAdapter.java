@@ -39,9 +39,9 @@ public class LocationAdapter extends BaseAdapter {
     @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.griditem_album, null); // inflate the layout
-        ImageView photo = (ImageView) view.findViewById(R.id.albumView); // get the reference of ImageView
-        photo.setImageResource(R.drawable.photo); // set logo images
+        view = inflater.inflate(R.layout.album_grid_item, null); // inflate the layout
+//        ImageView photo = (ImageView) view.findViewById(R.id.albumView); // get the reference of ImageView
+//        photo.setImageResource(R.drawable.photo); // set logo images
         return view;
     }
 }

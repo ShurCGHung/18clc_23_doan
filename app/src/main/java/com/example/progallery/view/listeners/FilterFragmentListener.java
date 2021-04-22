@@ -1,4 +1,4 @@
-package com.example.progallery.listeners;
+package com.example.progallery.view.listeners;
 
 import com.zomato.photofilters.imageprocessors.Filter;
 

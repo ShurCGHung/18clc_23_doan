@@ -15,7 +15,7 @@ import android.widget.ToggleButton;
 
 import com.example.progallery.R;
 import com.example.progallery.view.adapters.ColorAdapter;
-import com.example.progallery.listeners.BrushFragmentListener;
+import com.example.progallery.view.listeners.BrushFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**

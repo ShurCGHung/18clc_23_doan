@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Converter;
-import com.example.progallery.listeners.MediaListener;
+import com.example.progallery.view.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class SectionedPhotoAdapter extends SectionedRecyclerViewAdapter<Recycler
 
         hashMap = Converter.toHashMap(media);
         for (Map.Entry<String, List<Media>> pair : hashMap.entrySet()) {
-            dates.add((String) pair.getKey());
+            dates.add(pair.getKey());
         }
         notifyDataSetChanged();
     }

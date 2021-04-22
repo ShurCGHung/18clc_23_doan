@@ -23,7 +23,7 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.FetchStorage;
-import com.example.progallery.listeners.MediaListener;
+import com.example.progallery.view.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
@@ -43,8 +43,6 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public static final int GRID = 0;
     public static final int LIST = 1;
     public static final int FLEX = 2;
-
-    public static final int OPEN_MEDIA_REQUEST = 3;
 
     public static int displayOption;
     public static boolean showDatesBool;
@@ -234,10 +232,14 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         loadView();
     }
 
-    public void loadView() {
+    private void loadView() {
         layout.setRefreshing(true);
         List<Media> refetch = FetchStorage.getAllMedias(Objects.requireNonNull(getContext()));
+
+        // Delete not exist files
         mediaViewModel.getAll();
+
+        // Insert new files if needed
         mediaViewModel.insert(refetch);
         layout.setRefreshing(false);
     }

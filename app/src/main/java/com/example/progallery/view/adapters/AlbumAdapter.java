@@ -1,48 +1,91 @@
 package com.example.progallery.view.adapters;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
+import com.example.progallery.model.entities.Album;
+import com.example.progallery.view.listeners.AlbumListener;
 
-public class AlbumAdapter extends BaseAdapter {
-    Context context;
-    int[] photos;
-    LayoutInflater inflater;
+import java.util.ArrayList;
+import java.util.List;
 
-    public AlbumAdapter(Context context, int[] photos) {
-        this.context = context;
-        this.photos = photos;
-        this.inflater = (LayoutInflater.from(context));
+public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
+    private List<Album> albumList = new ArrayList<>();
+    private AlbumListener albumListener;
+
+    public AlbumAdapter() {
+    }
+
+    @NonNull
+    @Override
+    public AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new AlbumViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.album_grid_item, parent, false));
     }
 
     @Override
-    public int getCount() {
-        return photos.length;
+    public void onBindViewHolder(@NonNull AlbumViewHolder holder, int position) {
+        holder.albumName.setText(albumList.get(position).getAlbumName());
+        holder.imageCount.setText(albumList.get(position).getNumberOfImages());
+        if (Integer.parseInt(albumList.get(position).getNumberOfImages()) == 0) {
+            Glide.with(holder.imageView.getContext())
+                    .load(R.color.black)
+                    .placeholder(R.color.black)
+                    .centerCrop()
+                    .transition(DrawableTransitionOptions.withCrossFade(500))
+                    .into(holder.imageView);
+        } else {
+            Glide.with(holder.imageView.getContext())
+                    .load(albumList.get(position).getAlbumThumbnail())
+                    .placeholder(R.color.black)
+                    .centerCrop()
+                    .transition(DrawableTransitionOptions.withCrossFade(500))
+                    .into(holder.imageView);
+        }
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public int getItemCount() {
+        return albumList.size();
     }
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
+    public void setAlbumList(List<Album> albumList) {
+        this.albumList = albumList;
+        notifyDataSetChanged();
     }
 
-    @SuppressLint({"ViewHolder", "InflateParams"})
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflater.inflate(R.layout.griditem_album, null); // inflate the layout
-        ImageView photo = (ImageView) view.findViewById(R.id.albumView); // get the reference of ImageView
-        photo.setImageResource(R.drawable.photo); // set logo images
-        return view;
+
+    public void setAlbumListener(AlbumListener albumListener) {
+        this.albumListener = albumListener;
+    }
+
+    class AlbumViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
+        TextView albumName;
+        TextView imageCount;
+
+        public AlbumViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            imageView = itemView.findViewById(R.id.album_thumbnail);
+            albumName = itemView.findViewById(R.id.album_name);
+            imageCount = itemView.findViewById(R.id.count_images);
+
+            itemView.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (albumListener != null && position != RecyclerView.NO_POSITION)
+                    albumListener.onAlbumClick(albumList.get(position));
+            });
+        }
     }
 }
 

@@ -49,14 +49,14 @@ public class HighlightsFragment extends Fragment {
         locationGView = (ExpandableHeightGridView) view.findViewById(R.id.location_grid);
         favoriteGView = (ExpandableHeightGridView) view.findViewById(R.id.favorite_grid);
 
-        AlbumAdapter albumAdapter = new AlbumAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photosPeople);
-        peopleGView.setAdapter(albumAdapter);
-
-        albumAdapter = new AlbumAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photos_Location);
-        locationGView.setAdapter(albumAdapter);
-
-        albumAdapter = new AlbumAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photos_Favorite);
-        favoriteGView.setAdapter(albumAdapter);
+//        AlbumAdapter albumAdapter = new AlbumAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photosPeople);
+//        peopleGView.setAdapter(albumAdapter);
+//
+//        albumAdapter = new AlbumAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photos_Location);
+//        locationGView.setAdapter(albumAdapter);
+//
+//        albumAdapter = new AlbumAdapter(Objects.requireNonNull(getActivity()).getApplicationContext(), photos_Favorite);
+//        favoriteGView.setAdapter(albumAdapter);
 
         return view;
 

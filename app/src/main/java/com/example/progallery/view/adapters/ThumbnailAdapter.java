@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.progallery.listeners.FilterFragmentListener;
+import com.example.progallery.view.listeners.FilterFragmentListener;
 import com.example.progallery.R;
 import com.zomato.photofilters.utils.ThumbnailItem;
 

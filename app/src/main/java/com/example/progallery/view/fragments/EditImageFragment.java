@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.example.progallery.R;
-import com.example.progallery.listeners.EditImageFragmentListener;
+import com.example.progallery.view.listeners.EditImageFragmentListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /**

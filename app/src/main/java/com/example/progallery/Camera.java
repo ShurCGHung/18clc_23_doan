@@ -23,6 +23,6 @@ public class Camera extends Activity {
         capture = (ImageButton) findViewById(R.id.btnCapture);
         modeChange = (ImageButton) findViewById(R.id.btnChangeMode);
         backToPhoto = (ImageButton) findViewById(R.id.btnBackToPhoto);
-        surfaceView = (SurfaceView) findViewById(R.id.surface_view);
+        // surfaceView = (SurfaceView) findViewById(R.id.surface_view);
     }
 }

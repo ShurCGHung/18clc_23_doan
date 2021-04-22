@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
-import com.example.progallery.listeners.MediaListener;
+import com.example.progallery.view.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
 import com.example.progallery.view.fragments.PhotosFragment;
 import com.google.android.flexbox.FlexboxLayoutManager;

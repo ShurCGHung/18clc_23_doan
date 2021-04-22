@@ -29,9 +29,6 @@ public class MediaRepository {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             mediaDao.insert(media);
-
-//            new Handler(Looper.getMainLooper()).post(() -> {
-//            });
         });
     }
 
@@ -39,9 +36,6 @@ public class MediaRepository {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             mediaDao.insert(mediaList);
-
-//            new Handler(Looper.getMainLooper()).post(() -> {
-//            });
         });
     }
 
@@ -57,8 +51,6 @@ public class MediaRepository {
                 }
             }
             delete(notExistFile);
-//            new Handler(Looper.getMainLooper()).post(() -> {
-//            });
         });
     }
 
@@ -66,9 +58,6 @@ public class MediaRepository {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             mediaDao.insert(media);
-
-//            new Handler(Looper.getMainLooper()).post(() -> {
-//            });
         });
     }
 
@@ -76,9 +65,6 @@ public class MediaRepository {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             mediaDao.delete(media);
-
-//            new Handler(Looper.getMainLooper()).post(() -> {
-//            });
         });
     }
 
@@ -86,12 +72,8 @@ public class MediaRepository {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             mediaDao.delete(mediaList);
-
-//            new Handler(Looper.getMainLooper()).post(() -> {
-//            });
         });
     }
-
 
     public LiveData<List<Media>> getAllMedias() {
         return allMedias;

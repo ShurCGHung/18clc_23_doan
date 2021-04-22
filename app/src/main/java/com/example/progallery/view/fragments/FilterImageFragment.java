@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import com.example.progallery.R;
 import com.example.progallery.view.activities.EditImageActivity;
 import com.example.progallery.view.adapters.ThumbnailAdapter;
-import com.example.progallery.listeners.FilterFragmentListener;
+import com.example.progallery.view.listeners.FilterFragmentListener;
 import com.example.progallery.helpers.BitmapUtils;
 import com.example.progallery.helpers.SpaceItemDecoration;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
