@@ -1,5 +1,10 @@
 package com.example.progallery.helpers;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+
 import com.example.progallery.model.entities.Media;
 
 import java.util.ArrayList;
@@ -21,5 +26,15 @@ public class Converter {
             }
         }
         return groupedData;
+    }
+
+    public static String toPath(Context context, Uri uri) {
+        String[] proj = {MediaStore.Files.FileColumns.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA);
+        cursor.moveToFirst();
+        String path = cursor.getString(column_index);
+        cursor.close();
+        return path;
     }
 }

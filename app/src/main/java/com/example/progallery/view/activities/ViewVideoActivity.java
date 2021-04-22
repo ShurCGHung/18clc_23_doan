@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +20,7 @@ import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.ToolbarAnimator;
 
 import java.io.File;
+import java.util.Objects;
 
 public class ViewVideoActivity extends AppCompatActivity {
     private Toolbar topToolbar;
@@ -32,8 +35,17 @@ public class ViewVideoActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.view_video_menu, menu);
+        return true;
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_view_video);
 
         topToolbar = findViewById(R.id.topBar);
@@ -42,7 +54,7 @@ public class ViewVideoActivity extends AppCompatActivity {
 
         setSupportActionBar(topToolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         videoThumbnailView.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +84,7 @@ public class ViewVideoActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
+
         mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
 
         File videoFile = new File(mediaPath);
