@@ -15,11 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.afollestad.sectionedrecyclerview.SectionedRecyclerViewAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.signature.MediaStoreSignature;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Converter;
 import com.example.progallery.listeners.MediaListener;
 import com.example.progallery.model.entities.Media;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,10 +83,12 @@ public class SectionedPhotoAdapter extends SectionedRecyclerViewAdapter<Recycler
             contentViewHolder.imageView.setForeground(null);
         }
 
+        File f = new File(hashMap.get(dates.get(i)).get(i1).getMediaPath());
         Glide.with(contentViewHolder.imageView.getContext())
                 .load(Objects.requireNonNull(hashMap.get(dates.get(i))).get(i1).getMediaPath())
                 .placeholder(R.color.black)
                 .centerCrop()
+                .signature(new MediaStoreSignature("", f.lastModified(), 0))
                 .transition(DrawableTransitionOptions.withCrossFade(500))
                 .into(contentViewHolder.imageView);
     }

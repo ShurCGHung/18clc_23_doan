@@ -5,9 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,7 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.Converter;
-import com.example.progallery.helpers.FileUtils;
 import com.example.progallery.helpers.ToolbarAnimator;
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -98,7 +97,6 @@ public class ViewImageActivity extends AppCompatActivity {
             imageView.setImageBitmap(image);
         }
 
-
         findViewById(R.id.btnEdit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,9 +110,8 @@ public class ViewImageActivity extends AppCompatActivity {
     }
 
     private void EditImage() {
-        File outputFile = FileUtils.genEditFile();
         try {
-            Intent intent = new ImageEditorIntentBuilder(this, mediaPath, outputFile.getAbsolutePath())
+            Intent intent = new ImageEditorIntentBuilder(this, mediaPath, mediaPath)
                     .withAddText()
                     .withPaintFeature()
                     .withFilterFeature()
@@ -131,6 +128,25 @@ public class ViewImageActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show();
             Log.e("Demo App", e.getMessage());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ACTION_REQUEST_EDITIMAGE && resultCode == RESULT_OK) {
+            String newFilePath = data.getStringExtra(ImageEditorIntentBuilder.OUTPUT_PATH);
+            boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IS_IMAGE_EDITED, false);
+
+            if (isImageEdit) {
+                mediaPath = newFilePath;
+                File imageFile = new File(mediaPath);
+                if (imageFile.exists()) {
+                    Bitmap image = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                    imageView.setImageBitmap(image);
+                }
+            }
         }
     }
 }
