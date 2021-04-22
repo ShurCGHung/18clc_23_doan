@@ -22,16 +22,14 @@ import com.example.progallery.R;
 import com.example.progallery.view.adapters.PageAdapter;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_READWRITE_PERMISSION_CODE = 101;
     private static final int REQUEST_IMAGE_CAPTURE = 102;
+    private static final int REQUEST_VIDEO_CAPTURE = 103;
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
@@ -145,12 +143,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void dispatchTakeVideoIntent() {
+        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extra = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extra.get("data");
-
+            galleryAddPic();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
