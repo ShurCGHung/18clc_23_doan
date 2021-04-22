@@ -13,11 +13,10 @@ public class Album {
     private String albumThumbnail;
     private String numberOfImages;
 
-    public Album(String albumName, String dateCreated, String albumThumbnail, String numberOfImages) {
+    public Album(String albumName, String dateCreated) {
         this.albumName = albumName;
         this.dateCreated = dateCreated;
-        this.albumThumbnail = albumThumbnail;
-        this.numberOfImages = numberOfImages;
+        this.numberOfImages = "0";
     }
 
     public String getNumberOfImages() {

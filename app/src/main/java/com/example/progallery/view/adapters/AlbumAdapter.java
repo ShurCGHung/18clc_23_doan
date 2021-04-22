@@ -38,8 +38,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         holder.imageCount.setText(albumList.get(position).getNumberOfImages());
         if (Integer.parseInt(albumList.get(position).getNumberOfImages()) == 0) {
             Glide.with(holder.imageView.getContext())
-                    .load(R.color.black)
-                    .placeholder(R.color.black)
+                    .load(R.color.gray)
+                    .placeholder(R.color.gray)
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade(500))
                     .into(holder.imageView);
