@@ -20,5 +20,4 @@
             tools:listitem="@layout/photo_grid_item" />
     </LinearLayout>
 
-
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

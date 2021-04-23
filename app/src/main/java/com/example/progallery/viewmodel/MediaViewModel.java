@@ -1,51 +1,62 @@
 package com.example.progallery.viewmodel;
 
-import android.app.Application;
+import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.example.progallery.model.entities.Media;
-import com.example.progallery.model.repository.MediaRepository;
+import com.example.progallery.services.MediaFetchService;
 
 import java.util.List;
 
-public class MediaViewModel extends AndroidViewModel {
-    private final MediaRepository repository;
-    private final LiveData<List<Media>> allMedias;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-    public MediaViewModel(@NonNull Application application) {
-        super(application);
-        repository = new MediaRepository(application);
-        allMedias = repository.getAllMedias();
+public class MediaViewModel extends ViewModel {
+    private MutableLiveData<List<Media>> allMedias;
+
+    public MediaViewModel() {
+        this.allMedias = new MutableLiveData<>();
     }
 
-    public void insert(Media media) {
-        repository.insert(media);
+    public void callService(Context context) {
+        MediaFetchService service = MediaFetchService.getInstance();
+        service.getMediaList(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getMediasObserverRx());
     }
 
-    public void insert(List<Media> mediaList) {
-        repository.insert(mediaList);
-    }
-
-    public void update(Media media) {
-        repository.update(media);
-    }
-
-    public void delete(Media media) {
-        repository.delete(media);
-    }
-
-    public void delete(List<String> mediaList) {
-        repository.delete(mediaList);
-    }
-
-    public void getAll() {
-        repository.getAll();
-    }
-
-    public LiveData<List<Media>> getAllImages() {
+    public MutableLiveData<List<Media>> getMediasObserver() {
         return allMedias;
+    }
+
+    private Observer<List<Media>> getMediasObserverRx() {
+        return new Observer<List<Media>>() {
+
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                // Do something
+            }
+
+            @Override
+            public void onNext(@NonNull List<Media> mediaList) {
+                allMedias.postValue(mediaList);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                allMedias.postValue(null);
+            }
+
+            @Override
+            public void onComplete() {
+                // Do something
+            }
+        };
     }
 }

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,7 +23,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
-import com.example.progallery.helpers.FetchStorage;
 import com.example.progallery.model.entities.Media;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
@@ -35,7 +35,6 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 
-import java.util.List;
 import java.util.Objects;
 
 public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -203,18 +202,6 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             recyclerView.setLayoutManager(layoutManager);
         }
 
-        // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
-        // mediaViewModel = new ViewModelProvider(getActivity()).get(MediaViewModel.class);
-
-        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
-        mediaViewModel = new ViewModelProvider(this, factory).get(MediaViewModel.class);
-        mediaViewModel.getAllImages().observe(this, mediaList -> {
-            if (showDatesBool) {
-                photoAdapterByDate.setImageList(mediaList);
-            } else {
-                photoAdapter.setMediaList(mediaList);
-            }
-        });
 
         layout.post(() -> {
             layout.setRefreshing(true);
@@ -231,13 +218,24 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     private void loadView() {
         layout.setRefreshing(true);
-        List<Media> refetch = FetchStorage.getAllMedias(Objects.requireNonNull(getContext()));
 
-        // Delete not exist files
-        mediaViewModel.getAll();
+        // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
+        // mediaViewModel = new ViewModelProvider(getActivity()).get(MediaViewModel.class);
 
-        // Insert new files if needed
-        mediaViewModel.insert(refetch);
+        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
+        mediaViewModel = new ViewModelProvider(this, factory).get(MediaViewModel.class);
+        mediaViewModel.getMediasObserver().observe(this, mediaList -> {
+            if (mediaList == null) {
+                Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
+            } else {
+                if (showDatesBool) {
+                    photoAdapterByDate.setImageList(mediaList);
+                } else {
+                    photoAdapter.setMediaList(mediaList);
+                }
+            }
+        });
+        mediaViewModel.callService(getContext());
         layout.setRefreshing(false);
     }
 }

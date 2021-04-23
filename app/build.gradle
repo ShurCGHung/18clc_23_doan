@@ -38,19 +38,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.GoodieBag:Pinview:v1.4'
 
-    //noinspection GradleCompatible
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    //noinspection GradleCompatible
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.karumi:dexter:4.1.0'
-    implementation 'info.androidhive:imagefilters:1.0.7'
-
-    // Photo Editor API
-    implementation 'ja.burhanrashid52:photoeditor:0.2.1'
-
-    // Emojicon Text View (Display emoji from String)
-    implementation 'com.github.rockerhieu:emojicon:v1.4.2'
-
     // Rotate Image
     implementation 'com.github.yalantis:ucrop:2.2.2-native'
 
@@ -89,4 +76,7 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
     implementation 'com.github.iamutkarshtiwari:Ananas:1.2.3'
+
+    implementation "io.reactivex.rxjava3:rxjava:3.0.12"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 }

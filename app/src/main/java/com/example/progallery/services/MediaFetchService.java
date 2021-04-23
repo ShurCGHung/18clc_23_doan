@@ -1,4 +1,4 @@
-package com.example.progallery.helpers;
+package com.example.progallery.services;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,15 +10,20 @@ import androidx.loader.content.CursorLoader;
 
 import com.example.progallery.model.entities.Media;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class FetchStorage {
-    public static List<Media> getAllMedias(Context context) {
+import io.reactivex.rxjava3.core.Observable;
+
+public class MediaFetchService {
+    public static MediaFetchService getInstance() {
+        return SingletonHelper.INSTANCE;
+    }
+
+    public Observable<List<Media>> getMediaList(Context context) {
         List<Media> medias = new ArrayList<>();
         String[] projection = {
                 MediaStore.Files.FileColumns.DATA,
@@ -77,11 +82,11 @@ public class FetchStorage {
             medias.add(media);
         }
         cursor.close();
-        return medias;
+
+        return Observable.just(medias);
     }
 
-    public static boolean isExist(String filePath) {
-        File file = new File(filePath);
-        return file.exists();
+    private static class SingletonHelper {
+        private static final MediaFetchService INSTANCE = new MediaFetchService();
     }
 }

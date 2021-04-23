@@ -72,16 +72,16 @@ public class AlbumsFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String albumName = editText.getText().toString();
-                try {
-                    boolean isExist = albumViewModel.isExist(albumName);
-                    if (isExist) {
-                        Toast.makeText(getContext(), "Existed album name", Toast.LENGTH_SHORT).show();
-                    } else {
-                        addAlbum(albumName);
-                    }
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    boolean isExist = albumViewModel.isExist(albumName);
+//                    if (isExist) {
+//                        Toast.makeText(getContext(), "Existed album name", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        addAlbum(albumName);
+//                    }
+//                } catch (ExecutionException | InterruptedException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -101,7 +101,7 @@ public class AlbumsFragment extends Fragment {
         sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+7"));
         String formattedDate = sdf.format(new Date());
         Album newAlbum = new Album(albumName, formattedDate);
-        albumViewModel.insert(newAlbum);
+        // albumViewModel.insert(newAlbum);
     }
 
     @Override
@@ -131,8 +131,8 @@ public class AlbumsFragment extends Fragment {
         recyclerView.setLayoutManager(glm);
 
         ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
-        albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
-        albumViewModel.getAllAlbums().observe(this, albumAdapter::setAlbumList);
+        // albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
+        // albumViewModel.getAllAlbums().observe(this, albumAdapter::setAlbumList);
 
         return view;
     }
