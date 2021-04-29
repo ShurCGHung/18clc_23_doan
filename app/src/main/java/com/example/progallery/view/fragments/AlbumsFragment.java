@@ -19,10 +19,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
-import com.example.progallery.model.entities.Album;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.viewmodel.AlbumViewModel;
 
@@ -30,13 +30,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.concurrent.ExecutionException;
 
-public class AlbumsFragment extends Fragment {
+public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private AlbumViewModel albumViewModel;
     private AlbumAdapter albumAdapter;
-    private Timer timer;
+    private SwipeRefreshLayout layout;
+
 
     public AlbumsFragment() {
         albumViewModel = null;
@@ -100,7 +99,7 @@ public class AlbumsFragment extends Fragment {
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+7"));
         String formattedDate = sdf.format(new Date());
-        Album newAlbum = new Album(albumName, formattedDate);
+        // Album newAlbum = new Album(albumName, formattedDate);
         // albumViewModel.insert(newAlbum);
     }
 
@@ -116,6 +115,9 @@ public class AlbumsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_albums, container, false);
 
+        layout = view.findViewById(R.id.refresh_layout);
+        layout.setOnRefreshListener(this);
+
         RecyclerView recyclerView = view.findViewById(R.id.album_grid_view);
         recyclerView.setHasFixedSize(true);
 
@@ -130,12 +132,35 @@ public class AlbumsFragment extends Fragment {
         GridLayoutManager glm = new GridLayoutManager(getContext(), numColumn);
         recyclerView.setLayoutManager(glm);
 
-        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
-        // albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
-        // albumViewModel.getAllAlbums().observe(this, albumAdapter::setAlbumList);
+        layout.post(() -> {
+            layout.setRefreshing(true);
+            loadView();
+        });
 
         return view;
     }
 
+    @Override
+    public void onRefresh() {
+        loadView();
+    }
 
+    private void loadView() {
+        layout.setRefreshing(true);
+
+        // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
+        // mediaViewModel = new ViewModelProvider(getActivity()).get(MediaViewModel.class);
+
+        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
+        albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
+        albumViewModel.getAlbumsObserver().observe(this, albumList -> {
+            if (albumList == null) {
+                Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
+            } else {
+                albumAdapter.setAlbumList(albumList);
+            }
+        });
+        albumViewModel.callService(getContext());
+        layout.setRefreshing(false);
+    }
 }

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.example.progallery.model.entities.Media;
+import com.example.progallery.model.Media;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

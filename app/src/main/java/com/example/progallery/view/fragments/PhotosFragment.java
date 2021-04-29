@@ -23,7 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
-import com.example.progallery.model.entities.Media;
+import com.example.progallery.model.Media;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;

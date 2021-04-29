@@ -5,9 +5,10 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.progallery.model.entities.Media;
+import com.example.progallery.model.Media;
 import com.example.progallery.services.MediaFetchService;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;

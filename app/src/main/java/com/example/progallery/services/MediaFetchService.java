@@ -8,7 +8,7 @@ import android.provider.MediaStore;
 
 import androidx.loader.content.CursorLoader;
 
-import com.example.progallery.model.entities.Media;
+import com.example.progallery.model.Media;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
