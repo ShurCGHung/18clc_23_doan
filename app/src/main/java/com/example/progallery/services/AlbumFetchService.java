@@ -23,7 +23,7 @@ public class AlbumFetchService {
         return SingletonHelper.INSTANCE;
     }
 
-    private int getCount(final Context context, final Uri contentUri, final String bucketId) {
+    private int getCount(final Context context, final Uri contentUri, final String bucketName) {
         try (final Cursor cursor = context.getContentResolver().query(contentUri,
                 null,
                 "("
@@ -34,8 +34,8 @@ public class AlbumFetchService {
                         + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
                         + ")"
                         + " AND "
-                        + MediaStore.Files.FileColumns.BUCKET_ID + "=?",
-                new String[]{bucketId},
+                        + MediaStore.Files.FileColumns.BUCKET_DISPLAY_NAME + "=?",
+                new String[]{bucketName},
                 null)) {
             return ((cursor == null) || (!cursor.moveToFirst())) ? 0 : cursor.getCount();
         }
@@ -81,16 +81,16 @@ public class AlbumFetchService {
             String albumID = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.BUCKET_ID));
             String albumName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.BUCKET_DISPLAY_NAME));
 
-            if (!mapAlbumThumbnail.containsKey(albumName.toLowerCase()) && albumName.charAt(0) != '.') {
+            if (!mapAlbumThumbnail.containsKey(albumName) && albumName.charAt(0) != '.') {
                 String albumThumbnail = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
                 String thumbnailType = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE));
 
                 File f = new File(albumThumbnail);
                 String folderPath = Objects.requireNonNull(f.getParentFile()).getPath();
 
-                int count = getCount(context, queryUri, albumID);
+                int count = getCount(context, queryUri, albumName);
                 Album album = new Album(albumID, albumName, Integer.toString(count), albumThumbnail, thumbnailType, folderPath);
-                mapAlbumThumbnail.put(albumName.toLowerCase(), albumThumbnail);
+                mapAlbumThumbnail.put(albumName, albumThumbnail);
                 albums.add(album);
             }
         }
@@ -103,12 +103,12 @@ public class AlbumFetchService {
         String[] directories = file.list((current, name) -> new File(current, name).isDirectory());
 
         for (int i = 0; i < Objects.requireNonNull(directories).length; i++) {
-            if (!mapAlbumThumbnail.containsKey(directories[i].toLowerCase()) && directories[i].charAt(0) != '.') {
+            if (!mapAlbumThumbnail.containsKey(directories[i]) && directories[i].charAt(0) != '.') {
                 String albumName = directories[i];
                 String albumPath = root + File.pathSeparator + albumName;
 
                 Album album = new Album(null, albumName, Integer.toString(0), null, null, albumPath);
-                mapAlbumThumbnail.put(albumName.toLowerCase(), null);
+                mapAlbumThumbnail.put(albumName, null);
                 albums.add(album);
             }
         }
