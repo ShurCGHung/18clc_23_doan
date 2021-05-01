@@ -1,6 +1,7 @@
 package com.example.progallery.viewmodel;
 
 import android.content.Context;
+import android.os.Environment;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.progallery.model.Album;
 import com.example.progallery.services.AlbumFetchService;
 
+import java.io.File;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -58,5 +60,13 @@ public class AlbumViewModel extends ViewModel {
                 // Do something
             }
         };
+    }
+
+    public boolean createAlbum(String albumName) {
+        File pictureFolder = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES
+        );
+        File imagesFolder = new File(pictureFolder, albumName);
+        return imagesFolder.mkdirs();
     }
 }

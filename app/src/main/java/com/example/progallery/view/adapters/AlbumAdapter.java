@@ -5,6 +5,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -79,6 +80,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         ImageView imageView;
         TextView albumName;
         TextView imageCount;
+        ImageButton imageButton;
 
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,11 +88,18 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             imageView = itemView.findViewById(R.id.album_thumbnail);
             albumName = itemView.findViewById(R.id.album_name);
             imageCount = itemView.findViewById(R.id.count_images);
+            imageButton = itemView.findViewById(R.id.album_options);
 
             itemView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (albumListener != null && position != RecyclerView.NO_POSITION)
                     albumListener.onAlbumClick(albumList.get(position));
+            });
+
+            imageButton.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (albumListener != null && position != RecyclerView.NO_POSITION)
+                    albumListener.onOptionAlbumClick(albumList.get(position));
             });
         }
     }

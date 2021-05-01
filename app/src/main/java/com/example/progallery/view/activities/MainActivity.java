@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.R;
+import com.example.progallery.helpers.Constant;
 import com.example.progallery.view.adapters.PageAdapter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_READWRITE_PERMISSION_CODE = 101;
     private static final int REQUEST_IMAGE_CAPTURE = 102;
     private static final int REQUEST_VIDEO_CAPTURE = 103;
+
+    public static int displayOption;
+    public static boolean showDatesBool;
+
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        displayOption = Constant.GRID;
+        showDatesBool = false;
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));

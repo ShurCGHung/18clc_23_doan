@@ -1,7 +1,7 @@
 package com.example.progallery.view.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,19 +22,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
+import com.example.progallery.model.Album;
 import com.example.progallery.view.adapters.AlbumAdapter;
+import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 
 public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private AlbumViewModel albumViewModel;
     private AlbumAdapter albumAdapter;
     private SwipeRefreshLayout layout;
-
 
     public AlbumsFragment() {
         albumViewModel = null;
@@ -63,44 +60,22 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         final View customDialog = getLayoutInflater().inflate(R.layout.album_name_dialog, null);
 
         EditText editText = customDialog.findViewById(R.id.album_name_text);
-        TextView warningText = customDialog.findViewById(R.id.warning_text);
 
         builder.setView(customDialog);
         builder.setTitle("Create album");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String albumName = editText.getText().toString();
-//                try {
-//                    boolean isExist = albumViewModel.isExist(albumName);
-//                    if (isExist) {
-//                        Toast.makeText(getContext(), "Existed album name", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        addAlbum(albumName);
-//                    }
-//                } catch (ExecutionException | InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String albumName = editText.getText().toString();
+            boolean check = albumViewModel.createAlbum(albumName);
+            if (check) {
+                loadView();
+                Toast.makeText(getContext(), "Album is created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Album is already existed", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
-
-
         dialog.show();
-    }
-
-    private void addAlbum(String albumName) {
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-        sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+7"));
-        String formattedDate = sdf.format(new Date());
-        // Album newAlbum = new Album(albumName, formattedDate);
-        // albumViewModel.insert(newAlbum);
     }
 
     @Override
@@ -135,6 +110,18 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         layout.post(() -> {
             layout.setRefreshing(true);
             loadView();
+        });
+
+        albumAdapter.setAlbumListener(new AlbumListener() {
+            @Override
+            public void onAlbumClick(Album album) {
+                Fragment photoFrag = new PhotoForAlbumFragment(album.getAlbumName());
+                getChildFragmentManager().beginTransaction().replace(R.id.refresh_layout, photoFrag).addToBackStack(null).commit();
+            }
+            @Override
+            public void onOptionAlbumClick(Album album) {
+                Log.d("MY_APP", "option clicked");
+            }
         });
 
         return view;

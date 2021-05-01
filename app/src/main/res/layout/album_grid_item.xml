@@ -26,6 +26,7 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_three_dots"
+        android:tint="@color/white"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +39,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        android:clickable="false">
 
         <TextView
             android:id="@+id/album_name"

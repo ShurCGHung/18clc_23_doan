@@ -16,14 +16,20 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.signature.MediaStoreSignature;
 import com.example.progallery.R;
-import com.example.progallery.view.listeners.MediaListener;
 import com.example.progallery.model.Media;
 import com.example.progallery.view.fragments.PhotosFragment;
+import com.example.progallery.view.listeners.MediaListener;
 import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.progallery.helpers.Constant.FLEX;
+import static com.example.progallery.helpers.Constant.GRID;
+import static com.example.progallery.helpers.Constant.LIST;
+import static com.example.progallery.view.activities.MainActivity.displayOption;
+
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
     private List<Media> mediaList = new ArrayList<>();
@@ -35,10 +41,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     @NonNull
     @Override
     public PhotoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (PhotosFragment.displayOption == PhotosFragment.GRID) {
+        if (displayOption == GRID) {
             return new PhotoViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.photo_grid_item, parent, false));
-        } else if (PhotosFragment.displayOption == PhotosFragment.LIST) {
+        } else if (displayOption == LIST) {
             return new PhotoViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.photo_list_item, parent, false));
         } else {
@@ -49,7 +55,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     @Override
     public void onBindViewHolder(@NonNull PhotoViewHolder holder, int position) {
-        if (PhotosFragment.displayOption == PhotosFragment.LIST) {
+        if (displayOption == LIST) {
             holder.imageName.setText(mediaList.get(position).getMediaName());
             holder.imageDate.setText(mediaList.get(position).getMediaDateAdded());
             if (Integer.parseInt(mediaList.get(position).getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
@@ -60,7 +66,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 String temp = "VIDEO";
                 holder.imageType.setText(temp);
             }
-        } else if (PhotosFragment.displayOption == PhotosFragment.FLEX) {
+        } else if (displayOption == FLEX) {
             ViewGroup.LayoutParams lp = holder.imageView.getLayoutParams();
             if (lp instanceof FlexboxLayoutManager.LayoutParams) {
                 FlexboxLayoutManager.LayoutParams flexboxLp = (FlexboxLayoutManager.LayoutParams) lp;
@@ -77,7 +83,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
         File f = new File(mediaList.get(position).getMediaPath());
 
-        if (PhotosFragment.displayOption != PhotosFragment.FLEX) {
+        if (displayOption != FLEX) {
             Glide.with(holder.imageView.getContext())
                     .load(mediaList.get(position).getMediaPath())
                     .placeholder(R.color.black)
@@ -120,7 +126,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
 
-            if (PhotosFragment.displayOption == PhotosFragment.LIST) {
+            if (displayOption == LIST) {
                 imageName = itemView.findViewById(R.id.file_name);
                 imageDate = itemView.findViewById(R.id.file_date);
                 imageType = itemView.findViewById(R.id.file_type);
