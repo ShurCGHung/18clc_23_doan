@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -115,9 +116,15 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         albumAdapter.setAlbumListener(new AlbumListener() {
             @Override
             public void onAlbumClick(Album album) {
-                Fragment photoFrag = new PhotoForAlbumFragment(album.getAlbumName());
-                getChildFragmentManager().beginTransaction().replace(R.id.refresh_layout, photoFrag).addToBackStack(null).commit();
+                assert getFragmentManager() != null;
+                FragmentTransaction trans = getFragmentManager()
+                        .beginTransaction();
+                trans.replace(R.id.root_fragment, new PhotoForAlbumFragment(album.getAlbumName()));
+                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                trans.addToBackStack(null);
+                trans.commit();
             }
+
             @Override
             public void onOptionAlbumClick(Album album) {
                 Log.d("MY_APP", "option clicked");

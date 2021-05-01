@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.progallery.view.fragments.AlbumsFragment;
 import com.example.progallery.view.fragments.HighlightsFragment;
 import com.example.progallery.view.fragments.PhotosFragment;
+import com.example.progallery.view.fragments.RootAlbumFragment;
 
 public class PageAdapter extends FragmentPagerAdapter {
     private int numOfTabs;
@@ -24,7 +24,7 @@ public class PageAdapter extends FragmentPagerAdapter {
             case 0:
                 return new PhotosFragment();
             case 1:
-                return new AlbumsFragment();
+                return new RootAlbumFragment();
             case 2:
                 return new HighlightsFragment();
             default:
