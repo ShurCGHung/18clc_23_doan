@@ -5,35 +5,35 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.progallery.view.fragments.HighlightsFragment;
-import com.example.progallery.view.fragments.PhotosFragment;
-import com.example.progallery.view.fragments.RootAlbumFragment;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PageAdapter extends FragmentPagerAdapter {
-    private int numOfTabs;
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    public PageAdapter(@NonNull FragmentManager fm, int behavior, int numOfTabs) {
+    public PageAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
-        this.numOfTabs = numOfTabs;
     }
 
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            case 0:
-                return new PhotosFragment();
-            case 1:
-                return new RootAlbumFragment();
-            case 2:
-                return new HighlightsFragment();
-            default:
-                return null;
-        }
+        return mFragmentList.get(position);
     }
 
     @Override
     public int getCount() {
-        return numOfTabs;
+        return mFragmentList.size();
+    }
+
+    public void addFragment(Fragment fragment, String title) {
+        mFragmentList.add(fragment);
+        mFragmentTitleList.add(title);
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mFragmentTitleList.get(position);
     }
 }

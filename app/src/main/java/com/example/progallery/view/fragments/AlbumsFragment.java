@@ -41,8 +41,15 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.view_album_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -52,7 +59,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             handleAddAlbum();
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void handleAddAlbum() {
@@ -80,16 +87,12 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.fragment_albums, container, false);
+
+        setHasOptionsMenu(true);
 
         layout = view.findViewById(R.id.refresh_layout);
         layout.setOnRefreshListener(this);
@@ -119,7 +122,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 assert getFragmentManager() != null;
                 FragmentTransaction trans = getFragmentManager()
                         .beginTransaction();
-                trans.replace(R.id.root_fragment, new PhotoForAlbumFragment(album.getAlbumName()));
+                trans.replace(R.id.root_fragment, new PhotoForAlbumFragment(album.getAlbumName()), "PHOTO_ALBUM");
                 trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 trans.addToBackStack(null);
                 trans.commit();

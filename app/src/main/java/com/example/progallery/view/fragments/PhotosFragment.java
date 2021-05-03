@@ -23,13 +23,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
-import com.example.progallery.model.Media;
 import com.example.progallery.view.activities.MainActivity;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
 import com.example.progallery.view.adapters.SectionedPhotoAdapter;
-import com.example.progallery.view.listeners.MediaListener;
 import com.example.progallery.viewmodel.MediaViewModel;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
@@ -63,6 +61,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.view_photos_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -107,7 +106,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             MainActivity.showDatesBool = !MainActivity.showDatesBool;
             recreateFragment();
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void recreateFragment() {
@@ -121,9 +120,9 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
+
+        setHasOptionsMenu(true);
 
         layout = view.findViewById(R.id.refresh_layout);
         layout.setOnRefreshListener(this);
@@ -135,18 +134,15 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             photoAdapterByDate = new SectionedPhotoAdapter();
             recyclerView.setAdapter(photoAdapterByDate);
 
-            photoAdapterByDate.setMediaListener(new MediaListener() {
-                @Override
-                public void onMediaClick(Media media) {
-                    if (Integer.parseInt(media.getMediaType()) == 1) {
-                        Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
-                        intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
-                        startActivity(intent);
-                    } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-                        Intent intent = new Intent(PhotosFragment.this.getContext(), ViewVideoActivity.class);
-                        intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
-                        startActivity(intent);
-                    }
+            photoAdapterByDate.setMediaListener(media -> {
+                if (Integer.parseInt(media.getMediaType()) == 1) {
+                    Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
+                    intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                    startActivity(intent);
+                } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                    Intent intent = new Intent(PhotosFragment.this.getContext(), ViewVideoActivity.class);
+                    intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                    startActivity(intent);
                 }
             });
 
@@ -223,4 +219,5 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mediaViewModel.callService(getContext());
         layout.setRefreshing(false);
     }
+
 }

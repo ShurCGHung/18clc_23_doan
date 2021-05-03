@@ -24,6 +24,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.view.adapters.PageAdapter;
+import com.example.progallery.view.fragments.HighlightsFragment;
+import com.example.progallery.view.fragments.PhotosFragment;
+import com.example.progallery.view.fragments.RootAlbumFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     String currentPhotoPath;
     Uri imageUri;
+    PageAdapter pageAdapter;
     private List<String> permission = new ArrayList<>();
 
     @Override
@@ -89,8 +93,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init() {
-        PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager(), 0, tabLayout.getTabCount());
+        pageAdapter = new PageAdapter(getSupportFragmentManager(), 0);
+        pageAdapter.addFragment(new PhotosFragment(), getResources().getString(R.string.photo_tab));
+        pageAdapter.addFragment(new RootAlbumFragment(), getResources().getString(R.string.album_tab));
+        pageAdapter.addFragment(new HighlightsFragment(), getResources().getString(R.string.highlight_tab));
+
         viewPager.setAdapter(pageAdapter);
+
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setSmoothScrollingEnabled(true);
 
         viewPager.addOnPageChangeListener((new TabLayout.TabLayoutOnPageChangeListener(tabLayout)));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -109,6 +121,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void invalidateFragmentMenus(int position) {
+        for (int i = 0; i < pageAdapter.getCount(); i++) {
+            pageAdapter.getItem(i).setHasOptionsMenu(i == position);
+        }
+        invalidateOptionsMenu(); //or respectively its support method.
     }
 
     @Override

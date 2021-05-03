@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,6 +79,12 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
     }
 
     @Override
+    public void onDestroy() {
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         item.setChecked(true);
@@ -89,6 +97,17 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
         } else if (id == R.id.flex && MainActivity.displayOption != FLEX) {
             MainActivity.displayOption = FLEX;
             recreateFragment();
+        } else if (id == android.R.id.home) {
+            assert getFragmentManager() != null;
+            Fragment myFragment = getFragmentManager().findFragmentByTag("PHOTO_ALBUM");
+            FragmentTransaction trans = getFragmentManager()
+                    .beginTransaction();
+            assert myFragment != null;
+            trans.remove(myFragment);
+            trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            trans.commit();
+
+            getFragmentManager().popBackStack();
         }
         return true;
     }
@@ -105,6 +124,8 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
 
@@ -153,7 +174,6 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
         });
 
         return view;
-
     }
 
     @Override
