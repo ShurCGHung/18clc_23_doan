@@ -61,6 +61,7 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.view_photo_for_album_menu, menu);
     }
 
