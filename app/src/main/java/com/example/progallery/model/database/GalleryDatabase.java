@@ -11,7 +11,7 @@ import com.example.progallery.model.dao.MediaDao;
 import com.example.progallery.model.entities.Album;
 import com.example.progallery.model.entities.Media;
 
-@Database(entities = {Media.class, Album.class}, version = 1, exportSchema = false)
+@Database(entities = {Media.class, Album.class}, version = 2, exportSchema = false)
 public abstract class GalleryDatabase extends RoomDatabase {
     private static GalleryDatabase instance;
 

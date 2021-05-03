@@ -94,4 +94,10 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
     implementation 'com.github.iamutkarshtiwari:Ananas:1.2.3'
+
+    // ExifInterface
+    //noinspection GradleCompatible
+    implementation 'com.android.support:support-v4:25.3.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:exifinterface:25.3.0'
 }

@@ -50,5 +50,13 @@
     <string name="add_album">Add album</string>
     <string name="name_required">Name (Required)</string>
     <string name="warning">Warning</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="image_source">Source</string>
+    <string name="image_length">Length</string>
+    <string name="image_width">Width</string>
+    <string name="datetime">Datetime</string>
+    <string name="orientation">Orientation</string>
+    <string name="location">Location</string>
 
 </resources>

@@ -3,9 +3,9 @@ package com.example.progallery.view.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -18,9 +18,11 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.Converter;
 import com.example.progallery.helpers.ToolbarAnimator;
+import com.example.progallery.view.fragments.ImageInfoFragment;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import iamutkarshtiwari.github.io.ananas.editimage.EditImageActivity;
@@ -107,6 +109,14 @@ public class ViewImageActivity extends AppCompatActivity {
                 EditImage();
             }
         });
+
+        findViewById(R.id.btnInfo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageInfoFragment fragment = new ImageInfoFragment(mediaPath);
+                fragment.show(getSupportFragmentManager(), "Image Info");
+            }
+        });
     }
 
     private void EditImage() {
@@ -146,6 +156,22 @@ public class ViewImageActivity extends AppCompatActivity {
                     imageView.setImageBitmap(image);
                 }
             }
+        }
+    }
+
+    public void getImageDataExifInterface() {
+        try {
+            ExifInterface exif = new ExifInterface(mediaPath);
+
+
+            String image_length = exif.getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
+            String image_width = exif.getAttribute(ExifInterface.TAG_IMAGE_WIDTH);
+            String datetime = exif.getAttribute(ExifInterface.TAG_DATETIME);
+            String orientation = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
+            String fileSource = exif.getAttribute(ExifInterface.TAG_FILE_SOURCE);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
