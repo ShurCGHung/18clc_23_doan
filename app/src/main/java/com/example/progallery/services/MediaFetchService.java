@@ -1,5 +1,7 @@
 package com.example.progallery.services;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
@@ -154,6 +156,40 @@ public class MediaFetchService {
         cursor.close();
 
         return Observable.just(medias);
+    }
+
+    public boolean deleteMedia(Context context, String path) {
+        String[] projection = {
+                MediaStore.Files.FileColumns._ID
+        };
+
+        String selection = MediaStore.Files.FileColumns.DATA + "=?";
+
+        Uri queryUri = MediaStore.Files.getContentUri("external");
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                queryUri,
+                projection,
+                selection,
+                new String[]{path},
+                null
+        );
+
+        Cursor cursor = cursorLoader.loadInBackground();
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        boolean check = false;
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                long mediaID = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID));
+                Uri deleteUri = ContentUris.withAppendedId(queryUri, mediaID);
+                contentResolver.delete(deleteUri, null, null);
+                check = true;
+            }
+            cursor.close();
+        }
+        return check;
     }
 
     private static class SingletonHelper {

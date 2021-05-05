@@ -17,7 +17,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.signature.MediaStoreSignature;
 import com.example.progallery.R;
 import com.example.progallery.model.Media;
-import com.example.progallery.view.fragments.PhotosFragment;
 import com.example.progallery.view.listeners.MediaListener;
 import com.google.android.flexbox.FlexboxLayoutManager;
 

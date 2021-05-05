@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.progallery.R;
-import com.example.progallery.view.fragments.AlbumsFragment;
 
 public class RootAlbumFragment extends Fragment {
     public RootAlbumFragment() {

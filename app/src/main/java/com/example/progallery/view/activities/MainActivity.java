@@ -123,13 +123,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void invalidateFragmentMenus(int position) {
-        for (int i = 0; i < pageAdapter.getCount(); i++) {
-            pageAdapter.getItem(i).setHasOptionsMenu(i == position);
-        }
-        invalidateOptionsMenu(); //or respectively its support method.
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -227,8 +220,6 @@ public class MainActivity extends AppCompatActivity {
                     outputStream = getContentResolver().openOutputStream(uri);
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                     outputStream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
