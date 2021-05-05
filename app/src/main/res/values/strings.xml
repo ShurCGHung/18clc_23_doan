@@ -58,5 +58,6 @@
     <string name="datetime">Datetime</string>
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
+    <string name="are_you_sure_to_delete_this_media">Are you sure to delete this media?</string>
 
 </resources>

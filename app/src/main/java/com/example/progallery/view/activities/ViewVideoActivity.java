@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -56,15 +57,7 @@ public class ViewVideoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.deleteVideo) {
-            boolean delRes = deleteMedia(mediaPath);
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
-            if (delRes) {
-                setResult(RESULT_OK, returnIntent);
-            } else {
-                setResult(RESULT_CANCELED, returnIntent);
-            }
-            finish();
+            deleteMedia(mediaPath);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -127,8 +120,27 @@ public class ViewVideoActivity extends AppCompatActivity {
         }
     }
 
-    private boolean deleteMedia(String mediaPath) {
-        MediaFetchService service = MediaFetchService.getInstance();
-        return service.deleteMedia(getApplicationContext(), mediaPath);
+    private void deleteMedia(String mediaPath) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ViewVideoActivity.this);
+
+        final View customDialog = getLayoutInflater().inflate(R.layout.confirm_delete_dialog, null);
+
+        builder.setView(customDialog);
+        builder.setTitle("Delete media");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            MediaFetchService service = MediaFetchService.getInstance();
+            boolean delRes = service.deleteMedia(getApplicationContext(), mediaPath);
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
+            if (delRes) {
+                setResult(RESULT_OK, returnIntent);
+            } else {
+                setResult(RESULT_CANCELED, returnIntent);
+            }
+            finish();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

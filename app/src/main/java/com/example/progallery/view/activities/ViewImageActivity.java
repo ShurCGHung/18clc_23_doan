@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -19,8 +20,8 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.Converter;
 import com.example.progallery.helpers.ToolbarAnimator;
-import com.example.progallery.view.fragments.ImageInfoFragment;
 import com.example.progallery.services.MediaFetchService;
+import com.example.progallery.view.fragments.ImageInfoFragment;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
@@ -60,16 +61,10 @@ public class ViewImageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.deleteImage) {
-            boolean delRes = deleteMedia(mediaPath);
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
-            if (delRes) {
-                setResult(RESULT_OK, returnIntent);
-            } else {
-                setResult(RESULT_CANCELED, returnIntent);
-            }
-            finish();
+        if (id == R.id.deleteImage || id == R.id.btnDelete) {
+            deleteMedia(mediaPath);
+        } else if (id == R.id.btnShowInfo) {
+            showImageInfo();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -135,10 +130,14 @@ public class ViewImageActivity extends AppCompatActivity {
         findViewById(R.id.btnInfo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageInfoFragment fragment = new ImageInfoFragment(mediaPath);
-                fragment.show(getSupportFragmentManager(), "Image Info");
+                showImageInfo();
             }
         });
+    }
+
+    private void showImageInfo() {
+        ImageInfoFragment fragment = new ImageInfoFragment(mediaPath);
+        fragment.show(getSupportFragmentManager(), "Image Info");
     }
 
     private void EditImage() {
@@ -162,9 +161,28 @@ public class ViewImageActivity extends AppCompatActivity {
         }
     }
 
-    private boolean deleteMedia(String mediaPath) {
-        MediaFetchService service = MediaFetchService.getInstance();
-        return service.deleteMedia(getApplicationContext(), mediaPath);
+    private void deleteMedia(String mediaPath) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ViewImageActivity.this);
+
+        final View customDialog = getLayoutInflater().inflate(R.layout.confirm_delete_dialog, null);
+
+        builder.setView(customDialog);
+        builder.setTitle("Delete media");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            MediaFetchService service = MediaFetchService.getInstance();
+            boolean delRes = service.deleteMedia(getApplicationContext(), mediaPath);
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
+            if (delRes) {
+                setResult(RESULT_OK, returnIntent);
+            } else {
+                setResult(RESULT_CANCELED, returnIntent);
+            }
+            finish();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
