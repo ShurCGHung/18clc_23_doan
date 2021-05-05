@@ -62,7 +62,7 @@ public class ImageInfoFragment extends DialogFragment {
             imgWidth.setText(exif.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
             imgDateTime.setText(exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL));
             imgOrientation.setText(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
-            imgLocation.setText(exif.getAttribute(ExifInterface.TAG_GPS_ALTITUDE));
+            imgLocation.setText(exif.getAttribute(ExifInterface.TAG_GPS_AREA_INFORMATION));
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -23,6 +23,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
+import com.example.progallery.helpers.BitmapUtils;
 import com.example.progallery.view.adapters.PageAdapter;
 import com.example.progallery.view.fragments.HighlightsFragment;
 import com.example.progallery.view.fragments.PhotosFragment;
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bitmap imageBitmap = null;
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                imageBitmap = BitmapUtils.handleSamplingAndRotationBitmap(getApplicationContext(), imageUri);
 
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, "title");
