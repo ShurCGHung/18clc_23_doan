@@ -1,18 +1,22 @@
 package com.example.progallery.view.adapters;
 
+import android.graphics.drawable.Drawable;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
-import com.example.progallery.model.entities.Album;
+import com.example.progallery.model.Album;
 import com.example.progallery.view.listeners.AlbumListener;
 
 import java.util.ArrayList;
@@ -36,21 +40,25 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     public void onBindViewHolder(@NonNull AlbumViewHolder holder, int position) {
         holder.albumName.setText(albumList.get(position).getAlbumName());
         holder.imageCount.setText(albumList.get(position).getNumberOfImages());
-        if (Integer.parseInt(albumList.get(position).getNumberOfImages()) == 0) {
-            Glide.with(holder.imageView.getContext())
-                    .load(R.color.gray)
-                    .placeholder(R.color.gray)
-                    .centerCrop()
-                    .transition(DrawableTransitionOptions.withCrossFade(500))
-                    .into(holder.imageView);
+
+        if (albumList.get(position).getThumbnailType() != null) {
+            if (Integer.parseInt(albumList.get(position).getThumbnailType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                Drawable drawable = ContextCompat.getDrawable(holder.imageView.getContext(), R.drawable.video_overlay);
+                holder.imageView.setForeground(drawable);
+            } else {
+                holder.imageView.setForeground(null);
+            }
         } else {
-            Glide.with(holder.imageView.getContext())
-                    .load(albumList.get(position).getAlbumThumbnail())
-                    .placeholder(R.color.black)
-                    .centerCrop()
-                    .transition(DrawableTransitionOptions.withCrossFade(500))
-                    .into(holder.imageView);
+            holder.imageView.setForeground(null);
+
         }
+
+        Glide.with(holder.imageView.getContext())
+                .load(albumList.get(position).getAlbumThumbnail())
+                .placeholder(R.color.gray)
+                .centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade(500))
+                .into(holder.imageView);
     }
 
     @Override
@@ -72,6 +80,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         ImageView imageView;
         TextView albumName;
         TextView imageCount;
+        ImageButton imageButton;
 
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,11 +88,18 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             imageView = itemView.findViewById(R.id.album_thumbnail);
             albumName = itemView.findViewById(R.id.album_name);
             imageCount = itemView.findViewById(R.id.count_images);
+            imageButton = itemView.findViewById(R.id.album_options);
 
             itemView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (albumListener != null && position != RecyclerView.NO_POSITION)
                     albumListener.onAlbumClick(albumList.get(position));
+            });
+
+            imageButton.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (albumListener != null && position != RecyclerView.NO_POSITION)
+                    albumListener.onOptionAlbumClick(albumList.get(position));
             });
         }
     }

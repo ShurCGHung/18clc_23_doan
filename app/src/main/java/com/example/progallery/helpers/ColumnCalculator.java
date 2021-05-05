@@ -7,6 +7,6 @@ public class ColumnCalculator {
     public static int calculateNoOfColumns(Context context, int columnWidthPixels) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         int screenPixels = displayMetrics.widthPixels;
-        return  screenPixels / columnWidthPixels;
+        return screenPixels / columnWidthPixels;
     }
 }

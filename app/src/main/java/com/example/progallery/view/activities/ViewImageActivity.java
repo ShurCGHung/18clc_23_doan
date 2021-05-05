@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,6 +20,7 @@ import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.Converter;
 import com.example.progallery.helpers.ToolbarAnimator;
 import com.example.progallery.view.fragments.ImageInfoFragment;
+import com.example.progallery.services.MediaFetchService;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
@@ -44,6 +47,31 @@ public class ViewImageActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.view_image_menu, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_RETURN);
+        setResult(RESULT_OK, returnIntent);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.deleteImage) {
+            boolean delRes = deleteMedia(mediaPath);
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
+            if (delRes) {
+                setResult(RESULT_OK, returnIntent);
+            } else {
+                setResult(RESULT_CANCELED, returnIntent);
+            }
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -100,10 +128,6 @@ public class ViewImageActivity extends AppCompatActivity {
         findViewById(R.id.btnEdit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Edit ảnh here please
-                // Intent intent = new Intent(getBaseContext(), EditImageActivity.class);
-                // intent.putExtra("IMAGE_PATH", mediaPath);
-                // startActivity(intent);
                 EditImage();
             }
         });
@@ -136,6 +160,11 @@ public class ViewImageActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean deleteMedia(String mediaPath) {
+        MediaFetchService service = MediaFetchService.getInstance();
+        return service.deleteMedia(getApplicationContext(), mediaPath);
     }
 
     @Override

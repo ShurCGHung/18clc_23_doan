@@ -1,47 +1,72 @@
 package com.example.progallery.viewmodel;
 
-import android.app.Application;
+import android.content.Context;
+import android.os.Environment;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.example.progallery.model.entities.Album;
-import com.example.progallery.model.repository.AlbumRepository;
+import com.example.progallery.model.Album;
+import com.example.progallery.services.AlbumFetchService;
 
+import java.io.File;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
-public class AlbumViewModel extends AndroidViewModel {
-    private final AlbumRepository repository;
-    private final LiveData<List<Album>> allAlbums;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-    public AlbumViewModel(@NonNull Application application) {
-        super(application);
-        repository = new AlbumRepository(application);
-        allAlbums = repository.getAllAlbums();
+public class AlbumViewModel extends ViewModel {
+    private MutableLiveData<List<Album>> allAlbums;
+
+    public AlbumViewModel() {
+        this.allAlbums = new MutableLiveData<>();
     }
 
-    public void insert(Album album) {
-        repository.insert(album);
+    public void callService(Context context) {
+        AlbumFetchService service = AlbumFetchService.getInstance();
+        service.getAlbumList(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getAlbumsObserverRx());
     }
 
-    public void update(Album album) {
-        repository.insert(album);
-    }
-
-    public void delete(Album album) {
-        repository.delete(album);
-    }
-
-    public LiveData<List<Album>> getAllAlbums() {
+    public MutableLiveData<List<Album>> getAlbumsObserver() {
         return allAlbums;
     }
 
-    public boolean isExist(String name) throws ExecutionException, InterruptedException {
-        Future<Boolean> fb = repository.isExists(name);
-        return fb.get();
+    private Observer<List<Album>> getAlbumsObserverRx() {
+        return new Observer<List<Album>>() {
+
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                // Do something
+            }
+
+            @Override
+            public void onNext(@NonNull List<Album> albumList) {
+                allAlbums.postValue(albumList);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                allAlbums.postValue(null);
+            }
+
+            @Override
+            public void onComplete() {
+                // Do something
+            }
+        };
     }
 
+    public boolean createAlbum(String albumName) {
+        File pictureFolder = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES
+        );
+        File imagesFolder = new File(pictureFolder, albumName);
+        return imagesFolder.mkdirs();
+    }
 }

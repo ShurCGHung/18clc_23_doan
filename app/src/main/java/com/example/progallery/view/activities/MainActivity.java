@@ -22,7 +22,11 @@ import androidx.core.content.FileProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.R;
+import com.example.progallery.helpers.Constant;
 import com.example.progallery.view.adapters.PageAdapter;
+import com.example.progallery.view.fragments.HighlightsFragment;
+import com.example.progallery.view.fragments.PhotosFragment;
+import com.example.progallery.view.fragments.RootAlbumFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
@@ -38,17 +42,25 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_READWRITE_PERMISSION_CODE = 101;
     private static final int REQUEST_IMAGE_CAPTURE = 102;
     private static final int REQUEST_VIDEO_CAPTURE = 103;
+
+    public static int displayOption;
+    public static boolean showDatesBool;
+
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
     String currentPhotoPath;
     Uri imageUri;
+    PageAdapter pageAdapter;
     private List<String> permission = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        displayOption = Constant.GRID;
+        showDatesBool = false;
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
@@ -81,8 +93,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init() {
-        PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager(), 0, tabLayout.getTabCount());
+        pageAdapter = new PageAdapter(getSupportFragmentManager(), 0);
+        pageAdapter.addFragment(new PhotosFragment(), getResources().getString(R.string.photo_tab));
+        pageAdapter.addFragment(new RootAlbumFragment(), getResources().getString(R.string.album_tab));
+        pageAdapter.addFragment(new HighlightsFragment(), getResources().getString(R.string.highlight_tab));
+
         viewPager.setAdapter(pageAdapter);
+
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setSmoothScrollingEnabled(true);
 
         viewPager.addOnPageChangeListener((new TabLayout.TabLayoutOnPageChangeListener(tabLayout)));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -200,8 +220,6 @@ public class MainActivity extends AppCompatActivity {
                     outputStream = getContentResolver().openOutputStream(uri);
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
                     outputStream.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

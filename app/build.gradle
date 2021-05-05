@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.progallery"
-        minSdkVersion 24
+        minSdkVersion 29
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -33,23 +33,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'org.jetbrains:annotations:15.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.GoodieBag:Pinview:v1.4'
-
-    //noinspection GradleCompatible
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    //noinspection GradleCompatible
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.karumi:dexter:4.1.0'
-    implementation 'info.androidhive:imagefilters:1.0.7'
-
-    // Photo Editor API
-    implementation 'ja.burhanrashid52:photoeditor:0.2.1'
-
-    // Emojicon Text View (Display emoji from String)
-    implementation 'com.github.rockerhieu:emojicon:v1.4.2'
 
     // Rotate Image
     implementation 'com.github.yalantis:ucrop:2.2.2-native'
@@ -65,15 +53,6 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-
-    // Item spacing
-    implementation('com.github.thekhaeng:recycler-margin:1.2.1') {
-        exclude group: 'com.android.support', module: 'recyclerview-v7'
-    }
-
-    // Room
-    implementation "androidx.room:room-runtime:2.2.6"
-    annotationProcessor "androidx.room:room-compiler:2.2.6"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.3.1"
@@ -93,7 +72,12 @@ dependencies {
     // PhotoView
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
+    // Photo editor
     implementation 'com.github.iamutkarshtiwari:Ananas:1.2.3'
+
+    // RxJava and RxAndroid
+    implementation "io.reactivex.rxjava3:rxjava:3.0.12"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
     // ExifInterface
     //noinspection GradleCompatible

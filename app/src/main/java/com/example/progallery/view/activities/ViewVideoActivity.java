@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -18,6 +20,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.ToolbarAnimator;
+import com.example.progallery.services.MediaFetchService;
 
 import java.io.File;
 import java.util.Objects;
@@ -39,6 +42,31 @@ public class ViewVideoActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.view_video_menu, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_RETURN);
+        setResult(RESULT_OK, returnIntent);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.deleteVideo) {
+            boolean delRes = deleteMedia(mediaPath);
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
+            if (delRes) {
+                setResult(RESULT_OK, returnIntent);
+            } else {
+                setResult(RESULT_CANCELED, returnIntent);
+            }
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -97,5 +125,10 @@ public class ViewVideoActivity extends AppCompatActivity {
                     .transition(DrawableTransitionOptions.withCrossFade(500))
                     .into(videoThumbnailView);
         }
+    }
+
+    private boolean deleteMedia(String mediaPath) {
+        MediaFetchService service = MediaFetchService.getInstance();
+        return service.deleteMedia(getApplicationContext(), mediaPath);
     }
 }

@@ -13,15 +13,4 @@
         android:hint="@string/name_required"
         android:importantForAutofill="no"
         android:inputType="text" />
-
-    <TextView
-        android:id="@+id/warning_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:text="@string/warning"
-        android:textColor="@color/warning"
-        android:visibility="gone" />
 </LinearLayout>

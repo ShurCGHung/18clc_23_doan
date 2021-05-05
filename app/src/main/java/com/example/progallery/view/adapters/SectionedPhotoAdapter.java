@@ -18,8 +18,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.signature.MediaStoreSignature;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Converter;
+import com.example.progallery.model.Media;
 import com.example.progallery.view.listeners.MediaListener;
-import com.example.progallery.model.entities.Media;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ public class SectionedPhotoAdapter extends SectionedRecyclerViewAdapter<Recycler
     HashMap<String, List<Media>> hashMap = new HashMap<>();
     List<Media> mediaList = new ArrayList<>();
     private MediaListener mediaListener;
-
 
     public SectionedPhotoAdapter() {
     }

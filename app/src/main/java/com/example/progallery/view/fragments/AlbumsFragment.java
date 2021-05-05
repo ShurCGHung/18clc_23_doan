@@ -1,43 +1,37 @@
 package com.example.progallery.view.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
-import com.example.progallery.model.entities.Album;
+import com.example.progallery.model.Album;
 import com.example.progallery.view.adapters.AlbumAdapter;
+import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
-import com.thekhaeng.recyclerviewmargin.LayoutMarginDecoration;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.concurrent.ExecutionException;
 
-public class AlbumsFragment extends Fragment {
+public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private AlbumViewModel albumViewModel;
     private AlbumAdapter albumAdapter;
-    private Timer timer;
+    private SwipeRefreshLayout layout;
 
     public AlbumsFragment() {
         albumViewModel = null;
@@ -45,8 +39,8 @@ public class AlbumsFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.view_album_menu, menu);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -56,7 +50,7 @@ public class AlbumsFragment extends Fragment {
             handleAddAlbum();
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     private void handleAddAlbum() {
@@ -65,57 +59,34 @@ public class AlbumsFragment extends Fragment {
         final View customDialog = getLayoutInflater().inflate(R.layout.album_name_dialog, null);
 
         EditText editText = customDialog.findViewById(R.id.album_name_text);
-        TextView warningText = customDialog.findViewById(R.id.warning_text);
 
         builder.setView(customDialog);
         builder.setTitle("Create album");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String albumName = editText.getText().toString();
-                try {
-                    boolean isExist = albumViewModel.isExist(albumName);
-                    if (isExist) {
-                        Toast.makeText(getContext(), "Existed album name", Toast.LENGTH_SHORT).show();
-                    } else {
-                        addAlbum(albumName);
-                    }
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String albumName = editText.getText().toString();
+            boolean check = albumViewModel.createAlbum(albumName);
+            if (check) {
+                loadView();
+                Toast.makeText(getContext(), "Album is created", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Album is already existed", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
-
-
         dialog.show();
-    }
-
-    private void addAlbum(String albumName) {
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-        sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+7"));
-        String formattedDate = sdf.format(new Date());
-        Album newAlbum = new Album(albumName, formattedDate);
-        albumViewModel.insert(newAlbum);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.fragment_albums, container, false);
+
+        setHasOptionsMenu(true);
+
+        layout = view.findViewById(R.id.refresh_layout);
+        layout.setOnRefreshListener(this);
 
         RecyclerView recyclerView = view.findViewById(R.id.album_grid_view);
         recyclerView.setHasFixedSize(true);
@@ -130,14 +101,54 @@ public class AlbumsFragment extends Fragment {
 
         GridLayoutManager glm = new GridLayoutManager(getContext(), numColumn);
         recyclerView.setLayoutManager(glm);
-        recyclerView.addItemDecoration(new LayoutMarginDecoration(numColumn, getResources().getDimensionPixelSize(R.dimen._10sdp)));
 
-        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
-        albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
-        albumViewModel.getAllAlbums().observe(this, albumAdapter::setAlbumList);
+        layout.post(() -> {
+            layout.setRefreshing(true);
+            loadView();
+        });
+
+        albumAdapter.setAlbumListener(new AlbumListener() {
+            @Override
+            public void onAlbumClick(Album album) {
+                assert getFragmentManager() != null;
+                FragmentTransaction trans = getFragmentManager()
+                        .beginTransaction();
+                trans.replace(R.id.root_fragment, new PhotoForAlbumFragment(album.getAlbumName()), "PHOTO_ALBUM");
+                trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                trans.addToBackStack(null);
+                trans.commit();
+            }
+
+            @Override
+            public void onOptionAlbumClick(Album album) {
+                Log.d("MY_APP", "option clicked");
+            }
+        });
 
         return view;
     }
 
+    @Override
+    public void onRefresh() {
+        loadView();
+    }
 
+    private void loadView() {
+        layout.setRefreshing(true);
+
+        // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
+        // mediaViewModel = new ViewModelProvider(getActivity()).get(MediaViewModel.class);
+
+        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
+        albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
+        albumViewModel.getAlbumsObserver().observe(this, albumList -> {
+            if (albumList == null) {
+                Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
+            } else {
+                albumAdapter.setAlbumList(albumList);
+            }
+        });
+        albumViewModel.callService(getContext());
+        layout.setRefreshing(false);
+    }
 }

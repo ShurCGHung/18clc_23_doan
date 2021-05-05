@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/add_to_album"
+        android:icon="@drawable/ic_add"
+        android:title="@string/media_capture"
+        app:showAsAction="ifRoom" >
+    </item>
+
+    <item
+        android:id="@+id/view_type"
+        android:title="@string/view_type"
+        app:showAsAction="never">
+
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/grid"
+                    android:checked="true"
+                    android:title="@string/grid" />
+
+                <item
+                    android:id="@+id/list"
+                    android:title="@string/list" />
+
+                <item
+                    android:id="@+id/flex"
+                    android:title="@string/flex" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings" />
+</menu>

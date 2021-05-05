@@ -13,8 +13,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +29,6 @@ import com.example.progallery.view.activities.MainActivity;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
-import com.example.progallery.view.adapters.SectionedPhotoAdapter;
 import com.example.progallery.viewmodel.MediaViewModel;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
@@ -37,21 +37,18 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 
 import java.util.Objects;
 
-import static android.app.Activity.RESULT_OK;
 import static com.example.progallery.helpers.Constant.FLEX;
 import static com.example.progallery.helpers.Constant.GRID;
 import static com.example.progallery.helpers.Constant.LIST;
-import static com.example.progallery.helpers.Constant.REQUEST_REMOVE_MEDIA;
-import static com.example.progallery.helpers.Constant.REQUEST_VIEW_MEDIA;
 
-public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-
+public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    private String albumName;
     private MediaViewModel mediaViewModel;
     private SwipeRefreshLayout layout;
     private PhotoAdapter photoAdapter;
-    private SectionedPhotoAdapter photoAdapterByDate;
 
-    public PhotosFragment() {
+    public PhotoForAlbumFragment(String albumName) {
+        this.albumName = albumName;
         mediaViewModel = null;
         MainActivity.showDatesBool = false;
         MainActivity.displayOption = GRID;
@@ -64,21 +61,12 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.view_photos_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.view_photo_for_album_menu, menu);
     }
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        MenuItem showDates = menu.findItem(R.id.show_dates);
-        showDates.setVisible(MainActivity.displayOption == GRID);
-
-        if (MainActivity.showDatesBool) {
-            showDates.setTitle(R.string.hide_dates);
-        } else {
-            showDates.setTitle(R.string.show_dates);
-        }
-
         if (MainActivity.displayOption == GRID) {
             MenuItem item = menu.findItem(R.id.grid);
             item.setChecked(true);
@@ -92,6 +80,12 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     @Override
+    public void onDestroy() {
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         item.setChecked(true);
@@ -100,33 +94,41 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             recreateFragment();
         } else if (id == R.id.list && MainActivity.displayOption != LIST) {
             MainActivity.displayOption = LIST;
-            MainActivity.showDatesBool = false;
             recreateFragment();
         } else if (id == R.id.flex && MainActivity.displayOption != FLEX) {
             MainActivity.displayOption = FLEX;
-            MainActivity.showDatesBool = false;
             recreateFragment();
-        } else if (id == R.id.show_dates) {
-            MainActivity.showDatesBool = !MainActivity.showDatesBool;
-            recreateFragment();
+        } else if (id == android.R.id.home) {
+            assert getFragmentManager() != null;
+            Fragment myFragment = getFragmentManager().findFragmentByTag("PHOTO_ALBUM");
+            FragmentTransaction trans = getFragmentManager()
+                    .beginTransaction();
+            assert myFragment != null;
+            trans.remove(myFragment);
+            trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            trans.commit();
+
+            getFragmentManager().popBackStack();
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void recreateFragment() {
         assert this.getFragmentManager() != null;
         this.getFragmentManager().beginTransaction()
-                .detach(PhotosFragment.this)
-                .attach(PhotosFragment.this)
+                .detach(PhotoForAlbumFragment.this)
+                .attach(PhotoForAlbumFragment.this)
                 .commit();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_photos, container, false);
-
         setHasOptionsMenu(true);
+
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        View view = inflater.inflate(R.layout.fragment_photos, container, false);
 
         layout = view.findViewById(R.id.refresh_layout);
         layout.setOnRefreshListener(this);
@@ -134,38 +136,20 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         RecyclerView recyclerView = view.findViewById(R.id.photo_grid_view);
         recyclerView.setHasFixedSize(true);
 
-        if (MainActivity.showDatesBool) {
-            photoAdapterByDate = new SectionedPhotoAdapter();
-            recyclerView.setAdapter(photoAdapterByDate);
+        photoAdapter = new PhotoAdapter();
+        recyclerView.setAdapter(photoAdapter);
 
-            photoAdapterByDate.setMediaListener(media -> {
-                if (Integer.parseInt(media.getMediaType()) == 1) {
-                    Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
-                    intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
-                    startActivityForResult(intent, Constant.REQUEST_VIEW_MEDIA);
-                } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-                    Intent intent = new Intent(PhotosFragment.this.getContext(), ViewVideoActivity.class);
-                    intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
-                    startActivityForResult(intent, Constant.REQUEST_VIEW_MEDIA);
-                }
-            });
-
-        } else {
-            photoAdapter = new PhotoAdapter();
-            recyclerView.setAdapter(photoAdapter);
-
-            photoAdapter.setMediaListener(media -> {
-                if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
-                    Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
-                    intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
-                    startActivityForResult(intent, Constant.REQUEST_VIEW_MEDIA);
-                } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-                    Intent intent = new Intent(PhotosFragment.this.getContext(), ViewVideoActivity.class);
-                    intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
-                    startActivityForResult(intent, Constant.REQUEST_VIEW_MEDIA);
-                }
-            });
-        }
+        photoAdapter.setMediaListener(media -> {
+            if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
+                Intent intent = new Intent(PhotoForAlbumFragment.this.getContext(), ViewImageActivity.class);
+                intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                startActivity(intent);
+            } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                Intent intent = new Intent(PhotoForAlbumFragment.this.getContext(), ViewVideoActivity.class);
+                intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                startActivity(intent);
+            }
+        });
 
         if (MainActivity.displayOption == GRID) {
             View tempView = inflater.inflate(R.layout.photo_grid_item, container, false);
@@ -174,9 +158,6 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             int numColumn = ColumnCalculator.calculateNoOfColumns(Objects.requireNonNull(getContext()), columnWidth);
 
             GridLayoutManager glm = new GridLayoutManager(getContext(), numColumn);
-            if (MainActivity.showDatesBool) {
-                photoAdapterByDate.setLayoutManager(glm);
-            }
             recyclerView.setLayoutManager(glm);
         } else if (MainActivity.displayOption == LIST) {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -201,24 +182,6 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         loadView();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        assert data != null;
-        if (requestCode == REQUEST_VIEW_MEDIA) {
-            int requestCodeFromIntent = data.getIntExtra(Constant.EXTRA_REQUEST, -1);
-            if (requestCodeFromIntent == REQUEST_REMOVE_MEDIA) {
-                if (resultCode == RESULT_OK) {
-                    Toast.makeText(getContext(), "Media is deleted successfully", Toast.LENGTH_SHORT).show();
-                    loadView();
-                } else {
-                    Toast.makeText(getContext(), "Failed to delete media", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-
-    }
-
     private void loadView() {
         layout.setRefreshing(true);
 
@@ -231,14 +194,10 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             if (mediaList == null) {
                 Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
             } else {
-                if (MainActivity.showDatesBool) {
-                    photoAdapterByDate.setImageList(mediaList);
-                } else {
-                    photoAdapter.setMediaList(mediaList);
-                }
+                photoAdapter.setMediaList(mediaList);
             }
         });
-        mediaViewModel.callService(getContext());
+        mediaViewModel.callServiceForAlbum(getContext(), albumName);
         layout.setRefreshing(false);
     }
 }
