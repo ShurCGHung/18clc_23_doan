@@ -7,59 +7,28 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.ToolbarAnimator;
-import com.example.progallery.services.MediaFetchService;
 
 import java.io.File;
 import java.util.Objects;
 
-public class ViewVideoActivity extends AppCompatActivity {
-    private Toolbar topToolbar;
-    private Toolbar bottomToolbar;
+public class ViewVideoActivity extends RootViewMediaActivity {
     private ImageView videoThumbnailView;
-    private String mediaPath;
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.view_video_menu, menu);
+        inflater.inflate(R.menu.view_image_menu, menu);
+        menu.findItem(R.id.btnEdit).setVisible(false);
+        menu.findItem(R.id.btnSetAs).setVisible(false);
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_RETURN);
-        setResult(RESULT_OK, returnIntent);
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.deleteVideo) {
-            deleteMedia(mediaPath);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 
@@ -118,29 +87,5 @@ public class ViewVideoActivity extends AppCompatActivity {
                     .transition(DrawableTransitionOptions.withCrossFade(500))
                     .into(videoThumbnailView);
         }
-    }
-
-    private void deleteMedia(String mediaPath) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ViewVideoActivity.this);
-
-        final View customDialog = getLayoutInflater().inflate(R.layout.confirm_delete_dialog, null);
-
-        builder.setView(customDialog);
-        builder.setTitle("Delete media");
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            MediaFetchService service = MediaFetchService.getInstance();
-            boolean delRes = service.deleteMedia(getApplicationContext(), mediaPath);
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
-            if (delRes) {
-                setResult(RESULT_OK, returnIntent);
-            } else {
-                setResult(RESULT_CANCELED, returnIntent);
-            }
-            finish();
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }

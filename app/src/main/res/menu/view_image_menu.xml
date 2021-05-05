@@ -4,14 +4,15 @@
     <item
         android:id="@+id/deleteImage"
         android:icon="@drawable/ic_delete"
-        app:showAsAction="ifRoom"
-        android:title="@string/delete" />
+        android:title="@string/delete"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/btnSlideshow"
         android:title="@string/slideshow" />
     <item
         android:id="@+id/btnAddAlbum"
         android:title="@string/add_to_album" />
+
     <item
         android:id="@+id/btnSetAs"
         android:title="@string/set_as_wallpaper" />
@@ -21,9 +22,6 @@
     <item
         android:id="@+id/btnEdit"
         android:title="@string/edit" />
-    <item
-        android:id="@+id/btnDelete"
-        android:title="@string/delete" />
     <item
         android:id="@+id/btnMoveToVault"
         android:title="@string/move_to_vault" />

@@ -30,44 +30,9 @@ import java.util.Objects;
 import iamutkarshtiwari.github.io.ananas.editimage.EditImageActivity;
 import iamutkarshtiwari.github.io.ananas.editimage.ImageEditorIntentBuilder;
 
-public class ViewImageActivity extends AppCompatActivity {
+public class ViewImageActivity extends RootViewMediaActivity {
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
-    private Toolbar topToolbar;
-    private Toolbar bottomToolbar;
     private PhotoView imageView;
-    private String mediaPath;
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.view_image_menu, menu);
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_RETURN);
-        setResult(RESULT_OK, returnIntent);
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.deleteImage || id == R.id.btnDelete) {
-            deleteMedia(mediaPath);
-        } else if (id == R.id.btnShowInfo) {
-            showImageInfo();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,11 +100,6 @@ public class ViewImageActivity extends AppCompatActivity {
         });
     }
 
-    private void showImageInfo() {
-        ImageInfoFragment fragment = new ImageInfoFragment(mediaPath);
-        fragment.show(getSupportFragmentManager(), "Image Info");
-    }
-
     private void EditImage() {
         try {
             Intent intent = new ImageEditorIntentBuilder(this, mediaPath, mediaPath)
@@ -159,30 +119,6 @@ public class ViewImageActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void deleteMedia(String mediaPath) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ViewImageActivity.this);
-
-        final View customDialog = getLayoutInflater().inflate(R.layout.confirm_delete_dialog, null);
-
-        builder.setView(customDialog);
-        builder.setTitle("Delete media");
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            MediaFetchService service = MediaFetchService.getInstance();
-            boolean delRes = service.deleteMedia(getApplicationContext(), mediaPath);
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
-            if (delRes) {
-                setResult(RESULT_OK, returnIntent);
-            } else {
-                setResult(RESULT_CANCELED, returnIntent);
-            }
-            finish();
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     @Override
