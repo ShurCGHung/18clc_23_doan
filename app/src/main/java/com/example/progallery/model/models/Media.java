@@ -1,4 +1,4 @@
-package com.example.progallery.model;
+package com.example.progallery.model.models;
 
 public class Media {
     private String mediaPath;

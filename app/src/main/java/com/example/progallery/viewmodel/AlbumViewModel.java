@@ -6,8 +6,8 @@ import android.os.Environment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.progallery.model.Album;
-import com.example.progallery.services.AlbumFetchService;
+import com.example.progallery.model.models.Album;
+import com.example.progallery.model.services.AlbumFetchService;
 
 import java.io.File;
 import java.util.List;

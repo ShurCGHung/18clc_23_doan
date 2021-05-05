@@ -1,4 +1,4 @@
-package com.example.progallery.services;
+package com.example.progallery.model.services;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,7 +8,7 @@ import android.provider.MediaStore;
 
 import androidx.loader.content.CursorLoader;
 
-import com.example.progallery.model.Album;
+import com.example.progallery.model.models.Album;
 
 import java.io.File;
 import java.util.ArrayList;

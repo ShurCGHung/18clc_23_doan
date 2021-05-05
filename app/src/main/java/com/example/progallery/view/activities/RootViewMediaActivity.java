@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
-import com.example.progallery.services.MediaFetchService;
+import com.example.progallery.model.services.MediaFetchService;
 import com.example.progallery.view.fragments.ImageInfoFragment;
 
 public class RootViewMediaActivity extends AppCompatActivity {

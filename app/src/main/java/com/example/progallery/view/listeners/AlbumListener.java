@@ -1,6 +1,6 @@
 package com.example.progallery.view.listeners;
 
-import com.example.progallery.model.Album;
+import com.example.progallery.model.models.Album;
 
 public interface AlbumListener {
     void onAlbumClick(Album album);

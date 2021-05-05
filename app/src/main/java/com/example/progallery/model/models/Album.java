@@ -1,4 +1,4 @@
-package com.example.progallery.model;
+package com.example.progallery.model.models;
 
 import androidx.annotation.NonNull;
 

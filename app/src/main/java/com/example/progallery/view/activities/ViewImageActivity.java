@@ -5,23 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.Converter;
 import com.example.progallery.helpers.ToolbarAnimator;
-import com.example.progallery.services.MediaFetchService;
-import com.example.progallery.view.fragments.ImageInfoFragment;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;

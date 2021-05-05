@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
-import com.example.progallery.model.Album;
+import com.example.progallery.model.models.Album;
 import com.example.progallery.view.listeners.AlbumListener;
 
 import java.util.ArrayList;

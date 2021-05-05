@@ -21,7 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
-import com.example.progallery.model.Album;
+import com.example.progallery.model.models.Album;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;

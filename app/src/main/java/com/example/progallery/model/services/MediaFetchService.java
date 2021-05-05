@@ -1,4 +1,4 @@
-package com.example.progallery.services;
+package com.example.progallery.model.services;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -11,7 +11,7 @@ import android.util.Log;
 
 import androidx.loader.content.CursorLoader;
 
-import com.example.progallery.model.Media;
+import com.example.progallery.model.models.Media;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

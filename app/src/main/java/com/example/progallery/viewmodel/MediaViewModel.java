@@ -5,8 +5,8 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.progallery.model.Media;
-import com.example.progallery.services.MediaFetchService;
+import com.example.progallery.model.models.Media;
+import com.example.progallery.model.services.MediaFetchService;
 
 import java.util.List;
 
