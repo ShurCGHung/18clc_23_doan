@@ -7,11 +7,18 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-feature android:name="android.hardware.camera2.any"
-        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera2.any"
+        android:required="false" />
+
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -21,8 +28,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProGallery">
+        <activity android:name=".view.activities.RootViewMediaActivity" />
         <activity android:name=".view.activities.ViewVideoActivity" />
-
         <activity
             android:name=".view.activities.DisplayVideoActivity"
             tools:ignore="AppLinkUrlError">
@@ -35,7 +42,6 @@
                 <data android:mimeType="video/*" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activities.ViewImageActivity"
             tools:ignore="AppLinkUrlError">
@@ -48,7 +54,6 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-
         <activity android:name=".view.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,7 +61,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -72,12 +76,5 @@
                 android:resource="@xml/file_paths" />
         </provider>
     </application>
-
-    <queries>
-        <!-- Camera -->
-        <intent>
-            <action android:name="android.media.action.IMAGE_CAPTURE" />
-        </intent>
-    </queries>
 
 </manifest>

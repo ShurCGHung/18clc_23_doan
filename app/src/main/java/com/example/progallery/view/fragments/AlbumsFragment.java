@@ -1,7 +1,6 @@
 package com.example.progallery.view.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
-import com.example.progallery.model.Album;
+import com.example.progallery.model.models.Album;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
@@ -91,7 +90,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         RecyclerView recyclerView = view.findViewById(R.id.album_grid_view);
         recyclerView.setHasFixedSize(true);
 
-        albumAdapter = new AlbumAdapter();
+        albumAdapter = new AlbumAdapter(true);
         recyclerView.setAdapter(albumAdapter);
 
         View tempView = inflater.inflate(R.layout.album_grid_item, container, false);
@@ -120,8 +119,12 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
 
             @Override
-            public void onOptionAlbumClick(Album album) {
-                Log.d("MY_APP", "option clicked");
+            public void onOptionAlbumClick(Album album, int option) {
+                if (option == R.id.delete_album) {
+                    // xóa folder và tất cả ảnh
+                } else if (option == R.id.rename_album) {
+                    // đổi tên folder cà đường dẫ
+                }
             }
         });
 

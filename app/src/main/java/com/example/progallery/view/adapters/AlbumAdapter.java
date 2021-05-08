@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.progallery.R;
-import com.example.progallery.model.Album;
+import com.example.progallery.model.models.Album;
 import com.example.progallery.view.listeners.AlbumListener;
 
 import java.util.ArrayList;
@@ -25,15 +26,22 @@ import java.util.List;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
     private List<Album> albumList = new ArrayList<>();
     private AlbumListener albumListener;
+    private boolean isGrid;
 
-    public AlbumAdapter() {
+    public AlbumAdapter(boolean isGrid) {
+        this.isGrid = isGrid;
     }
 
     @NonNull
     @Override
     public AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new AlbumViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.album_grid_item, parent, false));
+        if (isGrid) {
+            return new AlbumViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.album_grid_item, parent, false));
+        } else {
+            return new AlbumViewHolder((LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.album_list_item, parent, false)));
+        }
     }
 
     @Override
@@ -88,7 +96,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             imageView = itemView.findViewById(R.id.album_thumbnail);
             albumName = itemView.findViewById(R.id.album_name);
             imageCount = itemView.findViewById(R.id.count_images);
-            imageButton = itemView.findViewById(R.id.album_options);
 
             itemView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
@@ -96,11 +103,24 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     albumListener.onAlbumClick(albumList.get(position));
             });
 
-            imageButton.setOnClickListener(v -> {
-                int position = getBindingAdapterPosition();
-                if (albumListener != null && position != RecyclerView.NO_POSITION)
-                    albumListener.onOptionAlbumClick(albumList.get(position));
-            });
+            if (isGrid) {
+                imageButton = itemView.findViewById(R.id.album_options);
+
+                imageButton.setOnClickListener(v -> {
+                    int position = getBindingAdapterPosition();
+                    if (albumListener != null && position != RecyclerView.NO_POSITION) {
+                        PopupMenu popupMenu = new PopupMenu(itemView.getContext(), v);
+                        popupMenu.inflate(R.menu.album_option_menu);
+                        popupMenu.setOnMenuItemClickListener(item -> {
+                            int itemID = item.getItemId();
+                            albumListener.onOptionAlbumClick(albumList.get(position), itemID);
+                            return true;
+                        });
+                        popupMenu.show();
+                    }
+                });
+            }
+
         }
     }
 }

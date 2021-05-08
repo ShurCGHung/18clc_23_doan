@@ -19,6 +19,7 @@ import com.example.progallery.R;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 public class ImageInfoFragment extends DialogFragment {
 
@@ -34,7 +35,7 @@ public class ImageInfoFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
         View view = inflater.inflate(R.layout.image_details, null);
 
         builder.setView(view)
@@ -46,15 +47,15 @@ public class ImageInfoFragment extends DialogFragment {
                     }
                 });
 
-        imgSource = (TextView) view.findViewById(R.id.imgSource);
-        imgLength = (TextView) view.findViewById(R.id.imgLength);
-        imgWidth = (TextView) view.findViewById(R.id.imgWidth);
-        imgDateTime = (TextView) view.findViewById(R.id.imgDateTime);
-        imgOrientation = (TextView) view.findViewById(R.id.imgOrientation);
-        imgLocation = (TextView) view.findViewById(R.id.imgLocation);
+        imgSource = view.findViewById(R.id.imgSource);
+        imgLength = view.findViewById(R.id.imgLength);
+        imgWidth = view.findViewById(R.id.imgWidth);
+        imgDateTime = view.findViewById(R.id.imgDateTime);
+        imgOrientation = view.findViewById(R.id.imgOrientation);
+        imgLocation = view.findViewById(R.id.imgLocation);
         try {
             Uri uri = Uri.fromFile(new File(mediaPath));
-            InputStream in = getContext().getApplicationContext().getContentResolver().openInputStream(uri);
+            InputStream in = Objects.requireNonNull(getContext()).getApplicationContext().getContentResolver().openInputStream(uri);
             exif = new ExifInterface(in);
 
             imgSource.setText(exif.getAttribute(ExifInterface.TAG_FILE_SOURCE));

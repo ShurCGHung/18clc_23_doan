@@ -58,5 +58,10 @@
     <string name="datetime">Datetime</string>
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
+    <string name="are_you_sure_to_delete_this_media">Are you sure to delete this media?</string>
+    <string name="copy_to_album">Copy to album</string>
+    <string name="move_to_album">Move to album</string>
+    <string name="rename_album">Rename album</string>
+    <string name="delete_album">Delete album</string>
 
 </resources>

@@ -14,5 +14,4 @@ public class Constant {
     public static final int REQUEST_REMOVE_MEDIA = 3;
     public static final int REQUEST_VIEW_MEDIA = 4;
     public static final int REQUEST_RETURN = 5;
-
 }

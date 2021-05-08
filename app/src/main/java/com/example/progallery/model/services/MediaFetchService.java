@@ -1,7 +1,8 @@
-package com.example.progallery.services;
+package com.example.progallery.model.services;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
@@ -11,7 +12,7 @@ import android.util.Log;
 
 import androidx.loader.content.CursorLoader;
 
-import com.example.progallery.model.Media;
+import com.example.progallery.model.models.Media;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,7 +84,9 @@ public class MediaFetchService {
 
             Media media = new Media(absolutePathOfImage, nameOfImage, formattedDate, heightOfImage, widthOfImage, typeOfImage);
             medias.add(media);
+            Log.d("MY_APP", media.getMediaPath());
         }
+
         cursor.close();
 
         return Observable.just(medias);
@@ -152,7 +155,6 @@ public class MediaFetchService {
             medias.add(media);
         }
 
-        Log.d("MY_APP", String.valueOf(medias));
         cursor.close();
 
         return Observable.just(medias);
@@ -190,6 +192,30 @@ public class MediaFetchService {
             cursor.close();
         }
         return check;
+    }
+
+    public boolean updateMediaAlbum(Context context, String oldPath, String newPath) {
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Files.FileColumns.DATA, newPath);
+        return contentResolver.update(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values,
+                MediaStore.Files.FileColumns.DATA + "='" + oldPath + "'", null)
+                == 1;
+    }
+
+    public boolean addNewMedia(Context context, String newPath, String title) {
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Files.FileColumns.DATA, newPath);
+        values.put(MediaStore.Files.FileColumns.TITLE, title);
+        values.put(MediaStore.Files.FileColumns.DATE_ADDED, System.currentTimeMillis() / 1000);
+
+        Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        return uri != null;
     }
 
     private static class SingletonHelper {
