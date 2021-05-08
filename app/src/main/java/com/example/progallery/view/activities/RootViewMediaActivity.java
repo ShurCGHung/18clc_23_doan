@@ -167,7 +167,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onOptionAlbumClick(Album album) {
+            public void onOptionAlbumClick(Album album, int option) {
             }
         });
     }

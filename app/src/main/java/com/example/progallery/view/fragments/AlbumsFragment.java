@@ -1,7 +1,6 @@
 package com.example.progallery.view.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,8 +119,12 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
 
             @Override
-            public void onOptionAlbumClick(Album album) {
-                Log.d("MY_APP", "option clicked");
+            public void onOptionAlbumClick(Album album, int option) {
+                if (option == R.id.delete_album) {
+                    // xóa folder và tất cả ảnh
+                } else if (option == R.id.rename_album) {
+                    // đổi tên folder cà đường dẫ
+                }
             }
         });
 
