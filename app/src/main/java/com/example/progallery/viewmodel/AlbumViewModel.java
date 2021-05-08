@@ -69,4 +69,6 @@ public class AlbumViewModel extends ViewModel {
         File imagesFolder = new File(pictureFolder, albumName);
         return imagesFolder.mkdirs();
     }
+
+
 }

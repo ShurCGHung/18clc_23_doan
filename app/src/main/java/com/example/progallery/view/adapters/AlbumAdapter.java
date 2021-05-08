@@ -25,15 +25,22 @@ import java.util.List;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
     private List<Album> albumList = new ArrayList<>();
     private AlbumListener albumListener;
+    private boolean isGrid;
 
-    public AlbumAdapter() {
+    public AlbumAdapter(boolean isGrid) {
+        this.isGrid = isGrid;
     }
 
     @NonNull
     @Override
     public AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new AlbumViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.album_grid_item, parent, false));
+        if (isGrid) {
+            return new AlbumViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.album_grid_item, parent, false));
+        } else {
+            return new AlbumViewHolder((LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.album_list_item, parent, false)));
+        }
     }
 
     @Override
@@ -88,7 +95,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             imageView = itemView.findViewById(R.id.album_thumbnail);
             albumName = itemView.findViewById(R.id.album_name);
             imageCount = itemView.findViewById(R.id.count_images);
-            imageButton = itemView.findViewById(R.id.album_options);
 
             itemView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
@@ -96,11 +102,18 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     albumListener.onAlbumClick(albumList.get(position));
             });
 
-            imageButton.setOnClickListener(v -> {
-                int position = getBindingAdapterPosition();
-                if (albumListener != null && position != RecyclerView.NO_POSITION)
-                    albumListener.onOptionAlbumClick(albumList.get(position));
-            });
+            if (isGrid) {
+                imageButton = itemView.findViewById(R.id.album_options);
+
+                imageButton.setOnClickListener(v -> {
+                    int position = getBindingAdapterPosition();
+                    if (albumListener != null && position != RecyclerView.NO_POSITION)
+                        albumListener.onOptionAlbumClick(albumList.get(position));
+                });
+            } else {
+
+            }
+
         }
     }
 }

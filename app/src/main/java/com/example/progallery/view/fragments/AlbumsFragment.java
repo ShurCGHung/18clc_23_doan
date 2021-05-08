@@ -91,7 +91,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         RecyclerView recyclerView = view.findViewById(R.id.album_grid_view);
         recyclerView.setHasFixedSize(true);
 
-        albumAdapter = new AlbumAdapter();
+        albumAdapter = new AlbumAdapter(true);
         recyclerView.setAdapter(albumAdapter);
 
         View tempView = inflater.inflate(R.layout.album_grid_item, container, false);

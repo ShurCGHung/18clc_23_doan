@@ -25,7 +25,7 @@ public class ViewVideoActivity extends RootViewMediaActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.view_image_menu, menu);
+        inflater.inflate(R.menu.view_media_menu, menu);
         menu.findItem(R.id.btnEdit).setVisible(false);
         menu.findItem(R.id.btnSetAs).setVisible(false);
         return true;
