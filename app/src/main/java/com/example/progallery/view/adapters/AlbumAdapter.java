@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -109,14 +108,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                 imageButton.setOnClickListener(v -> {
                     int position = getBindingAdapterPosition();
                     if (albumListener != null && position != RecyclerView.NO_POSITION) {
-                        PopupMenu popupMenu = new PopupMenu(itemView.getContext(), v);
-                        popupMenu.inflate(R.menu.album_option_menu);
-                        popupMenu.setOnMenuItemClickListener(item -> {
-                            int itemID = item.getItemId();
-                            albumListener.onOptionAlbumClick(albumList.get(position), itemID);
-                            return true;
-                        });
-                        popupMenu.show();
+                        albumListener.onOptionAlbumClick(albumList.get(position));
                     }
                 });
             }

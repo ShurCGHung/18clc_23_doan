@@ -84,7 +84,6 @@ public class MediaFetchService {
 
             Media media = new Media(absolutePathOfImage, nameOfImage, formattedDate, heightOfImage, widthOfImage, typeOfImage);
             medias.add(media);
-            Log.d("MY_APP", media.getMediaPath());
         }
 
         cursor.close();

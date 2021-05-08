@@ -1,6 +1,8 @@
 package com.example.progallery.view.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,10 +23,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.model.models.Album;
+import com.example.progallery.model.services.AlbumFetchService;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -119,16 +127,109 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             }
 
             @Override
-            public void onOptionAlbumClick(Album album, int option) {
-                if (option == R.id.delete_album) {
-                    // xóa folder và tất cả ảnh
-                } else if (option == R.id.rename_album) {
-                    // đổi tên folder cà đường dẫ
-                }
+            public void onOptionAlbumClick(Album album) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                builder.setTitle("Choose an action");
+
+                String[] options = {"Remove album", "Rename album"};
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                handleRemoveAlbum(album);
+                                break;
+                            case 1:
+                                handleRenameAlbum(album);
+                                break;
+                        }
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
         return view;
+    }
+
+    private void handleRenameAlbum(Album album) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+
+        final View customDialog = getLayoutInflater().inflate(R.layout.album_name_dialog, null);
+
+        EditText editText = customDialog.findViewById(R.id.album_name_text);
+        editText.setText(album.getAlbumName());
+
+        builder.setView(customDialog);
+        builder.setTitle("Rename album");
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String albumName = editText.getText().toString();
+            String newAlbumPath = album.getAlbumPath().replace(album.getAlbumName(), albumName);
+            Path source = Paths.get(album.getAlbumPath());
+            try {
+                Files.move(source, source.resolveSibling(newAlbumPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Unable to rename album", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            AlbumFetchService service = AlbumFetchService.getInstance();
+            boolean check = service.changeMediaPath(getContext(), album.getAlbumName(), albumName);
+            if (check) {
+                loadView();
+                Toast.makeText(getContext(), "Album name is renamed", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Unable to rename album", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void handleRemoveAlbum(Album album) {
+        File f = new File(album.getAlbumPath());
+
+        boolean checkDel = delete(f);
+
+        if (checkDel) {
+            AlbumFetchService service = AlbumFetchService.getInstance();
+            boolean check = service.deleteAlbum(getContext(), album.getAlbumName());
+            if (check) {
+                loadView();
+                Toast.makeText(getContext(), "Album is removed", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("MY_APP", "block here");
+                Toast.makeText(getContext(), "Unable to remove album", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "Unable to remove album", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    private boolean delete(File file) {
+        if (file == null || !file.isDirectory()) {
+            return false;
+        }
+
+        if (file.isFile()) {
+            return file.delete();
+        }
+
+        File[] flist = file.listFiles();
+        if (flist != null && flist.length > 0) {
+            for (File f : flist) {
+                if (!delete(f)) {
+                    return false;
+                }
+            }
+        }
+
+        return file.delete();
     }
 
     @Override

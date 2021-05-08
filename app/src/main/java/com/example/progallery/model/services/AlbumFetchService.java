@@ -1,8 +1,10 @@
 package com.example.progallery.model.services;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -106,7 +108,7 @@ public class AlbumFetchService {
         for (int i = 0; i < Objects.requireNonNull(directories).length; i++) {
             if (!mapAlbumThumbnail.containsKey(directories[i]) && directories[i].charAt(0) != '.') {
                 String albumName = directories[i];
-                String albumPath = root + File.pathSeparator + albumName;
+                String albumPath = root + File.separator + albumName;
 
                 Album album = new Album(null, albumName, Integer.toString(0), null, null, albumPath);
                 mapAlbumThumbnail.put(albumName, null);
@@ -115,6 +117,83 @@ public class AlbumFetchService {
         }
 
         return Observable.just(albums);
+    }
+
+    public boolean changeMediaPath(Context context, String oldName, String newName) {
+        String selection = "("
+                + MediaStore.Files.FileColumns.MEDIA_TYPE + "="
+                + MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
+                + " OR "
+                + MediaStore.Files.FileColumns.MEDIA_TYPE + "="
+                + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
+                + ")"
+                + " AND "
+                + MediaStore.Files.FileColumns.BUCKET_DISPLAY_NAME + "=?";
+
+        Uri queryUri = MediaStore.Files.getContentUri("external");
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                queryUri,
+                null,
+                selection,
+                new String[]{oldName},
+                MediaStore.Files.FileColumns.DATE_ADDED + " DESC" // Sort order.
+        );
+        Cursor cursor = cursorLoader.loadInBackground();
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+
+        // Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, null, "DATE_ADDED DESC");
+        while (true) {
+            assert cursor != null;
+            if (!cursor.moveToNext()) break;
+            String absolutePathOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Files.FileColumns.DATA, absolutePathOfImage.replace(oldName, newName));
+            boolean check = contentResolver.update(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values,
+                    MediaStore.Files.FileColumns.DATA + "='" + absolutePathOfImage + "'", null)
+                    == 1;
+            if (!check) {
+                return false;
+            }
+        }
+
+        cursor.close();
+
+        return true;
+    }
+
+    public boolean deleteAlbum(Context context, String albumName) {
+        String[] projection = {
+                MediaStore.Files.FileColumns._ID
+        };
+
+        String selection = MediaStore.Files.FileColumns.BUCKET_DISPLAY_NAME + "=?";
+
+        Uri queryUri = MediaStore.Files.getContentUri("external");
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                queryUri,
+                projection,
+                selection,
+                new String[]{albumName},
+                null
+        );
+
+        Cursor cursor = cursorLoader.loadInBackground();
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                long mediaID = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID));
+                Uri deleteUri = ContentUris.withAppendedId(queryUri, mediaID);
+                contentResolver.delete(deleteUri, null, null);
+            }
+            cursor.close();
+        }
+        return true;
     }
 
     private static class SingletonHelper {
