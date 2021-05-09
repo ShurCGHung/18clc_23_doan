@@ -65,5 +65,14 @@
     <string name="delete_album">Delete album</string>
     <string name="set_as_lock_screen">Set as Lock Screen</string>
     <string name="set_as_home_screen">Set as home screen</string>
+    <string name="title_activity_settings">@string/settings</string>
+
+    <!-- Night mode -->
+    <string name="night_mode">Night mode</string>
+    <string name="night_mode_activated">Night mode is activated</string>
+    <string name="night_mode_deactivated">Night mode is deactivated</string>
+
+    <!-- Language -->
+    <string name="language">Language</string>
 
 </resources>
