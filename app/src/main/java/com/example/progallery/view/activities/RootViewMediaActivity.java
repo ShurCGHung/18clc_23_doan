@@ -2,6 +2,7 @@ package com.example.progallery.view.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,7 +70,8 @@ public class RootViewMediaActivity extends AppCompatActivity {
         } else if (id == R.id.btnAddAlbum) {
             addToAlbum();
         } else if (id == R.id.btnSetAs) {
-            setImageForWallPaper();
+            //setImageForWallPaper();
+            setImageAsWallpaper();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -225,6 +227,14 @@ public class RootViewMediaActivity extends AppCompatActivity {
     private void setImageForWallPaper() {
         SetWallpaperFragment setWallpaperFragment = new SetWallpaperFragment(mediaPath);
         setWallpaperFragment.show(getSupportFragmentManager(), setWallpaperFragment.getTag());
+    }
+
+    private void setImageAsWallpaper() {
+        Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setDataAndType(Uri.parse(mediaPath), "image/jpeg");
+        intent.putExtra("mimeType", "image/jpeg");
+        startActivity(Intent.createChooser(intent, "Set as:"));
     }
 
 
