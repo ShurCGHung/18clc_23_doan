@@ -23,6 +23,7 @@ import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.MediaFetchService;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.view.fragments.ImageInfoFragment;
+import com.example.progallery.view.fragments.SetWallpaperFragment;
 import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
 
@@ -67,6 +68,8 @@ public class RootViewMediaActivity extends AppCompatActivity {
             showImageInfo();
         } else if (id == R.id.btnAddAlbum) {
             addToAlbum();
+        } else if (id == R.id.btnSetAs) {
+            setImageForWallPaper();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -217,6 +220,11 @@ public class RootViewMediaActivity extends AppCompatActivity {
                 Toast.makeText(RootViewMediaActivity.this, "Failed to copy to media", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void setImageForWallPaper() {
+        SetWallpaperFragment setWallpaperFragment = new SetWallpaperFragment(mediaPath);
+        setWallpaperFragment.show(getSupportFragmentManager(), setWallpaperFragment.getTag());
     }
 
 

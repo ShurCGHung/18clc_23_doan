@@ -63,5 +63,7 @@
     <string name="move_to_album">Move to album</string>
     <string name="rename_album">Rename album</string>
     <string name="delete_album">Delete album</string>
+    <string name="set_as_lock_screen">Set as Lock Screen</string>
+    <string name="set_as_home_screen">Set as home screen</string>
 
 </resources>
