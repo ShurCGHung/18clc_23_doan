@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
+
 public class MainActivity extends AppCompatActivity {
     private static final int MY_READWRITE_PERMISSION_CODE = 101;
     private static final int REQUEST_IMAGE_CAPTURE = 102;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean showDatesBool;
 
     ViewPager viewPager;
-    TabLayout tabLayout;
+    public static TabLayout tabLayout;
     Toolbar toolbar;
     String currentPhotoPath;
     Uri imageUri;

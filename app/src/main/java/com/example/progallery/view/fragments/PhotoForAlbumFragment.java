@@ -34,6 +34,7 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
 
@@ -82,6 +83,9 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void onDestroy() {
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        TabLayout tabLayout = MainActivity.tabLayout;
+        Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
+        Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(true);
         super.onDestroy();
     }
 
@@ -125,6 +129,10 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
+        TabLayout tabLayout = MainActivity.tabLayout;
+        Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(false);
+        Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(false);
 
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 

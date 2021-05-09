@@ -3,6 +3,7 @@ package com.example.progallery.view.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,12 +65,8 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.view_photos_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         MenuItem showDates = menu.findItem(R.id.show_dates);
         showDates.setVisible(MainActivity.displayOption == GRID);
 
@@ -78,7 +75,11 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         } else {
             showDates.setTitle(R.string.show_dates);
         }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         if (MainActivity.displayOption == GRID) {
             MenuItem item = menu.findItem(R.id.grid);
             item.setChecked(true);
