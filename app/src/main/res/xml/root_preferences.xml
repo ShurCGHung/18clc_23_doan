@@ -1,0 +1,27 @@
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/language">
+
+        <ListPreference
+            app:defaultValue="reply"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:key="english"
+            app:title="@string/language"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/night_mode">
+
+        <CheckBoxPreference
+            app:defaultValue="false"
+            app:key="NIGHT"
+            app:summaryOn="@string/night_mode_activated"
+            app:summaryOff="@string/night_mode_deactivated"
+            app:title="@string/night_mode"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
