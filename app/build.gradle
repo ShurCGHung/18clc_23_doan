@@ -38,6 +38,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.GoodieBag:Pinview:v1.4'
+    implementation 'androidx.preference:preference:1.1.1'
 
     // Rotate Image
     implementation 'com.github.yalantis:ucrop:2.2.2-native'
@@ -84,4 +85,8 @@ dependencies {
     implementation 'com.android.support:support-v4:25.3.0'
     //noinspection GradleCompatible
     implementation 'com.android.support:exifinterface:25.3.0'
+
+    // Crop Image
+    implementation 'com.github.yalantis:ucrop:2.2.6-native'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }
