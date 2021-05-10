@@ -4,7 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <!-- -->
     <string name="photo_tab">Hình ảnh</string>
-    <string name="album_tab">Albums</string>
+    <string name="album_tab">Bộ sưu tập</string>
     <string name="highlight_tab">Nổi bật</string>
 
     <string name="photo_string">Đây là tab hình ảnh</string>
@@ -39,8 +39,8 @@
     <string name="this_is_place_holder_text">Hãy điền chữ</string>
     <string name="sample_date">Sample date</string>
     <string name="delete">Xóa</string>
-    <string name="slideshow">Slideshow</string>
-    <string name="add_to_album">Thêm vào album</string>
+    <string name="slideshow">Trình chiếu</string>
+    <string name="add_to_album">Thêm vào bộ sưu tập</string>
     <string name="set_as_wallpaper">Đặt ảnh nền</string>
     <string name="copy">Sao chép</string>
     <string name="edit">Chỉnh sửa</string>
@@ -48,7 +48,7 @@
     <string name="information">Thông tin</string>
     <string name="camera_capture">Camera</string>
     <string name="camera_video">Video</string>
-    <string name="add_album">Thêm album</string>
+    <string name="add_album">Thêm bộ sưu tập</string>
     <string name="name_required">Tên (Required)</string>
     <string name="warning">Cảnh báo</string>
     <string name="cancel">Hủy</string>
@@ -60,8 +60,8 @@
     <string name="orientation">Chiều xoay</string>
     <string name="location">Vị trí</string>
     <string name="are_you_sure_to_delete_this_media">Bạn có chắc chắn là bạn muốn xóa?</string>
-    <string name="copy_to_album">Sao chép đến album</string>
-    <string name="move_to_album">Di chuyển đến album</string>
+    <string name="copy_to_album">Sao chép đến bộ sưu tập</string>
+    <string name="move_to_album">Di chuyển đến bộ sưu tập</string>
     <string name="rename_album">Sửa tên album</string>
     <string name="delete_album">Xóa album</string>
     <string name="set_as_lock_screen">Đặt ảnh nền Lock screen</string>
@@ -73,6 +73,13 @@
     <string name="night_mode_activated">Night mode đã bật</string>
     <string name="night_mode_deactivated">Night mode đã tắt</string>
 
-    <!-- Language -->
-    <string name="language">Ngôn ngữ</string>
+    <!-- Preference Titles -->
+    <string name="preferences_category_general">General</string>
+    <string name="preferences_language">Ngôn ngữ</string>
+    <!-- NOTE: Has to correspond to array "locales" in locales.xml (elements in same orderwith) -->
+    <string-array name="settings_language_values">
+        <item>Default (System setting)</item>
+        <item>English</item>
+        <item>Vietnamese</item>
+    </string-array>
 </resources>

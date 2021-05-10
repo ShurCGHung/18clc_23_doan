@@ -1,7 +1,9 @@
 package com.example.progallery.view.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -15,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
+import com.example.progallery.helpers.LocaleHelpers;
 import com.example.progallery.view.adapters.PageAdapter;
 import com.example.progallery.view.fragments.HighlightsFragment;
 import com.example.progallery.view.fragments.PhotosFragment;
@@ -25,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String MyPreference = "pref_key_language";
+    private static final String language = "language";
     private static final int MY_READWRITE_PERMISSION_CODE = 101;
 
     public static int displayOption;
@@ -33,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
+    SharedPreferences sharedPreferences;
+    private String initialLocale;
 
     PageAdapter pageAdapter;
     private List<String> permission = new ArrayList<>();
@@ -72,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this, permission.toArray(new String[0]), MY_READWRITE_PERMISSION_CODE);
         } else {
             init();
+        }
+        sharedPreferences = getSharedPreferences(MyPreference, Context.MODE_PRIVATE);
+        if (sharedPreferences.contains(language)) {
+            initialLocale = sharedPreferences.getString(language, "");
         }
     }
 
@@ -139,5 +150,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleHelpers.onAttach(base));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (initialLocale != null && !initialLocale.equals(LocaleHelpers.getPersistedLocale(this))) {
+            recreate();
+        }
     }
 }
