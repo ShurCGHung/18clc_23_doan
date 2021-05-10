@@ -142,7 +142,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(RootViewMediaActivity.this);
         final View customDialog = getLayoutInflater().inflate(R.layout.choose_album_dialog, null);
         builder.setView(customDialog);
-        builder.setTitle("Choose an album");
+        builder.setTitle(R.string.choose_an_album);
 
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
@@ -261,6 +261,17 @@ public class RootViewMediaActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "Set as:"));
     }
 
+    public void shareMedia() {
+        try {
+            Uri shareBitmap = Uri.parse(mediaPath);
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("image/png");
+            intent.putExtra(Intent.EXTRA_STREAM, shareBitmap);
+            startActivity(Intent.createChooser(intent, "Share via"));
+        } catch (Exception e) {
+            Toast.makeText(this, "Share error", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

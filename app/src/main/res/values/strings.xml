@@ -68,6 +68,7 @@
     <string name="set_as_lock_screen">Set as Lock Screen</string>
     <string name="set_as_home_screen">Set as home screen</string>
     <string name="title_activity_settings">@string/settings</string>
+    <string name="choose_an_album">Choose an album</string>
 
     <!-- Night mode -->
     <string name="night_mode">Night mode</string>
@@ -77,6 +78,7 @@
     <!-- Preference Titles -->
     <string name="preferences_category_general">General</string>
     <string name="preferences_language">Language</string>
+
     <!-- NOTE: Has to correspond to array "locales" in locales.xml (elements in same orderwith) -->
     <string-array name="settings_language_values">
         <item>Default (System setting)</item>

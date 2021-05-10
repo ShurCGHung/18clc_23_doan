@@ -12,7 +12,6 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.Converter;
 import com.example.progallery.helpers.ToolbarAnimator;
-import com.example.progallery.model.services.MediaFetchService;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.io.File;
@@ -90,6 +89,12 @@ public class ViewImageActivity extends RootViewMediaActivity {
             }
         });
 
+        findViewById(R.id.btnShare).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareMedia();
+            }
+        });
     }
 
     private void EditImage() {
