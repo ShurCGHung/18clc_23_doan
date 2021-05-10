@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.progallery.R;
+import com.example.progallery.SlideshowActivity;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.MediaFetchService;
@@ -91,7 +92,12 @@ public class RootViewMediaActivity extends AppCompatActivity {
                 Toast.makeText(RootViewMediaActivity.this, "Favorited", Toast.LENGTH_SHORT).show();
             }
             isFavorite = !isFavorite;
+        } else if (id == R.id.btnSlideshow) {
+            Intent intent = new Intent(RootViewMediaActivity.this, SlideshowActivity.class);
+            intent.putExtra(Constant.EXTRA_PATH, mediaPath);
+            startActivity(intent);
         }
+
         return super.onOptionsItemSelected(item);
     }
 

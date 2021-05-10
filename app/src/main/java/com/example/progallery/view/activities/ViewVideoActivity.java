@@ -28,6 +28,7 @@ public class ViewVideoActivity extends RootViewMediaActivity {
         inflater.inflate(R.menu.view_media_menu, menu);
         menu.findItem(R.id.btnEdit).setVisible(false);
         menu.findItem(R.id.btnSetAs).setVisible(false);
+        menu.findItem(R.id.btnSlideshow).setVisible(false);
         return true;
     }
 
