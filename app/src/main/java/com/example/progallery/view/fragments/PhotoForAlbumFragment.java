@@ -84,8 +84,13 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
     public void onDestroy() {
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         TabLayout tabLayout = MainActivity.tabLayout;
-        Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
-        Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(true);
+        if (albumName != null) {
+            Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
+            Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(true);
+        } else {
+            Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
+            Objects.requireNonNull(tabLayout.getTabAt(1)).view.setClickable(true);
+        }
         super.onDestroy();
     }
 
@@ -132,13 +137,19 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
         TabLayout tabLayout = MainActivity.tabLayout;
-        Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(false);
-        Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(false);
+
+        if (albumName != null) {
+            Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(false);
+            Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(false);
+        } else {
+            Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(false);
+            Objects.requireNonNull(tabLayout.getTabAt(1)).view.setClickable(false);
+        }
 
         Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
@@ -213,7 +224,7 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
         });
         if (albumName != null) {
             mediaViewModel.callServiceForAlbum(getContext(), albumName);
-        }else {
+        } else {
             mediaViewModel.callServiceForFavoriteAlbum(getContext());
         }
         layout.setRefreshing(false);
