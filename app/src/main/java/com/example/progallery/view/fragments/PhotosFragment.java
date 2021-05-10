@@ -16,7 +16,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +30,7 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.view.activities.MainActivity;
+import com.example.progallery.view.activities.SettingsActivity;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
@@ -110,6 +115,15 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         } else if (id == R.id.show_dates) {
             MainActivity.showDatesBool = !MainActivity.showDatesBool;
             recreateFragment();
+        } else if (id == R.id.take_media) {
+            dispatchTakePictureIntent();
+            return true;
+        } else if (id == R.id.take_video) {
+            dispatchTakeVideoIntent();
+            return true;
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -241,5 +255,20 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         });
         mediaViewModel.callService(getContext());
         layout.setRefreshing(false);
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(takePictureIntent);
+        }
+    }
+
+    private void dispatchTakeVideoIntent() {
+        Intent takeVideoIntent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
+        if (takeVideoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(takeVideoIntent);
+        }
     }
 }

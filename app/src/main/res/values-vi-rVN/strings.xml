@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProGallery</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <!-- -->
+    <string name="photo_tab">Hình ảnh</string>
+    <string name="album_tab">Bộ sưu tập</string>
+    <string name="highlight_tab">Nổi bật</string>
+
+    <string name="photo_string">Đây là tab hình ảnh</string>
+    <string name="album_string">Đây là tab album</string>
+    <string name="highlight_string">Đây là tab nổi bật</string>
+
+    <string name="photo_desc">Ảnh tạm</string>
+    <string name="hello_blank_fragment">Fragment trống</string>
+    <string name="photo_video_name">Đây là tên ảnh/video</string>
+    <string name="loading_video">Loading Video</string>
+    <string name="settings">Cài đặt</string>
+    <string name="image_video_details">Đây là thông tin ảnh/video</string>
+    <string name="camera">Đây là camera</string>
+    <string name="brush_size">Brush Size</string>
+    <string name="opacity">Độ mờ</string>
+    <string name="brush_state_eraser">Cục gôm</string>
+    <string name="brush_state_paint">Brush</string>
+    <string name="brush_btn">Brush</string>
+    <string name="btn_emoji">Emoji</string>
+    <string name="text_for_image">chữ</string>
+    <string name="enter_some_text">Nhập chữ</string>
+    <string name="text_font">Font chữ</string>
+    <string name="font_arial">Arial</string>
+    <string name="crop_image">Cắt</string>
+    <string name="media_capture">Chụp ảnh</string>
+    <string name="view_type">View Type…</string>
+    <string name="show_dates">Hiện ngày</string>
+    <string name="hide_dates">Ẩn ngày</string>
+    <string name="grid">Lưới</string>
+    <string name="list">Danh sách</string>
+    <string name="flex">Flex</string>
+    <string name="this_is_place_holder_text">Hãy điền chữ</string>
+    <string name="sample_date">Sample date</string>
+    <string name="delete">Xóa</string>
+    <string name="slideshow">Trình chiếu</string>
+    <string name="add_to_album">Thêm vào bộ sưu tập</string>
+    <string name="set_as_wallpaper">Đặt ảnh nền</string>
+    <string name="copy">Sao chép</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="move_to_vault">Di chuyển đến kho</string>
+    <string name="information">Thông tin</string>
+    <string name="camera_capture">Camera</string>
+    <string name="camera_video">Video</string>
+    <string name="add_album">Thêm bộ sưu tập</string>
+    <string name="name_required">Tên (Required)</string>
+    <string name="warning">Cảnh báo</string>
+    <string name="cancel">Hủy</string>
+    <string name="close">Đóng</string>
+    <string name="image_source">Đường dẫn</string>
+    <string name="image_length">Chiều dài</string>
+    <string name="image_width">Chiều rộng</string>
+    <string name="datetime">Ngày tháng</string>
+    <string name="orientation">Chiều xoay</string>
+    <string name="location">Vị trí</string>
+    <string name="are_you_sure_to_delete_this_media">Bạn có chắc chắn là bạn muốn xóa?</string>
+    <string name="copy_to_album">Sao chép đến bộ sưu tập</string>
+    <string name="move_to_album">Di chuyển đến bộ sưu tập</string>
+    <string name="rename_album">Sửa tên album</string>
+    <string name="delete_album">Xóa album</string>
+    <string name="set_as_lock_screen">Đặt ảnh nền Lock screen</string>
+    <string name="set_as_home_screen">Đặt ảnh nền Home screen</string>
+    <string name="title_activity_settings">@string/settings</string>
+
+    <!-- Night mode -->
+    <string name="night_mode">Night mode</string>
+    <string name="night_mode_activated">Night mode đã bật</string>
+    <string name="night_mode_deactivated">Night mode đã tắt</string>
+
+    <!-- Preference Titles -->
+    <string name="preferences_category_general">General</string>
+    <string name="preferences_language">Ngôn ngữ</string>
+    <!-- NOTE: Has to correspond to array "locales" in locales.xml (elements in same orderwith) -->
+    <string-array name="settings_language_values">
+        <item>Default (System setting)</item>
+        <item>English</item>
+        <item>Vietnamese</item>
+    </string-array>
+</resources>

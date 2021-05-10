@@ -65,5 +65,23 @@
     <string name="delete_album">Delete album</string>
     <string name="favorite">Favorite</string>
     <string name="vault">Vault</string>
+    <string name="set_as_lock_screen">Set as Lock Screen</string>
+    <string name="set_as_home_screen">Set as home screen</string>
+    <string name="title_activity_settings">@string/settings</string>
+
+    <!-- Night mode -->
+    <string name="night_mode">Night mode</string>
+    <string name="night_mode_activated">Night mode is activated</string>
+    <string name="night_mode_deactivated">Night mode is deactivated</string>
+
+    <!-- Preference Titles -->
+    <string name="preferences_category_general">General</string>
+    <string name="preferences_language">Language</string>
+    <!-- NOTE: Has to correspond to array "locales" in locales.xml (elements in same orderwith) -->
+    <string-array name="settings_language_values">
+        <item>Default (System setting)</item>
+        <item>English</item>
+        <item>Vietnamese</item>
+    </string-array>
 
 </resources>

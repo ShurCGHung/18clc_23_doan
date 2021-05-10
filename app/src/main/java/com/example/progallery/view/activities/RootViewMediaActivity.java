@@ -2,6 +2,7 @@ package com.example.progallery.view.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,7 @@ import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.MediaFetchService;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.view.fragments.ImageInfoFragment;
+import com.example.progallery.view.fragments.SetWallpaperFragment;
 import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
 
@@ -91,6 +93,9 @@ public class RootViewMediaActivity extends AppCompatActivity {
                 Toast.makeText(RootViewMediaActivity.this, "Favorited", Toast.LENGTH_SHORT).show();
             }
             isFavorite = !isFavorite;
+        } else if (id == R.id.btnSetAs) {
+            //setImageForWallPaper();
+            setImageAsWallpaper();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -242,6 +247,20 @@ public class RootViewMediaActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void setImageForWallPaper() {
+        SetWallpaperFragment setWallpaperFragment = new SetWallpaperFragment(mediaPath);
+        setWallpaperFragment.show(getSupportFragmentManager(), setWallpaperFragment.getTag());
+    }
+
+    private void setImageAsWallpaper() {
+        Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setDataAndType(Uri.parse(mediaPath), "image/jpeg");
+        intent.putExtra("mimeType", "image/jpeg");
+        startActivity(Intent.createChooser(intent, "Set as:"));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
