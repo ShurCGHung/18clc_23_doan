@@ -46,8 +46,8 @@
     <string name="edit">Chỉnh sửa</string>
     <string name="move_to_vault">Di chuyển đến kho</string>
     <string name="information">Thông tin</string>
-    <string name="camera_capture">Camera</string>
-    <string name="camera_video">Video</string>
+    <string name="camera_capture">Chụp ảnh</string>
+    <string name="camera_video">Quay phim</string>
     <string name="add_album">Thêm bộ sưu tập</string>
     <string name="name_required">Tên (Required)</string>
     <string name="warning">Cảnh báo</string>
@@ -62,8 +62,10 @@
     <string name="are_you_sure_to_delete_this_media">Bạn có chắc chắn là bạn muốn xóa?</string>
     <string name="copy_to_album">Sao chép đến bộ sưu tập</string>
     <string name="move_to_album">Di chuyển đến bộ sưu tập</string>
-    <string name="rename_album">Sửa tên album</string>
-    <string name="delete_album">Xóa album</string>
+    <string name="rename_album">Sửa tên bộ sưu tập</string>
+    <string name="delete_album">Xóa bộ sưu tập</string>
+    <string name="favorite">Yêu thích</string>
+    <string name="vault">Kho bí mật</string>
     <string name="set_as_lock_screen">Đặt ảnh nền Lock screen</string>
     <string name="set_as_home_screen">Đặt ảnh nền Home screen</string>
     <string name="title_activity_settings">@string/settings</string>
