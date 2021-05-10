@@ -3,5 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root_album_fragment"
-    tools:context=".view.fragments.RootAlbumFragment" />
+    android:id="@+id/root_highlight_fragment"
+    tools:context=".view.fragments.RootHighlightFragment" />

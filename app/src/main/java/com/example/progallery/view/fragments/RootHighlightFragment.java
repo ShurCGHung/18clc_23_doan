@@ -13,8 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.progallery.R;
 
-public class RootAlbumFragment extends Fragment {
-    public RootAlbumFragment() {
+public class RootHighlightFragment extends Fragment {
+    public RootHighlightFragment() {
     }
 
     @Override
@@ -31,7 +31,7 @@ public class RootAlbumFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_root_album, container, false);
+        View view = inflater.inflate(R.layout.fragment_root_highlight, container, false);
 
         setHasOptionsMenu(true);
 
@@ -39,7 +39,7 @@ public class RootAlbumFragment extends Fragment {
         FragmentTransaction transaction = getFragmentManager()
                 .beginTransaction();
 
-        transaction.replace(R.id.root_album_fragment, new AlbumsFragment());
+        transaction.replace(R.id.root_highlight_fragment, new HighlightsFragment());
 
         transaction.commit();
 

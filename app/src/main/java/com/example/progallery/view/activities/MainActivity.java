@@ -24,21 +24,18 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.view.adapters.PageAdapter;
-import com.example.progallery.view.fragments.HighlightsFragment;
 import com.example.progallery.view.fragments.PhotosFragment;
 import com.example.progallery.view.fragments.RootAlbumFragment;
+import com.example.progallery.view.fragments.RootHighlightFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_READWRITE_PERMISSION_CODE = 101;
@@ -47,9 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static int displayOption;
     public static boolean showDatesBool;
-
-    ViewPager viewPager;
     public static TabLayout tabLayout;
+    ViewPager viewPager;
     Toolbar toolbar;
     String currentPhotoPath;
     Uri imageUri;
@@ -98,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         pageAdapter = new PageAdapter(getSupportFragmentManager(), 0);
         pageAdapter.addFragment(new PhotosFragment(), getResources().getString(R.string.photo_tab));
         pageAdapter.addFragment(new RootAlbumFragment(), getResources().getString(R.string.album_tab));
-        pageAdapter.addFragment(new HighlightsFragment(), getResources().getString(R.string.highlight_tab));
+        pageAdapter.addFragment(new RootHighlightFragment(), getResources().getString(R.string.highlight_tab));
 
         viewPager.setAdapter(pageAdapter);
 

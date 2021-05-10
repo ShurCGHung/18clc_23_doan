@@ -57,7 +57,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             }
         } else {
             holder.imageView.setForeground(null);
-
         }
 
         Glide.with(holder.imageView.getContext())

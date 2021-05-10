@@ -1,7 +1,7 @@
 package com.example.progallery.viewmodel;
 
 import android.content.Context;
-import android.os.Environment;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.AlbumFetchService;
 
-import java.io.File;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -20,9 +19,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AlbumViewModel extends ViewModel {
     private MutableLiveData<List<Album>> allAlbums;
+    private MutableLiveData<Album> favoriteAlbum;
 
     public AlbumViewModel() {
         this.allAlbums = new MutableLiveData<>();
+        this.favoriteAlbum = new MutableLiveData<>();
     }
 
     public void callService(Context context) {
@@ -33,8 +34,21 @@ public class AlbumViewModel extends ViewModel {
                 .subscribe(getAlbumsObserverRx());
     }
 
+    public void callFavoriteService(Context context) {
+        AlbumFetchService service = AlbumFetchService.getInstance();
+        service.getFavoriteAlbum(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getFavoriteObserverRx());
+    }
+
+
     public MutableLiveData<List<Album>> getAlbumsObserver() {
         return allAlbums;
+    }
+
+    public MutableLiveData<Album> getFavoriteObserver() {
+        return favoriteAlbum;
     }
 
     private Observer<List<Album>> getAlbumsObserverRx() {
@@ -62,12 +76,28 @@ public class AlbumViewModel extends ViewModel {
         };
     }
 
-    public boolean createAlbum(String albumName) {
-        File pictureFolder = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES
-        );
-        File imagesFolder = new File(pictureFolder, albumName);
-        return imagesFolder.mkdirs();
+    private Observer<Album> getFavoriteObserverRx() {
+        return new Observer<Album>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Album album) {
+                favoriteAlbum.postValue(album);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                favoriteAlbum.postValue(null);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
 

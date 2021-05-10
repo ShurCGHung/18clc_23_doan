@@ -4,21 +4,24 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import androidx.loader.content.CursorLoader;
 
+import com.example.progallery.helpers.Constant;
 import com.example.progallery.model.models.Media;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.reactivex.rxjava3.core.Observable;
 
@@ -216,6 +219,138 @@ public class MediaFetchService {
 
         return uri != null;
     }
+
+    public boolean checkFavorite(Context context, String mediaPath) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.FAVORITE_PREF, Context.MODE_PRIVATE);
+        return sharedPreferences.contains(mediaPath);
+    }
+
+    public void addFavorite(Context context, String mediaPath) {
+        String[] projection = {
+                MediaStore.Files.FileColumns.MEDIA_TYPE
+        };
+
+        String selection = MediaStore.Files.FileColumns.DATA + "=?";
+
+        Uri queryUri = MediaStore.Files.getContentUri("external");
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                queryUri,
+                projection,
+                selection,
+                new String[]{mediaPath},
+                null
+        );
+
+        Cursor cursor = cursorLoader.loadInBackground();
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        String mediaType = "";
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                mediaType = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE));
+
+            }
+            cursor.close();
+        }
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.FAVORITE_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(mediaPath, mediaType);
+        editor.apply();
+    }
+
+    public void removeFavorite(Context context, String mediaPath) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.FAVORITE_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(mediaPath);
+        editor.apply();
+    }
+
+    public Observable<List<Media>> getMediaListForFavoriteAlbum(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.FAVORITE_PREF, Context.MODE_PRIVATE);
+        Map<String, String> res = new LinkedHashMap<>();
+
+        Map<String, ?> allEntries = sharedPreferences.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            res.put(entry.getKey(), entry.getValue().toString());
+        }
+
+        List<Map.Entry<String, String>> entryList = new ArrayList<>(res.entrySet());
+
+        ArrayList<String> listPath = new ArrayList<>();
+        for (Map.Entry<String, String> entry : entryList) {
+            listPath.add(entry.getKey());
+        }
+
+        List<Media> medias = new ArrayList<>();
+        String[] projection = {
+                MediaStore.Files.FileColumns.DATA,
+                MediaStore.Files.FileColumns.DISPLAY_NAME,
+                MediaStore.Files.FileColumns.DATE_ADDED,
+                MediaStore.Files.FileColumns.HEIGHT,
+                MediaStore.Files.FileColumns.WIDTH,
+                MediaStore.Files.FileColumns.MEDIA_TYPE
+        };
+
+        String selection = "("
+                + MediaStore.Files.FileColumns.MEDIA_TYPE + "="
+                + MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
+                + " OR "
+                + MediaStore.Files.FileColumns.MEDIA_TYPE + "="
+                + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
+                + ")"
+                + " AND "
+                + MediaStore.Files.FileColumns.DATA + "=?";
+
+        Uri queryUri = MediaStore.Files.getContentUri("external");
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                queryUri,
+                projection,
+                selection,
+                listPath.toArray(new String[0]),
+                null // Sort order.
+        );
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        // Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, null, "DATE_ADDED DESC");
+        while (true) {
+            assert cursor != null;
+            if (!cursor.moveToNext()) break;
+            String absolutePathOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+            String nameOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME));
+            long dateAddedOfImage = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_ADDED));
+            String typeOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE));
+            String heightOfImage;
+            String widthOfImage;
+            if (typeOfImage.equals("1")) {
+                heightOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.HEIGHT));
+                widthOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.WIDTH));
+            } else {
+                MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+                metaRetriever.setDataSource(context, Uri.parse(absolutePathOfImage));
+                heightOfImage = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+                widthOfImage = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+                metaRetriever.release();
+            }
+
+            Date date = new java.util.Date(dateAddedOfImage * 1000L);
+            SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+            sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+7"));
+            String formattedDate = sdf.format(date);
+
+            Media media = new Media(absolutePathOfImage, nameOfImage, formattedDate, heightOfImage, widthOfImage, typeOfImage);
+            medias.add(media);
+        }
+
+        cursor.close();
+
+        return Observable.just(medias);
+    }
+
 
     private static class SingletonHelper {
         private static final MediaFetchService INSTANCE = new MediaFetchService();

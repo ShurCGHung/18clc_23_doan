@@ -2,6 +2,7 @@ package com.example.progallery.view.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -71,7 +72,11 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         builder.setTitle("Create album");
         builder.setPositiveButton("OK", (dialog, which) -> {
             String albumName = editText.getText().toString();
-            boolean check = albumViewModel.createAlbum(albumName);
+            File pictureFolder = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES
+            );
+            File imagesFolder = new File(pictureFolder, albumName);
+            boolean check = imagesFolder.mkdirs();
             if (check) {
                 loadView();
                 Toast.makeText(getContext(), "Album is created", Toast.LENGTH_SHORT).show();
@@ -120,7 +125,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 assert getFragmentManager() != null;
                 FragmentTransaction trans = getFragmentManager()
                         .beginTransaction();
-                trans.replace(R.id.root_fragment, new PhotoForAlbumFragment(album.getAlbumName()), "PHOTO_ALBUM");
+                trans.replace(R.id.root_album_fragment, new PhotoForAlbumFragment(album.getAlbumName()), "PHOTO_ALBUM");
                 trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 trans.addToBackStack(null);
                 trans.commit();

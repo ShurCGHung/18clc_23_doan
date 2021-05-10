@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -11,12 +12,14 @@ import android.provider.MediaStore;
 
 import androidx.loader.content.CursorLoader;
 
+import com.example.progallery.helpers.Constant;
 import com.example.progallery.model.models.Album;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -194,6 +197,28 @@ public class AlbumFetchService {
             cursor.close();
         }
         return true;
+    }
+
+    public Observable<Album> getFavoriteAlbum(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constant.FAVORITE_PREF, Context.MODE_PRIVATE);
+        Map<String, String> res = new LinkedHashMap<>();
+
+        Map<String, ?> allEntries = sharedPreferences.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            res.put(entry.getKey(), entry.getValue().toString());
+        }
+
+        List<Map.Entry<String, String>> entryList = new ArrayList<>(res.entrySet());
+
+        Album favoriteAlbum;
+        if (entryList.size() == 0) {
+            favoriteAlbum = new Album(null, null, Integer.toString(0), null, null, null);
+        } else {
+            Map.Entry<String, String> lastEntry = entryList.get(entryList.size() - 1);
+            favoriteAlbum = new Album(null, null, Integer.toString(entryList.size()), lastEntry.getKey(), lastEntry.getValue(), null);
+        }
+
+        return Observable.just(favoriteAlbum);
     }
 
     private static class SingletonHelper {

@@ -35,6 +35,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
     protected Toolbar topToolbar;
     protected Toolbar bottomToolbar;
     protected String mediaPath;
+    protected boolean isFavorite;
     AlbumViewModel albumViewModel;
 
     @Override
@@ -47,7 +48,20 @@ public class RootViewMediaActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.view_media_menu, menu);
+        MediaFetchService service = MediaFetchService.getInstance();
+        isFavorite = service.checkFavorite(RootViewMediaActivity.this, mediaPath);
+
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
+        if (isFavorite) {
+            menu.findItem(R.id.btnFavorite).setTitle("Unfavorite");
+        } else {
+            menu.findItem(R.id.btnFavorite).setTitle("Favorite");
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -67,6 +81,16 @@ public class RootViewMediaActivity extends AppCompatActivity {
             showImageInfo();
         } else if (id == R.id.btnAddAlbum) {
             addToAlbum();
+        } else if (id == R.id.btnFavorite) {
+            MediaFetchService service = MediaFetchService.getInstance();
+            if (isFavorite) {
+                service.removeFavorite(RootViewMediaActivity.this, mediaPath);
+                Toast.makeText(RootViewMediaActivity.this, "Unfavorited", Toast.LENGTH_SHORT).show();
+            } else {
+                service.addFavorite(RootViewMediaActivity.this, mediaPath);
+                Toast.makeText(RootViewMediaActivity.this, "Favorited", Toast.LENGTH_SHORT).show();
+            }
+            isFavorite = !isFavorite;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -218,7 +242,6 @@ public class RootViewMediaActivity extends AppCompatActivity {
             }
         }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

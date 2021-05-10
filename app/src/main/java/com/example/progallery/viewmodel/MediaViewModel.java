@@ -39,6 +39,14 @@ public class MediaViewModel extends ViewModel {
                 .subscribe(getMediasObserverRx());
     }
 
+    public void callServiceForFavoriteAlbum(Context context) {
+        MediaFetchService service = MediaFetchService.getInstance();
+        service.getMediaListForFavoriteAlbum(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getMediasObserverRx());
+    }
+
     public MutableLiveData<List<Media>> getMediasObserver() {
         return allMedias;
     }

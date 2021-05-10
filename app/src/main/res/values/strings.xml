@@ -63,5 +63,7 @@
     <string name="move_to_album">Move to album</string>
     <string name="rename_album">Rename album</string>
     <string name="delete_album">Delete album</string>
+    <string name="favorite">Favorite</string>
+    <string name="vault">Vault</string>
 
 </resources>

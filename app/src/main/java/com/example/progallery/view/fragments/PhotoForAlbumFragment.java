@@ -104,7 +104,13 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
             recreateFragment();
         } else if (id == android.R.id.home) {
             assert getFragmentManager() != null;
-            Fragment myFragment = getFragmentManager().findFragmentByTag("PHOTO_ALBUM");
+            Fragment myFragment;
+            if (albumName != null) {
+                myFragment = getFragmentManager().findFragmentByTag("PHOTO_ALBUM");
+            } else {
+                myFragment = getFragmentManager().findFragmentByTag("PHOTO_FAVORITE");
+            }
+
             FragmentTransaction trans = getFragmentManager()
                     .beginTransaction();
             assert myFragment != null;
@@ -205,7 +211,11 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
                 photoAdapter.setMediaList(mediaList);
             }
         });
-        mediaViewModel.callServiceForAlbum(getContext(), albumName);
+        if (albumName != null) {
+            mediaViewModel.callServiceForAlbum(getContext(), albumName);
+        }else {
+            mediaViewModel.callServiceForFavoriteAlbum(getContext());
+        }
         layout.setRefreshing(false);
     }
 }
