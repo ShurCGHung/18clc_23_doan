@@ -65,5 +65,6 @@
     <string name="delete_album">Delete album</string>
     <string name="favorite">Favorite</string>
     <string name="vault">Vault</string>
+    <string name="set_location">Set location</string>
 
 </resources>

@@ -85,5 +85,9 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:exifinterface:25.3.0'
 
+    //noinspection GradleDependency
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.6';
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
 }

@@ -50,7 +50,6 @@ public class RootViewMediaActivity extends AppCompatActivity {
         inflater.inflate(R.menu.view_media_menu, menu);
         MediaFetchService service = MediaFetchService.getInstance();
         isFavorite = service.checkFavorite(RootViewMediaActivity.this, mediaPath);
-
         return true;
     }
 
@@ -94,6 +93,9 @@ public class RootViewMediaActivity extends AppCompatActivity {
         } else if (id == R.id.btnSlideshow) {
             Intent intent = new Intent(RootViewMediaActivity.this, SlideshowActivity.class);
             intent.putExtra(Constant.EXTRA_PATH, mediaPath);
+            startActivity(intent);
+        } else if (id == R.id.btnLocation) {
+            Intent intent = new Intent(RootViewMediaActivity.this, LocationPickerActivity.class);
             startActivity(intent);
         }
 
