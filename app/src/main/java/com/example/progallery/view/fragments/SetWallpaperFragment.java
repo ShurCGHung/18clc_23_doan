@@ -1,8 +1,10 @@
 package com.example.progallery.view.fragments;
 
 import android.app.WallpaperManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +14,16 @@ import android.widget.Toast;
 
 import com.example.progallery.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.io.IOException;
 
+import static android.app.Activity.RESULT_OK;
+
 public class SetWallpaperFragment extends BottomSheetDialogFragment {
 
+    private static final int REQUEST_CROP_IMAGE = 2501;
     public SetWallpaperFragment() { }
 
 
@@ -76,5 +82,17 @@ public class SetWallpaperFragment extends BottomSheetDialogFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 }
