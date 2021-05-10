@@ -1,7 +1,6 @@
 package com.example.progallery.view.fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -16,7 +15,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,7 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.view.activities.MainActivity;
+import com.example.progallery.view.activities.SettingsActivity;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
@@ -47,15 +51,10 @@ import static com.example.progallery.helpers.Constant.REQUEST_VIEW_MEDIA;
 
 public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 102;
-    private static final int REQUEST_VIDEO_CAPTURE = 103;
-
     private MediaViewModel mediaViewModel;
     private SwipeRefreshLayout layout;
     private PhotoAdapter photoAdapter;
     private SectionedPhotoAdapter photoAdapterByDate;
-    String currentPhotoPath;
-    Uri imageUri;
 
     public PhotosFragment() {
         mediaViewModel = null;
@@ -121,6 +120,9 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         } else if (id == R.id.take_video) {
             dispatchTakeVideoIntent();
             return true;
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -26,6 +26,7 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.view.activities.MainActivity;
+import com.example.progallery.view.activities.SettingsActivity;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
@@ -109,6 +110,9 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
             trans.commit();
 
             getFragmentManager().popBackStack();
+        } else if (id == R.id.settings) {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
         }
         return true;
     }
