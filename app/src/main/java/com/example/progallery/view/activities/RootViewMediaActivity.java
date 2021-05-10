@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.progallery.R;
-import com.example.progallery.SlideshowActivity;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.MediaFetchService;

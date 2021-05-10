@@ -1,4 +1,4 @@
-package com.example.progallery;
+package com.example.progallery.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.model.models.Media;
 import com.example.progallery.model.services.MediaFetchService;

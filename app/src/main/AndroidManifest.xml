@@ -28,7 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProGallery">
-        <activity android:name=".SlideshowActivity"></activity>
+        <activity android:name=".view.activities.SlideshowActivity"></activity>
         <activity android:name=".view.activities.RootViewMediaActivity" />
         <activity android:name=".view.activities.ViewVideoActivity" />
         <activity
