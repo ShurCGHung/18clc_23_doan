@@ -1,10 +1,10 @@
 package com.example.progallery.view.activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -19,10 +19,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import static com.example.progallery.helpers.Constant.LOCATION_REQUEST_CODE;
+
 public class LocationPickerActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private final static int PLACE_PICKER_REQUEST = 999;
-    private final static int LOCATION_REQUEST_CODE = 23;
     private GoogleMap mMap;
+    private Marker marker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,47 +40,42 @@ public class LocationPickerActivity extends AppCompatActivity implements OnMapRe
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // Add a marker in HCM and move the camera
         LatLng vn = new LatLng(10.762622, 106.660172);
-        mMap.addMarker(new MarkerOptions().position(vn).draggable(true).title("Marker in HCM, VN"));
+
+        MarkerOptions markerOptions = new MarkerOptions().position(vn).title("Marker in HCM, VN").draggable(true);
+
+        marker = mMap.addMarker(markerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(vn));
 
         // Enable the zoom controls for the map
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        googleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-            @Override
-            public void onMarkerDragStart(@NonNull Marker marker) {
+        googleMap.setOnMapClickListener(latLng -> {
+            marker.setPosition(latLng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        });
 
-            }
+        googleMap.setOnMapLongClickListener(latLng -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LocationPickerActivity.this);
 
-            @Override
-            public void onMarkerDrag(Marker marker) {
-            }
-
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
-                LatLng latLng = marker.getPosition();
-
-                //Toast.makeText(LocationPickerActivity.this, latLng.latitude + ", " + latLng.longitude, Toast.LENGTH_SHORT).show();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(LocationPickerActivity.this);
-                builder.setTitle("Pick this location?");
-                builder.setPositiveButton("OK", (dialog, which) -> {
-
-                });
-                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-            }
+            builder.setTitle("Pick this location?");
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("lat", latLng.latitude);
+                returnIntent.putExtra("long", latLng.longitude);
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            });
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
     }
 }
