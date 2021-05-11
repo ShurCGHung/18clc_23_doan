@@ -52,12 +52,15 @@
     <string name="warning">Warning</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
-    <string name="image_source">Source</string>
+    <string name="image_source">Path</string>
     <string name="image_length">Length</string>
     <string name="image_width">Width</string>
     <string name="datetime">Datetime</string>
     <string name="orientation">Orientation</string>
-    <string name="location">Location</string>
+    <string name="latitude">Latitude</string>
+    <string name="longtitude">Longtitude</string>
+    <string name="file_size">File Size</string>
+    <string name="img_title">Title</string>
     <string name="are_you_sure_to_delete_this_media">Are you sure to delete this media?</string>
     <string name="copy_to_album">Copy to album</string>
     <string name="move_to_album">Move to album</string>

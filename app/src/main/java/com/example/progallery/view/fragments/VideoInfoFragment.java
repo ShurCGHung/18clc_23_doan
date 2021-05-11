@@ -21,13 +21,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-public class ImageInfoFragment extends DialogFragment {
+public class VideoInfoFragment extends DialogFragment {
 
-    TextView imgTitle, imgSource, imgLength, imgWidth, imgOrientation, imgDateTime, imgLongtitude, imgLatitude;
+    TextView imgTitle, imgSource, imgDateTime, imgLongtitude, imgLatitude;
     ExifInterface exif;
     private String mediaPath;
 
-    public ImageInfoFragment(String mediaPath) {
+    public VideoInfoFragment(String mediaPath) {
         this.mediaPath = mediaPath;
     }
 
@@ -36,7 +36,7 @@ public class ImageInfoFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
-        View view = inflater.inflate(R.layout.image_details, null);
+        View view = inflater.inflate(R.layout.video_details, null);
 
         builder.setView(view)
                 .setTitle("Image Information")
@@ -49,10 +49,7 @@ public class ImageInfoFragment extends DialogFragment {
 
         imgTitle = view.findViewById(R.id.imgTitle);
         imgSource = view.findViewById(R.id.imgSource);
-        imgLength = view.findViewById(R.id.imgLength);
-        imgWidth = view.findViewById(R.id.imgWidth);
         imgDateTime = view.findViewById(R.id.imgDateTime);
-        imgOrientation = view.findViewById(R.id.imgOrientation);
         imgLongtitude = view.findViewById(R.id.imgLongtitude);
         imgLatitude = view.findViewById(R.id.imgLatitude);
         try {
@@ -61,10 +58,7 @@ public class ImageInfoFragment extends DialogFragment {
             exif = new ExifInterface(in);
 
             imgTitle.setText(mediaPath.substring(mediaPath.lastIndexOf("/") + 1));
-            imgLength.setText(exif.getAttribute(ExifInterface.TAG_IMAGE_LENGTH));
-            imgWidth.setText(exif.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
-            imgDateTime.setText(exif.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED));
-            imgOrientation.setText(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+            imgDateTime.setText(exif.getAttribute(ExifInterface.TAG_DATETIME));
             imgLongtitude.setText(exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE));
             imgLatitude.setText(exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE));
             imgSource.setText(mediaPath);

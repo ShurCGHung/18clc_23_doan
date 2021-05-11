@@ -37,56 +37,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp"
-        android:weightSum="2">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_13ssp"
-            android:text="@string/image_length"
-            android:textAlignment="textStart"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/imgLength"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_13ssp"
-            android:textAlignment="textStart"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_3sdp"
-        android:weightSum="2">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_13ssp"
-            android:text="@string/image_width"
-            android:textAlignment="textStart"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/imgWidth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_13ssp"
-            android:textAlignment="textStart"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_3sdp"
         android:layout_weight="2">
 
         <TextView
@@ -99,31 +49,6 @@
 
         <TextView
             android:id="@+id/imgDateTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_13ssp"
-            android:textAlignment="textStart"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/_3sdp"
-        android:weightSum="2">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_13ssp"
-            android:text="@string/orientation"
-            android:textAlignment="textStart"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/imgOrientation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/_13ssp"
