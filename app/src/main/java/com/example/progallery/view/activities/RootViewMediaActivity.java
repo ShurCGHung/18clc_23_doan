@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
+import com.example.progallery.helpers.GPS;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.MediaFetchService;
 import com.example.progallery.view.adapters.AlbumAdapter;
@@ -32,9 +34,9 @@ import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
 
 import java.io.File;
-import java.net.URLConnection;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -304,14 +306,24 @@ public class RootViewMediaActivity extends AppCompatActivity {
         assert data != null;
         if (requestCode == REQUEST_GET_LOCATION) {
             if (resultCode == RESULT_OK) {
-                double lat = data.getDoubleExtra("lat", 0);
-                double longC = data.getDoubleExtra("long", 0);
+                double latitude = data.getDoubleExtra("lat", 0);
+                double longitude = data.getDoubleExtra("long", 0);
+                File file = new File(mediaPath);
+                Log.d("Absolute path", file.getAbsolutePath());
                 Uri uri = Uri.fromFile(new File(mediaPath));
                 ExifInterface exif = null;
                 try {
                     InputStream in = Objects.requireNonNull(getApplicationContext().getContentResolver().openInputStream(uri));
-                    exif = new ExifInterface(in);
-                    exif.setLatLong(lat, longC);
+                    exif = new ExifInterface(mediaPath);
+                    String latStr = GPS.convert(latitude);
+                    String latStrRef = GPS.latitudeRef(latitude);
+                    String longStr = GPS.convert(longitude);
+                    String longStrRef = GPS.longitudeRef(longitude);
+                    exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latStr);
+                    exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, latStrRef);
+                    exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longStr);
+                    exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, longStrRef);
+                    exif.saveAttributes();
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(RootViewMediaActivity.this, "Set location failed", Toast.LENGTH_SHORT).show();

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-public class ImageInfoFragment extends DialogFragment {
+public class    ImageInfoFragment extends DialogFragment {
 
     TextView imgTitle, imgSource, imgLength, imgWidth, imgOrientation, imgDateTime, imgLongtitude, imgLatitude;
     ExifInterface exif;
@@ -65,8 +66,10 @@ public class ImageInfoFragment extends DialogFragment {
             imgWidth.setText(exif.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
             imgDateTime.setText(exif.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED));
             imgOrientation.setText(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
+
             imgLongtitude.setText(exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE));
             imgLatitude.setText(exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE));
+
             imgSource.setText(mediaPath);
 
         } catch (IOException e) {
