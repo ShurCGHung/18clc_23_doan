@@ -2,6 +2,7 @@ package com.example.progallery.view.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,9 +11,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,9 +30,14 @@ import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
+
+import static com.example.progallery.helpers.Constant.REQUEST_GET_LOCATION;
 
 public class RootViewMediaActivity extends AppCompatActivity {
     protected Toolbar topToolbar;
@@ -96,7 +104,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (id == R.id.btnLocation) {
             Intent intent = new Intent(RootViewMediaActivity.this, LocationPickerActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, Constant.REQUEST_GET_LOCATION);
         }
 
         return super.onOptionsItemSelected(item);
@@ -246,6 +254,30 @@ public class RootViewMediaActivity extends AppCompatActivity {
                 Toast.makeText(RootViewMediaActivity.this, "Copied to album", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(RootViewMediaActivity.this, "Failed to copy to media", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        assert data != null;
+        if (requestCode == REQUEST_GET_LOCATION) {
+            if (resultCode == RESULT_OK) {
+                double lat = data.getDoubleExtra("lat", 0);
+                double longC = data.getDoubleExtra("long", 0);
+                Uri uri = Uri.fromFile(new File(mediaPath));
+                ExifInterface exif = null;
+                try {
+                    InputStream in = Objects.requireNonNull(getApplicationContext().getContentResolver().openInputStream(uri));
+                    exif = new ExifInterface(in);
+                    exif.setLatLong(lat, longC);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(RootViewMediaActivity.this, "Set location failed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(RootViewMediaActivity.this, "Set location successfully", Toast.LENGTH_SHORT).show();
             }
         }
     }
