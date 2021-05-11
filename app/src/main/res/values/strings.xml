@@ -72,6 +72,7 @@
     <string name="set_as_home_screen">Set as home screen</string>
     <string name="title_activity_settings">@string/settings</string>
     <string name="choose_an_album">Choose an album</string>
+    <string name="set_location">Set location</string>
 
     <!-- Night mode -->
     <string name="night_mode">Night mode</string>
@@ -88,6 +89,5 @@
         <item>English</item>
         <item>Vietnamese</item>
     </string-array>
-    <string name="set_location">Set location</string>
 
 </resources>

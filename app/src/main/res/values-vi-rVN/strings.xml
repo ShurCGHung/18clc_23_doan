@@ -73,6 +73,7 @@
     <string name="set_as_home_screen">Đặt ảnh nền Home screen</string>
     <string name="title_activity_settings">@string/settings</string>
     <string name="choose_an_album">Chọn bộ sưu tập</string>
+    <string name="set_location">Chọn vị trí</string>
 
     <!-- Night mode -->
     <string name="night_mode">Night mode</string>
