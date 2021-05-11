@@ -4,7 +4,7 @@ public class Constant {
     // Intent tag
     public static final String EXTRA_PATH = "com.example.progallery.EXTRA_PATH";
     public static final String EXTRA_REQUEST = "com.example.progallery.EXTRA_REQUEST";
-
+    public static final String EXTRA_MEDIA_LIST = "com.example.progallery.EXTRA_MEDIA_LIST";
     // Layout
     public static final int GRID = 0;
     public static final int LIST = 1;

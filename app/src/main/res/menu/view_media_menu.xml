@@ -16,19 +16,19 @@
     <item
         android:id="@+id/btnAddAlbum"
         android:title="@string/add_to_album" />
-
     <item
         android:id="@+id/btnSetAs"
         android:title="@string/set_as_wallpaper" />
-    <item
-        android:id="@+id/btnCopy"
-        android:title="@string/copy" />
     <item
         android:id="@+id/btnEdit"
         android:title="@string/edit" />
     <item
         android:id="@+id/btnMoveToVault"
         android:title="@string/move_to_vault" />
+    <item
+        android:id="@+id/btnLocation"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/set_location" />
     <item
         android:id="@+id/btnShowInfo"
         android:title="@string/information" />
