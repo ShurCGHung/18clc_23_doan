@@ -23,7 +23,7 @@ import java.util.Objects;
 
 public class ImageInfoFragment extends DialogFragment {
 
-    TextView imgSource, imgLength, imgWidth, imgOrientation, imgDateTime, imgLocation, imgCamera;
+    TextView imgTitle, imgSource, imgLength, imgWidth, imgOrientation, imgDateTime, imgLongtitude, imgLatitude;
     ExifInterface exif;
     private String mediaPath;
 
@@ -47,23 +47,27 @@ public class ImageInfoFragment extends DialogFragment {
                     }
                 });
 
+        imgTitle = view.findViewById(R.id.imgTitle);
         imgSource = view.findViewById(R.id.imgSource);
         imgLength = view.findViewById(R.id.imgLength);
         imgWidth = view.findViewById(R.id.imgWidth);
         imgDateTime = view.findViewById(R.id.imgDateTime);
         imgOrientation = view.findViewById(R.id.imgOrientation);
-        imgLocation = view.findViewById(R.id.imgLocation);
+        imgLongtitude = view.findViewById(R.id.imgLongtitude);
+        imgLatitude = view.findViewById(R.id.imgLatitude);
         try {
             Uri uri = Uri.fromFile(new File(mediaPath));
             InputStream in = Objects.requireNonNull(getContext()).getApplicationContext().getContentResolver().openInputStream(uri);
             exif = new ExifInterface(in);
 
-            imgSource.setText(exif.getAttribute(ExifInterface.TAG_FILE_SOURCE));
+            imgTitle.setText(mediaPath.substring(mediaPath.lastIndexOf("/") + 1));
             imgLength.setText(exif.getAttribute(ExifInterface.TAG_IMAGE_LENGTH));
             imgWidth.setText(exif.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
-            imgDateTime.setText(exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL));
+            imgDateTime.setText(exif.getAttribute(ExifInterface.TAG_DATETIME_DIGITIZED));
             imgOrientation.setText(exif.getAttribute(ExifInterface.TAG_ORIENTATION));
-            imgLocation.setText(exif.getAttribute(ExifInterface.TAG_GPS_AREA_INFORMATION));
+            imgLongtitude.setText(exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE));
+            imgLatitude.setText(exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE));
+            imgSource.setText(mediaPath);
 
         } catch (IOException e) {
             e.printStackTrace();
