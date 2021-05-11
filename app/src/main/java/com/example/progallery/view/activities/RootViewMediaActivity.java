@@ -25,10 +25,12 @@ import com.example.progallery.model.services.MediaFetchService;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.view.fragments.ImageInfoFragment;
 import com.example.progallery.view.fragments.SetWallpaperFragment;
+import com.example.progallery.view.fragments.VideoInfoFragment;
 import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
 
 import java.io.File;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -80,7 +82,11 @@ public class RootViewMediaActivity extends AppCompatActivity {
         if (id == R.id.deleteImage) {
             deleteMedia();
         } else if (id == R.id.btnShowInfo) {
-            showImageInfo();
+            if (isImageFile(mediaPath)) {
+                showImageInfo();
+            } else if (isVideoFile(mediaPath)) {
+                showVideoInfo();
+            }
         } else if (id == R.id.btnAddAlbum) {
             addToAlbum();
         } else if (id == R.id.btnFavorite) {
@@ -103,6 +109,11 @@ public class RootViewMediaActivity extends AppCompatActivity {
     protected void showImageInfo() {
         ImageInfoFragment fragment = new ImageInfoFragment(mediaPath);
         fragment.show(getSupportFragmentManager(), "Image Info");
+    }
+
+    protected void showVideoInfo() {
+        VideoInfoFragment fragment = new VideoInfoFragment(mediaPath);
+        fragment.show(getSupportFragmentManager(), "Video Info");
     }
 
     protected void deleteMedia() {
@@ -276,5 +287,15 @@ public class RootViewMediaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
+    }
+
+    public static boolean isVideoFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("video");
     }
 }
