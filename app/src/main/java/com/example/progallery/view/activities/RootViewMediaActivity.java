@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
-import com.example.progallery.helpers.GPS;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.MediaFetchService;
 import com.example.progallery.view.adapters.AlbumAdapter;
@@ -35,12 +33,10 @@ import com.example.progallery.viewmodel.AlbumViewModel;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 
 import static com.example.progallery.helpers.Constant.REQUEST_GET_LOCATION;
 
@@ -50,6 +46,16 @@ public class RootViewMediaActivity extends AppCompatActivity {
     protected String mediaPath;
     protected boolean isFavorite;
     AlbumViewModel albumViewModel;
+
+    public static boolean isImageFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("image");
+    }
+
+    public static boolean isVideoFile(String path) {
+        String mimeType = URLConnection.guessContentTypeFromName(path);
+        return mimeType != null && mimeType.startsWith("video");
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -306,23 +312,16 @@ public class RootViewMediaActivity extends AppCompatActivity {
         assert data != null;
         if (requestCode == REQUEST_GET_LOCATION) {
             if (resultCode == RESULT_OK) {
-                double latitude = data.getDoubleExtra("lat", 0);
-                double longitude = data.getDoubleExtra("long", 0);
-                File file = new File(mediaPath);
-                Log.d("Absolute path", file.getAbsolutePath());
-                Uri uri = Uri.fromFile(new File(mediaPath));
-                ExifInterface exif = null;
+                double latitudeGet = data.getDoubleExtra("lat", 0);
+                double longitudeGet = data.getDoubleExtra("long", 0);
                 try {
-                    InputStream in = Objects.requireNonNull(getApplicationContext().getContentResolver().openInputStream(uri));
-                    exif = new ExifInterface(mediaPath);
-                    String latStr = GPS.convert(latitude);
-                    String latStrRef = GPS.latitudeRef(latitude);
-                    String longStr = GPS.convert(longitude);
-                    String longStrRef = GPS.longitudeRef(longitude);
-                    exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latStr);
-                    exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, latStrRef);
-                    exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longStr);
-                    exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, longStrRef);
+                    ExifInterface exif = new ExifInterface(mediaPath);
+                    String longitude = gpsInfoConvert(longitudeGet);
+                    String latitude = gpsInfoConvert(latitudeGet);
+                    exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, (longitudeGet > 0) ? "E" : "W");
+                    exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, (latitudeGet > 0) ? "N" : "S");
+                    exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, longitude);
+                    exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, latitude);
                     exif.saveAttributes();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -334,18 +333,30 @@ public class RootViewMediaActivity extends AppCompatActivity {
         }
     }
 
+    String gpsInfoConvert(Double coordinate) {
+        Double coord = coordinate;
+        StringBuilder sb = new StringBuilder();
+
+        if (coord < 0) {
+            coord = -coord;
+        }
+        int degrees = (int) Math.floor(coord);
+        sb.append(degrees);
+        sb.append("/1,");
+        coord -= (double) degrees;
+        coord *= 60.0;
+        int minutes = (int) Math.floor(coord);
+        sb.append(minutes);
+        sb.append("/1,");
+        coord -= (double) minutes;
+        coord *= 60.0;
+        sb.append((int) Math.floor(coord));
+        sb.append("/1");
+        return sb.toString();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    public static boolean isImageFile(String path) {
-        String mimeType = URLConnection.guessContentTypeFromName(path);
-        return mimeType != null && mimeType.startsWith("image");
-    }
-
-    public static boolean isVideoFile(String path) {
-        String mimeType = URLConnection.guessContentTypeFromName(path);
-        return mimeType != null && mimeType.startsWith("video");
     }
 }

@@ -80,15 +80,9 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.12"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
-    // ExifInterface
-    //noinspection GradleCompatible
-    implementation 'com.android.support:support-v4:25.3.0'
-    //noinspection GradleCompatible
-    implementation 'com.android.support:exifinterface:25.3.0'
-
     // Crop Image
     implementation 'com.github.yalantis:ucrop:2.2.6-native'
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     //noinspection GradleDependency
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.6';
 

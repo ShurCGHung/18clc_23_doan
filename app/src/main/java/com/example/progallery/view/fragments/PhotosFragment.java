@@ -240,7 +240,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
         // mediaViewModel = new ViewModelProvider(getActivity()).get(MediaViewModel.class);
 
-        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
+        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(this.requireActivity().getApplication());
         mediaViewModel = new ViewModelProvider(this, factory).get(MediaViewModel.class);
         mediaViewModel.getMediasObserver().observe(this, mediaList -> {
             if (mediaList == null) {
@@ -260,14 +260,14 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
             startActivity(takePictureIntent);
         }
     }
 
     private void dispatchTakeVideoIntent() {
         Intent takeVideoIntent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
-        if (takeVideoIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takeVideoIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
             startActivity(takeVideoIntent);
         }
     }
