@@ -81,6 +81,13 @@ public class ViewVideoActivity extends RootViewMediaActivity {
             }
         });
 
+        findViewById(R.id.btnShare).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareMedia();
+            }
+        });
+
         Intent intent = getIntent();
 
         mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);

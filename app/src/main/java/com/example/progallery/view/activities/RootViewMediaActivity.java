@@ -302,15 +302,19 @@ public class RootViewMediaActivity extends AppCompatActivity {
 
     public void shareMedia() {
         try {
-            Uri shareBitmap = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()), BuildConfig.APPLICATION_ID + ".provider", new File(mediaPath));
+            Uri shareMediaUri = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()), BuildConfig.APPLICATION_ID + ".provider", new File(mediaPath));
             Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_STREAM, shareBitmap);
+            if (isVideoFile(mediaPath)) {
+                intent.setType("video/mp4");
+            } else if (isImageFile(mediaPath)) {
+                intent.setType("image/jpeg");
+            }
             startActivity(Intent.createChooser(intent, "Share via"));
+            intent.putExtra(Intent.EXTRA_STREAM, shareMediaUri);
             List<ResolveInfo> resInfoList = getApplicationContext().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {
                 String packageName = resolveInfo.activityInfo.packageName;
-                getApplicationContext().grantUriPermission(packageName, shareBitmap, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                getApplicationContext().grantUriPermission(packageName, shareMediaUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
         } catch (Exception e) {
             e.printStackTrace();
