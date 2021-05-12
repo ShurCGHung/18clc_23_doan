@@ -55,6 +55,7 @@
     <string name="image_source">Path</string>
     <string name="image_length">Length</string>
     <string name="image_width">Width</string>
+    <string name="image_height">Height</string>
     <string name="datetime">Datetime</string>
     <string name="orientation">Orientation</string>
     <string name="latitude">Latitude</string>
@@ -82,6 +83,7 @@
     <!-- Preference Titles -->
     <string name="preferences_category_general">General</string>
     <string name="preferences_language">Language</string>
+    <string name="duration">Duration</string>
 
     <!-- NOTE: Has to correspond to array "locales" in locales.xml (elements in same orderwith) -->
     <string-array name="settings_language_values">

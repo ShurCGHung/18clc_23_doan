@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +20,16 @@ import androidx.fragment.app.DialogFragment;
 import com.example.progallery.R;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class VideoInfoFragment extends DialogFragment {
 
-    TextView imgTitle, imgSource, imgDateTime, imgLongtitude, imgLatitude;
+    private static final String TAG = "Format Video";
+    TextView vidTitle, vidSource, vidDatetime, vidDuration, vidWidth, vidHeight;
     ExifInterface exif;
     private String mediaPath;
 
@@ -48,28 +53,71 @@ public class VideoInfoFragment extends DialogFragment {
                     }
                 });
 
-        imgTitle = view.findViewById(R.id.imgTitle);
-        imgSource = view.findViewById(R.id.imgSource);
-        imgDateTime = view.findViewById(R.id.imgDateTime);
-        imgLongtitude = view.findViewById(R.id.imgLongtitude);
-        imgLatitude = view.findViewById(R.id.imgLatitude);
+        vidTitle = view.findViewById(R.id.vidTitle);
+        vidSource = view.findViewById(R.id.vidSource);
+        vidDatetime = view.findViewById(R.id.vidDatetime);
+        vidDuration = view.findViewById(R.id.vidDuration);
+        vidWidth = view.findViewById(R.id.vidWidth);
+        vidHeight = view.findViewById(R.id.vidHeight);
         try {
             Uri uri = Uri.fromFile(new File(mediaPath));
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(getContext(), uri);
+
             String duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            String width = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+            String height = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+
+            Long milliseconds = Long.parseLong(duration);
+            long hours = TimeUnit.MILLISECONDS.toHours(milliseconds);
+            milliseconds -= TimeUnit.HOURS.toMillis(hours);
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
+            milliseconds -= TimeUnit.MINUTES.toMillis(minutes);
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(milliseconds);
+            String videoDuration = String.format(
+                    "%02d:%02d:%02d",
+                    hours, minutes, seconds
+
+            );
+
             String datetime = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
+//            Date date = new Date(datetime);
+//            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+//            format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+//            String formatted = format.format(date);
+            String formattedDate = HandleFormatDate(datetime);
             retriever.release();
 
-            imgTitle.setText(mediaPath.substring(mediaPath.lastIndexOf("/") + 1));
-            imgLongtitude.setText(duration);
-            imgDateTime.setText(datetime);
-            imgSource.setText(mediaPath);
+            vidTitle.setText(mediaPath.substring(mediaPath.lastIndexOf("/") + 1));
+            vidDuration.setText(videoDuration);
+            vidDatetime.setText(formattedDate);
+            vidWidth.setText(width);
+            vidHeight.setText(height);
+            vidSource.setText(mediaPath);
 
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(getActivity(), "Failed to display video information", Toast.LENGTH_SHORT).show();
         }
 
         return builder.create();
+    }
+
+    private static String HandleFormatDate(String date) {
+        String formattedDate = "";
+        try {
+            Date inputDate = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault()).parse(date);
+            formattedDate = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(inputDate);
+        }
+        catch (Exception e){
+            Log.w(TAG, "error parsing date: ", e);
+            try {
+                Date inputDate = new SimpleDateFormat("yyyy MM dd", Locale.getDefault()).parse(date);
+                formattedDate = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(inputDate);
+            } catch (Exception ex) {
+                Log.e(TAG, "error parsing date: ", ex);
+            }
+        }
+        return formattedDate;
     }
 }

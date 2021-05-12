@@ -296,7 +296,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
 
     public void shareMedia() {
         try {
-            Uri shareBitmap = Uri.parse(mediaPath);
+            Uri shareBitmap = Uri.fromFile(new File(mediaPath));
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("image/png");
             intent.putExtra(Intent.EXTRA_STREAM, shareBitmap);
