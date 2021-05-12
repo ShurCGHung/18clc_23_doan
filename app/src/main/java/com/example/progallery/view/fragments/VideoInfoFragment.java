@@ -3,6 +3,7 @@ package com.example.progallery.view.fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -54,16 +55,18 @@ public class VideoInfoFragment extends DialogFragment {
         imgLatitude = view.findViewById(R.id.imgLatitude);
         try {
             Uri uri = Uri.fromFile(new File(mediaPath));
-            InputStream in = Objects.requireNonNull(getContext()).getApplicationContext().getContentResolver().openInputStream(uri);
-            exif = new ExifInterface(in);
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(getContext(), uri);
+            String duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            String datetime = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
+            retriever.release();
 
             imgTitle.setText(mediaPath.substring(mediaPath.lastIndexOf("/") + 1));
-            imgDateTime.setText(exif.getAttribute(ExifInterface.TAG_DATETIME));
-            imgLongtitude.setText(exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE));
-            imgLatitude.setText(exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE));
+            imgLongtitude.setText(duration);
+            imgDateTime.setText(datetime);
             imgSource.setText(mediaPath);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
