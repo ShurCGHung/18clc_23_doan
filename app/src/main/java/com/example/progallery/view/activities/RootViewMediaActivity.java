@@ -2,6 +2,8 @@ package com.example.progallery.view.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,11 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.progallery.BuildConfig;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.model.models.Album;
@@ -37,6 +41,8 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.Objects;
 
 import static com.example.progallery.helpers.Constant.REQUEST_GET_LOCATION;
 
@@ -296,12 +302,18 @@ public class RootViewMediaActivity extends AppCompatActivity {
 
     public void shareMedia() {
         try {
-            Uri shareBitmap = Uri.fromFile(new File(mediaPath));
+            Uri shareBitmap = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()), BuildConfig.APPLICATION_ID + ".provider", new File(mediaPath));
             Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("image/png");
+            intent.setType("image/jpeg");
             intent.putExtra(Intent.EXTRA_STREAM, shareBitmap);
             startActivity(Intent.createChooser(intent, "Share via"));
+            List<ResolveInfo> resInfoList = getApplicationContext().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                getApplicationContext().grantUriPermission(packageName, shareBitmap, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             Toast.makeText(this, "Share error", Toast.LENGTH_SHORT).show();
         }
     }

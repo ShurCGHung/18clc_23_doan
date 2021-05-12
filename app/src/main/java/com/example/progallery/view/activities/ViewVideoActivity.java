@@ -33,7 +33,6 @@ public class ViewVideoActivity extends RootViewMediaActivity {
         return true;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
