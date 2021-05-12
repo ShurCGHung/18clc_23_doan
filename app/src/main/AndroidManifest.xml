@@ -34,7 +34,7 @@
         android:theme="@style/Theme.ProGallery">
         <activity
             android:name=".view.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

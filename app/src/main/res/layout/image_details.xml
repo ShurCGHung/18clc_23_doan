@@ -4,15 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/_13sdp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="@dimen/_13sdp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <TextView
             android:layout_width="match_parent"
@@ -20,7 +19,7 @@
             android:textSize="@dimen/_13ssp"
             android:text="@string/img_title"
             android:textAlignment="textStart"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
         <TextView
             android:id="@+id/imgTitle"
@@ -37,7 +36,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <TextView
             android:layout_width="match_parent"
@@ -45,7 +44,7 @@
             android:textSize="@dimen/_13ssp"
             android:text="@string/image_length"
             android:textAlignment="textStart"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
         <TextView
             android:id="@+id/imgLength"
@@ -62,7 +61,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <TextView
             android:layout_width="match_parent"
@@ -70,7 +69,7 @@
             android:textSize="@dimen/_13ssp"
             android:text="@string/image_width"
             android:textAlignment="textStart"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
         <TextView
             android:id="@+id/imgWidth"
@@ -87,7 +86,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp"
-        android:layout_weight="2">
+        android:weightSum="3">
 
         <TextView
             android:layout_width="match_parent"
@@ -95,7 +94,7 @@
             android:textSize="@dimen/_13ssp"
             android:text="@string/datetime"
             android:textAlignment="textStart"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
         <TextView
             android:id="@+id/imgDateTime"
@@ -112,7 +111,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <TextView
             android:layout_width="match_parent"
@@ -120,7 +119,7 @@
             android:textSize="@dimen/_13ssp"
             android:text="@string/orientation"
             android:textAlignment="textStart"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
         <TextView
             android:id="@+id/imgOrientation"
@@ -137,7 +136,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <TextView
             android:layout_width="match_parent"
@@ -145,7 +144,7 @@
             android:textSize="@dimen/_13ssp"
             android:text="@string/longtitude"
             android:textAlignment="textStart"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
         <TextView
             android:id="@+id/imgLongtitude"
@@ -162,7 +161,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_3sdp"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <TextView
             android:layout_width="match_parent"
@@ -170,7 +169,7 @@
             android:textSize="@dimen/_13ssp"
             android:text="@string/latitude"
             android:textAlignment="textStart"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
         <TextView
             android:id="@+id/imgLatitude"
@@ -187,7 +186,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_3sdp"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <TextView
             android:layout_width="match_parent"
@@ -195,7 +194,7 @@
             android:textSize="@dimen/_13ssp"
             android:text="@string/image_source"
             android:textAlignment="textStart"
-            android:layout_weight="1"/>
+            android:layout_weight="2"/>
 
         <TextView
             android:id="@+id/imgSource"
