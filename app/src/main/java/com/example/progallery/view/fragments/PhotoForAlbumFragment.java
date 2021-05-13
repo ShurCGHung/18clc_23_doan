@@ -83,7 +83,7 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onDestroy() {
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         TabLayout tabLayout = MainActivity.tabLayout;
         if (albumName != null) {
             Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
@@ -155,7 +155,7 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
             Objects.requireNonNull(tabLayout.getTabAt(1)).view.setClickable(false);
         }
 
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         View view = inflater.inflate(R.layout.fragment_photos, container, false);
 
@@ -184,7 +184,7 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
             View tempView = inflater.inflate(R.layout.photo_grid_item, container, false);
             ImageView tempImage = tempView.findViewById(R.id.imageView);
             int columnWidth = tempImage.getLayoutParams().width;
-            int numColumn = ColumnCalculator.calculateNoOfColumns(Objects.requireNonNull(getContext()), columnWidth);
+            int numColumn = ColumnCalculator.calculateNoOfColumns(requireContext(), columnWidth);
 
             GridLayoutManager glm = new GridLayoutManager(getContext(), numColumn);
             recyclerView.setLayoutManager(glm);
@@ -217,9 +217,9 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
         // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
         // mediaViewModel = new ViewModelProvider(getActivity()).get(MediaViewModel.class);
 
-        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
+        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(this.requireActivity().getApplication());
         mediaViewModel = new ViewModelProvider(this, factory).get(MediaViewModel.class);
-        mediaViewModel.getMediasObserver().observe(this, mediaList -> {
+        mediaViewModel.getMediasObserver().observe(getViewLifecycleOwner(), mediaList -> {
             if (mediaList == null) {
                 Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
             } else {

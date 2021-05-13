@@ -24,7 +24,8 @@ public class RootHighlightFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.view_album_menu, menu);
+        menu.clear();
+        inflater.inflate(R.menu.view_hightlight_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

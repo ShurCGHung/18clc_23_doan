@@ -183,7 +183,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             View tempView = inflater.inflate(R.layout.photo_grid_item, container, false);
             ImageView tempImage = tempView.findViewById(R.id.imageView);
             int columnWidth = tempImage.getLayoutParams().width;
-            int numColumn = ColumnCalculator.calculateNoOfColumns(Objects.requireNonNull(getContext()), columnWidth);
+            int numColumn = ColumnCalculator.calculateNoOfColumns(requireContext(), columnWidth);
 
             GridLayoutManager glm = new GridLayoutManager(getContext(), numColumn);
             if (MainActivity.showDatesBool) {
@@ -239,7 +239,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(this.requireActivity().getApplication());
         mediaViewModel = new ViewModelProvider(this, factory).get(MediaViewModel.class);
-        mediaViewModel.getMediasObserver().observe(this, mediaList -> {
+        mediaViewModel.getMediasObserver().observe(getViewLifecycleOwner(), mediaList -> {
             if (mediaList == null) {
                 Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
             } else {

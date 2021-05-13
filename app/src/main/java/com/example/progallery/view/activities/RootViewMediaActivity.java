@@ -2,6 +2,7 @@ package com.example.progallery.view.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -23,9 +24,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ethanco.lib.PasswordDialog;
 import com.example.progallery.BuildConfig;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
+import com.example.progallery.helpers.CountCheckFilter;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.MediaFetchService;
 import com.example.progallery.view.adapters.AlbumAdapter;
@@ -129,9 +132,58 @@ public class RootViewMediaActivity extends AppCompatActivity {
         } else if (id == R.id.btnLocation) {
             Intent intent = new Intent(RootViewMediaActivity.this, LocationPickerActivity.class);
             startActivityForResult(intent, Constant.REQUEST_GET_LOCATION);
+        } else if (id == R.id.btnMoveToVault) {
+            moveToVault();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void moveToVault() {
+        SharedPreferences preferences = getSharedPreferences(Constant.PIN, MODE_PRIVATE);
+        if (!preferences.contains(Constant.PIN)) {
+            Toast.makeText(RootViewMediaActivity.this, "Set your PIN first", Toast.LENGTH_SHORT).show();
+        } else {
+            PasswordDialog.Builder builder = new PasswordDialog.Builder(RootViewMediaActivity.this)
+                    .setTitle("Please input password")
+                    .setBoxCount(4)
+                    .setBorderNotFocusedColor(R.color.colorSecondaryText)
+                    .setDotNotFocusedColor(R.color.colorSecondaryText)
+                    .setPositiveText("OK")
+                    .setPositiveListener((dialog, which, text) -> {
+                        String pass = getSharedPreferences(Constant.PIN, MODE_PRIVATE).getString(Constant.PIN, "");
+                        if (text.equals(pass)) {
+                            String imageName = mediaPath.substring(mediaPath.lastIndexOf('/'));
+                            File file = new File(getApplicationContext().getExternalFilesDir(".hidden").getAbsolutePath());
+                            String newPath = file.getAbsolutePath() + "/" + imageName;
+
+                            boolean fileMoved = true;
+                            try {
+                                Files.move(Paths.get(mediaPath), Paths.get(newPath), StandardCopyOption.REPLACE_EXISTING);
+                            } catch (Exception e) {
+                                fileMoved = false;
+                                e.printStackTrace();
+                            }
+
+                            if (fileMoved) {
+                                MediaFetchService service = MediaFetchService.getInstance();
+                                boolean remove = service.deleteMedia(RootViewMediaActivity.this, mediaPath);
+                                if (remove) {
+                                    Toast.makeText(RootViewMediaActivity.this, "Moved to vault", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(RootViewMediaActivity.this, "Failed to move vault", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                        else {
+                            Toast.makeText(RootViewMediaActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeListener((dialogInterface, i) -> {
+                    })
+                    .addCheckPasswordFilter(new CountCheckFilter());
+            builder.create().show();
+        }
     }
 
     protected void showImageInfo() {
