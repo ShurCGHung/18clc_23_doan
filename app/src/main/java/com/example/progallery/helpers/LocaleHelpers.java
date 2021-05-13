@@ -9,8 +9,6 @@ import android.os.Build;
 
 import androidx.preference.PreferenceManager;
 
-import com.example.progallery.view.activities.SettingsActivity;
-
 import java.util.Locale;
 
 public class LocaleHelpers {
@@ -28,7 +26,7 @@ public class LocaleHelpers {
 
     public static String getPersistedLocale(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(SettingsActivity.SettingsFragment.KEY_PREF_LANGUAGE, "");
+        return preferences.getString(Constant.KEY_PREF_LANGUAGE, "");
     }
 
     private static void persist(Context context, String language) {

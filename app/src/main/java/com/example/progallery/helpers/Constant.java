@@ -20,4 +20,10 @@ public class Constant {
 
     // SharedPreferences names
     public static final String FAVORITE_PREF = "FAVORITE";
+    public static final String PIN = "PIN";
+    public static final String KEY_PREF_LANGUAGE = "pref_key_language";
+    public static final String language = "language";
+
+    // Log
+    public static final String TAG = "Pin Passcode Activity";
 }
