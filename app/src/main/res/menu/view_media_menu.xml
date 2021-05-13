@@ -26,6 +26,9 @@
         android:id="@+id/btnMoveToVault"
         android:title="@string/move_to_vault" />
     <item
+        android:id="@+id/btnRemoveFromVault"
+        android:title="@string/remove_from_vault" />
+    <item
         android:id="@+id/btnLocation"
         android:icon="@drawable/ic_delete"
         android:title="@string/set_location" />

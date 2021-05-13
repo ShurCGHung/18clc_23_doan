@@ -64,7 +64,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void handleAddAlbum() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
         final View customDialog = getLayoutInflater().inflate(R.layout.album_name_dialog, null);
 
@@ -111,7 +111,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         View tempView = inflater.inflate(R.layout.album_grid_item, container, false);
         ImageView tempImage = tempView.findViewById(R.id.album_thumbnail);
         int columnWidth = tempImage.getLayoutParams().width;
-        int numColumn = ColumnCalculator.calculateNoOfColumns(Objects.requireNonNull(getContext()), columnWidth);
+        int numColumn = ColumnCalculator.calculateNoOfColumns(requireContext(), columnWidth);
 
         GridLayoutManager glm = new GridLayoutManager(getContext(), numColumn);
         recyclerView.setLayoutManager(glm);
@@ -162,7 +162,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void handleRenameAlbum(Album album) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
         final View customDialog = getLayoutInflater().inflate(R.layout.album_name_dialog, null);
 
@@ -250,9 +250,9 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
         // mediaViewModel = new ViewModelProvider(getActivity()).get(MediaViewModel.class);
 
-        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(Objects.requireNonNull(this.getActivity()).getApplication());
+        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(this.requireActivity().getApplication());
         albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
-        albumViewModel.getAlbumsObserver().observe(this, albumList -> {
+        albumViewModel.getAlbumsObserver().observe(getViewLifecycleOwner(), albumList -> {
             if (albumList == null) {
                 Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
             } else {

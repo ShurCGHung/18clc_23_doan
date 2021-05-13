@@ -1,6 +1,8 @@
 package com.example.progallery.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,7 +27,8 @@ public class RootHighlightFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.view_album_menu, menu);
+        menu.clear();
+        inflater.inflate(R.menu.view_hightlight_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

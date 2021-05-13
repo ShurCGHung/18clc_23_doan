@@ -66,6 +66,7 @@ public class ViewImageActivity extends RootViewMediaActivity {
                 mediaPath = Converter.toPath(this, mediaUri);
             }
         } else {
+            isVault = intent.getBooleanExtra(Constant.EXTRA_VAULT, false);
             mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
         }
 
