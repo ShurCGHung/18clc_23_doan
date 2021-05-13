@@ -137,6 +137,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_3sdp"
         android:orientation="horizontal"
+        android:id="@+id/pathText"
         android:weightSum="2">
 
         <TextView

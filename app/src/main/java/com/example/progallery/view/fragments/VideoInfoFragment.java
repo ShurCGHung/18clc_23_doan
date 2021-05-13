@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,16 +33,18 @@ public class VideoInfoFragment extends DialogFragment {
     TextView vidTitle, vidSource, vidDatetime, vidDuration, vidWidth, vidHeight;
     ExifInterface exif;
     private String mediaPath;
+    boolean isVault;
 
-    public VideoInfoFragment(String mediaPath) {
+    public VideoInfoFragment(String mediaPath, boolean isVault) {
         this.mediaPath = mediaPath;
+        this.isVault = isVault;
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.video_details, null);
 
         builder.setView(view)
@@ -52,6 +55,13 @@ public class VideoInfoFragment extends DialogFragment {
 
                     }
                 });
+
+        LinearLayout linearLayout = view.findViewById(R.id.pathText);
+        if (isVault) {
+            linearLayout.setVisibility(View.GONE);
+        } else {
+            linearLayout.setVisibility(View.VISIBLE);
+        }
 
         vidTitle = view.findViewById(R.id.vidTitle);
         vidSource = view.findViewById(R.id.vidSource);

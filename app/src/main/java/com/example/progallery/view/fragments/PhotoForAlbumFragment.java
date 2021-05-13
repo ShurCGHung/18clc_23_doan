@@ -3,7 +3,6 @@ package com.example.progallery.view.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -94,8 +93,14 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
         Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
         TabLayout tabLayout = MainActivity.tabLayout;
         if (albumName != null) {
-            Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
-            Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(true);
+            if (albumName.equals("e9569439466b447c2678d48306e433f9")) {
+                Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
+                Objects.requireNonNull(tabLayout.getTabAt(1)).view.setClickable(true);
+            } else {
+                Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
+                Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(true);
+
+            }
         } else {
             Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(true);
             Objects.requireNonNull(tabLayout.getTabAt(1)).view.setClickable(true);

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,10 +22,12 @@ public class ImageInfoFragment extends DialogFragment {
 
     TextView imgTitle, imgSource, imgLength, imgWidth, imgOrientation, imgDateTime, imgLongtitude, imgLatitude;
     ExifInterface exif;
+    boolean isVault;
     private String mediaPath;
 
-    public ImageInfoFragment(String mediaPath) {
+    public ImageInfoFragment(String mediaPath, boolean isVault) {
         this.mediaPath = mediaPath;
+        this.isVault = isVault;
     }
 
     @NonNull
@@ -43,6 +46,12 @@ public class ImageInfoFragment extends DialogFragment {
                     }
                 });
 
+        LinearLayout linearLayout = view.findViewById(R.id.pathText);
+        if (isVault) {
+            linearLayout.setVisibility(View.GONE);
+        } else {
+            linearLayout.setVisibility(View.VISIBLE);
+        }
         imgTitle = view.findViewById(R.id.imgTitle);
         imgSource = view.findViewById(R.id.imgSource);
         imgLength = view.findViewById(R.id.imgLength);

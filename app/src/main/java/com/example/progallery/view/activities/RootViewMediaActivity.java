@@ -265,12 +265,12 @@ public class RootViewMediaActivity extends AppCompatActivity {
     }
 
     protected void showImageInfo() {
-        ImageInfoFragment fragment = new ImageInfoFragment(mediaPath);
+        ImageInfoFragment fragment = new ImageInfoFragment(mediaPath, isVault);
         fragment.show(getSupportFragmentManager(), "Image Info");
     }
 
     protected void showVideoInfo() {
-        VideoInfoFragment fragment = new VideoInfoFragment(mediaPath);
+        VideoInfoFragment fragment = new VideoInfoFragment(mediaPath, isVault);
         fragment.show(getSupportFragmentManager(), "Video Info");
     }
 
