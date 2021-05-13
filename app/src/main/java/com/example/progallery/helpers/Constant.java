@@ -16,13 +16,15 @@ public class Constant {
     public static final int REQUEST_RETURN = 5;
     public static final int REQUEST_GET_LOCATION = 6;
     public final static int LOCATION_REQUEST_CODE = 23;
-
+    public static final int REQUEST_SET_PIN = 25;
+    public static final int REQUEST_CHANGE_PIN = 29;
 
     // SharedPreferences names
     public static final String FAVORITE_PREF = "FAVORITE";
     public static final String PIN = "PIN";
     public static final String KEY_PREF_LANGUAGE = "pref_key_language";
     public static final String language = "language";
+    public static final String VAULT = "Vault";
 
     // Log
     public static final String TAG = "Pin Passcode Activity";

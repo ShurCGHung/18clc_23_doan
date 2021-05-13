@@ -1,6 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="setting_pref">
     <PreferenceCategory
+        android:layout="@layout/preferences_category"
         android:title="@string/preferences_category_general">
         <ListPreference
             android:key="pref_key_language"
@@ -14,6 +16,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:layout="@layout/preferences_category"
         android:title="@string/night_mode">
 
         <CheckBoxPreference
@@ -26,19 +29,19 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="vault_passcode_key"
+        android:layout="@layout/preferences_category"
         android:title="@string/vault">
         <PreferenceScreen
+            android:key="set_pin_key"
             android:title="@string/set_pin"
             android:summary="@string/set_pin_passcode">
-
-            <intent android:action="pin.action.set_pin"/>
         </PreferenceScreen>
 
         <PreferenceScreen
+            android:key="change_pin_key"
             android:title="@string/change_pin"
             android:summary="@string/change_pin_passcode">
-
-            <intent android:action="pin.action.change_pin"/>
         </PreferenceScreen>
     </PreferenceCategory>
 

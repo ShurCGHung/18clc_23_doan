@@ -169,7 +169,7 @@ public class ChangePasscode extends AppCompatActivity {
                 CharSequence newPinInput = enterNewPinView.getText();
                 CharSequence confirmPIN = confirmPinView.getText();
 
-                if (savedPIN != null) {
+                if (!savedPIN.isEmpty()) {
                     if (oldPinInput.toString().equals(savedPIN)) {
                         try {
                             if (newPinInput.toString().equals(confirmPIN.toString())) {
@@ -188,8 +188,6 @@ public class ChangePasscode extends AppCompatActivity {
                     } else {
                         Toast.makeText(ChangePasscode.this, "Old Passcode Unmatched", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(ChangePasscode.this, "Have not set passcode", Toast.LENGTH_SHORT).show();
                 }
             }
         });
