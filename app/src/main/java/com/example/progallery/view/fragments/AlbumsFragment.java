@@ -135,7 +135,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
             @Override
             public void onOptionAlbumClick(Album album) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
                 builder.setTitle("Choose an action");
 
                 String[] options = {"Remove album", "Rename album"};

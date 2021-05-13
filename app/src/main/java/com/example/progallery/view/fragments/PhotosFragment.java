@@ -47,7 +47,9 @@ import static android.app.Activity.RESULT_OK;
 import static com.example.progallery.helpers.Constant.FLEX;
 import static com.example.progallery.helpers.Constant.GRID;
 import static com.example.progallery.helpers.Constant.LIST;
+import static com.example.progallery.helpers.Constant.REQUEST_MOVE_VAULT;
 import static com.example.progallery.helpers.Constant.REQUEST_REMOVE_MEDIA;
+import static com.example.progallery.helpers.Constant.REQUEST_REMOVE_VAULT;
 import static com.example.progallery.helpers.Constant.REQUEST_VIEW_MEDIA;
 
 public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -154,10 +156,12 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 if (Integer.parseInt(media.getMediaType()) == 1) {
                     Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
                     intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                    intent.putExtra(Constant.EXTRA_VAULT, false);
                     startActivityForResult(intent, Constant.REQUEST_VIEW_MEDIA);
                 } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
                     Intent intent = new Intent(PhotosFragment.this.getContext(), ViewVideoActivity.class);
                     intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                    intent.putExtra(Constant.EXTRA_VAULT, false);
                     startActivityForResult(intent, Constant.REQUEST_VIEW_MEDIA);
                 }
             });
@@ -170,10 +174,12 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
                     Intent intent = new Intent(PhotosFragment.this.getContext(), ViewImageActivity.class);
                     intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                    intent.putExtra(Constant.EXTRA_VAULT, false);
                     startActivityForResult(intent, Constant.REQUEST_VIEW_MEDIA);
                 } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
                     Intent intent = new Intent(PhotosFragment.this.getContext(), ViewVideoActivity.class);
                     intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
+                    intent.putExtra(Constant.EXTRA_VAULT, false);
                     startActivityForResult(intent, Constant.REQUEST_VIEW_MEDIA);
                 }
             });
@@ -219,12 +225,29 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         assert data != null;
         if (requestCode == REQUEST_VIEW_MEDIA) {
             int requestCodeFromIntent = data.getIntExtra(Constant.EXTRA_REQUEST, -1);
+            Log.d("MY_APP", String.valueOf(requestCodeFromIntent));
             if (requestCodeFromIntent == REQUEST_REMOVE_MEDIA) {
                 if (resultCode == RESULT_OK) {
                     Toast.makeText(getContext(), "Media is deleted successfully", Toast.LENGTH_SHORT).show();
                     loadView();
                 } else {
                     Toast.makeText(getContext(), "Failed to delete media", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if (requestCodeFromIntent == REQUEST_MOVE_VAULT) {
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getContext(), "Moved to vault", Toast.LENGTH_SHORT).show();
+                    loadView();
+                } else {
+                    Toast.makeText(getContext(), "Failed to move to vault", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if (requestCodeFromIntent == REQUEST_REMOVE_VAULT) {
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getContext(), "Removed from vault", Toast.LENGTH_SHORT).show();
+                    loadView();
+                } else {
+                    Toast.makeText(getContext(), "Failed to remove from vault", Toast.LENGTH_SHORT).show();
                 }
             }
         }

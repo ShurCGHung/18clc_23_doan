@@ -1,19 +1,16 @@
 package com.example.progallery.view.fragments;
 
-import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -24,11 +21,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.ethanco.lib.PasswordDialog;
-import com.ethanco.lib.abs.OnPositiveButtonListener;
 import com.example.progallery.R;
+import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.CountCheckFilter;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.viewmodel.AlbumViewModel;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class HighlightsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     View view;
@@ -72,31 +71,37 @@ public class HighlightsFragment extends Fragment implements SwipeRefreshLayout.O
         vaultImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PasswordDialog.Builder builder = new PasswordDialog.Builder(requireContext())
-                        .setTitle("Please input password")
-                        .setBoxCount(4)
-                        .setBorderNotFocusedColor(R.color.colorSecondaryText)
-                        .setDotNotFocusedColor(R.color.colorSecondaryText)
-                        .setPositiveText("OK")
-                        .setPositiveListener(new OnPositiveButtonListener() {
-                            @Override
-                            public void onPositiveClick(DialogInterface dialog, int which, String text) {
-                                if (text.equals("1234")) {
+                SharedPreferences preferences = requireContext().getSharedPreferences(Constant.PIN, MODE_PRIVATE);
+                if (!preferences.contains(Constant.PIN)) {
+                    Toast.makeText(getContext(), "Set your PIN first", Toast.LENGTH_SHORT).show();
+                } else {
+                    PasswordDialog.Builder builder = new PasswordDialog.Builder(requireContext())
+                            .setTitle("Please input password")
+                            .setBoxCount(4)
+                            .setBorderNotFocusedColor(R.color.colorSecondaryText)
+                            .setDotNotFocusedColor(R.color.colorSecondaryText)
+                            .setPositiveText("OK")
+                            .setPositiveListener((dialog, which, text) -> {
+                                String pass = requireContext().getSharedPreferences(Constant.PIN, MODE_PRIVATE).getString(Constant.PIN, "");
+                                if (text.equals(pass)) {
+                                    assert getFragmentManager() != null;
+                                    FragmentTransaction trans = getFragmentManager()
+                                            .beginTransaction();
+                                    trans.replace(R.id.root_highlight_fragment, new PhotoForAlbumFragment("e9569439466b447c2678d48306e433f9"), "PHOTO_VAULT");
+                                    trans.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                                    trans.addToBackStack(null);
+                                    trans.commit();
+                                } else {
+                                    Toast.makeText(getContext(), "Wrong password", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                        })
-                        .setNegativeListener(new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        })
-                        .addCheckPasswordFilter(new CountCheckFilter());
-                builder.create().show();
+                            })
+                            .setNegativeListener((dialogInterface, i) -> {
+                            })
+                            .addCheckPasswordFilter(new CountCheckFilter());
+                    builder.create().show();
+                }
             }
         });
-
-
         return view;
     }
 

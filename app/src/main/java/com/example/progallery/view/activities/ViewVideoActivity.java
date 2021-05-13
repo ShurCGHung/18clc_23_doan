@@ -91,6 +91,7 @@ public class ViewVideoActivity extends RootViewMediaActivity {
         Intent intent = getIntent();
 
         mediaPath = intent.getStringExtra(Constant.EXTRA_PATH);
+        isVault = intent.getBooleanExtra(Constant.EXTRA_VAULT, false);
 
         File videoFile = new File(mediaPath);
         if (videoFile.exists()) {

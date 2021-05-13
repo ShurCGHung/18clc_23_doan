@@ -54,6 +54,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
     protected Toolbar bottomToolbar;
     protected String mediaPath;
     protected boolean isFavorite;
+    protected boolean isVault;
     AlbumViewModel albumViewModel;
 
     public static boolean isImageFile(String path) {
@@ -88,6 +89,15 @@ public class RootViewMediaActivity extends AppCompatActivity {
         } else {
             menu.findItem(R.id.btnFavorite).setTitle("Favorite");
         }
+
+        if (isVault) {
+            menu.findItem(R.id.btnMoveToVault).setVisible(false);
+            menu.findItem(R.id.btnRemoveFromVault).setVisible(true);
+        } else {
+            menu.findItem(R.id.btnMoveToVault).setVisible(true);
+            menu.findItem(R.id.btnRemoveFromVault).setVisible(false);
+        }
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -134,9 +144,75 @@ public class RootViewMediaActivity extends AppCompatActivity {
             startActivityForResult(intent, Constant.REQUEST_GET_LOCATION);
         } else if (id == R.id.btnMoveToVault) {
             moveToVault();
+        } else if (id == R.id.btnRemoveFromVault) {
+            removeFromVault();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void removeFromVault() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(RootViewMediaActivity.this);
+        final View customDialog = getLayoutInflater().inflate(R.layout.choose_album_dialog, null);
+        builder.setView(customDialog);
+        builder.setTitle(R.string.choose_an_album);
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        RecyclerView recyclerView = customDialog.findViewById(R.id.album_pick_view);
+        recyclerView.setHasFixedSize(true);
+
+        AlbumAdapter albumAdapter = new AlbumAdapter(false);
+        recyclerView.setAdapter(albumAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(RootViewMediaActivity.this));
+
+        ViewModelProvider.AndroidViewModelFactory factory = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
+        albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
+        albumViewModel.getAlbumsObserver().observe(this, albumList -> {
+            if (albumList == null) {
+                Toast.makeText(RootViewMediaActivity.this, "Error in fetching data", Toast.LENGTH_SHORT).show();
+            } else {
+                albumAdapter.setAlbumList(albumList);
+            }
+        });
+        albumViewModel.callService(RootViewMediaActivity.this);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        albumAdapter.setAlbumListener(new AlbumListener() {
+            @Override
+            public void onAlbumClick(Album album) {
+                dialog.dismiss();
+                String imageName = mediaPath.substring(mediaPath.lastIndexOf('/'));
+                String newPath = album.getAlbumPath() + imageName;
+
+                boolean fileMoved = true;
+                try {
+                    Files.move(Paths.get(mediaPath), Paths.get(newPath), StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    fileMoved = false;
+                    e.printStackTrace();
+                }
+
+                if (fileMoved){
+                    MediaFetchService service = MediaFetchService.getInstance();
+                    boolean addToMediaStore = service.addNewMedia(RootViewMediaActivity.this, newPath, imageName);
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_VAULT);
+                    if (addToMediaStore) {
+                        setResult(RESULT_OK, returnIntent);
+                    } else {
+                        setResult(RESULT_CANCELED, returnIntent);
+                    }
+                    finish();
+                }
+            }
+
+            @Override
+            public void onOptionAlbumClick(Album album) {
+            }
+        });
     }
 
     protected void moveToVault() {
@@ -168,14 +244,16 @@ public class RootViewMediaActivity extends AppCompatActivity {
                             if (fileMoved) {
                                 MediaFetchService service = MediaFetchService.getInstance();
                                 boolean remove = service.deleteMedia(RootViewMediaActivity.this, mediaPath);
+                                Intent returnIntent = new Intent();
+                                returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_MOVE_VAULT);
                                 if (remove) {
-                                    Toast.makeText(RootViewMediaActivity.this, "Moved to vault", Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_OK, returnIntent);
                                 } else {
-                                    Toast.makeText(RootViewMediaActivity.this, "Failed to move vault", Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_CANCELED, returnIntent);
                                 }
+                                finish();
                             }
-                        }
-                        else {
+                        } else {
                             Toast.makeText(RootViewMediaActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
                         }
                     })

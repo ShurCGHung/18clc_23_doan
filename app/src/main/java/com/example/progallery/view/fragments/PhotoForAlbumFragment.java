@@ -3,6 +3,7 @@ package com.example.progallery.view.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,11 +39,17 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.IOException;
 import java.util.Objects;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.progallery.helpers.Constant.FLEX;
 import static com.example.progallery.helpers.Constant.GRID;
 import static com.example.progallery.helpers.Constant.LIST;
+import static com.example.progallery.helpers.Constant.REQUEST_MOVE_VAULT;
+import static com.example.progallery.helpers.Constant.REQUEST_REMOVE_MEDIA;
+import static com.example.progallery.helpers.Constant.REQUEST_REMOVE_VAULT;
+import static com.example.progallery.helpers.Constant.REQUEST_VIEW_MEDIA;
 
 public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private String albumName;
@@ -112,7 +120,11 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
             assert getFragmentManager() != null;
             Fragment myFragment;
             if (albumName != null) {
-                myFragment = getFragmentManager().findFragmentByTag("PHOTO_ALBUM");
+                if (albumName.equals("e9569439466b447c2678d48306e433f9")) {
+                    myFragment = getFragmentManager().findFragmentByTag("PHOTO_VAULT");
+                } else {
+                    myFragment = getFragmentManager().findFragmentByTag("PHOTO_ALBUM");
+                }
             } else {
                 myFragment = getFragmentManager().findFragmentByTag("PHOTO_FAVORITE");
             }
@@ -148,8 +160,14 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
         TabLayout tabLayout = MainActivity.tabLayout;
 
         if (albumName != null) {
-            Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(false);
-            Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(false);
+            if (albumName.equals("e9569439466b447c2678d48306e433f9")) {
+                Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(false);
+                Objects.requireNonNull(tabLayout.getTabAt(1)).view.setClickable(false);
+            } else {
+                Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(false);
+                Objects.requireNonNull(tabLayout.getTabAt(2)).view.setClickable(false);
+
+            }
         } else {
             Objects.requireNonNull(tabLayout.getTabAt(0)).view.setClickable(false);
             Objects.requireNonNull(tabLayout.getTabAt(1)).view.setClickable(false);
@@ -172,11 +190,22 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
             if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
                 Intent intent = new Intent(PhotoForAlbumFragment.this.getContext(), ViewImageActivity.class);
                 intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
-                startActivity(intent);
+                if (albumName != null) {
+                    intent.putExtra(Constant.EXTRA_VAULT, albumName.equals("e9569439466b447c2678d48306e433f9"));
+                } else {
+                    intent.putExtra(Constant.EXTRA_VAULT, false);
+                }
+
+                startActivityForResult(intent, REQUEST_VIEW_MEDIA);
             } else if (Integer.parseInt(media.getMediaType()) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
                 Intent intent = new Intent(PhotoForAlbumFragment.this.getContext(), ViewVideoActivity.class);
                 intent.putExtra(Constant.EXTRA_PATH, media.getMediaPath());
-                startActivity(intent);
+                if (albumName != null) {
+                    intent.putExtra(Constant.EXTRA_VAULT, albumName.equals("e9569439466b447c2678d48306e433f9"));
+                } else {
+                    intent.putExtra(Constant.EXTRA_VAULT, false);
+                }
+                startActivityForResult(intent, REQUEST_VIEW_MEDIA);
             }
         });
 
@@ -200,7 +229,11 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
 
         layout.post(() -> {
             layout.setRefreshing(true);
-            loadView();
+            try {
+                loadView();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         return view;
@@ -208,10 +241,58 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        loadView();
+        try {
+            loadView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void loadView() {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        assert data != null;
+        if (requestCode == REQUEST_VIEW_MEDIA) {
+            int requestCodeFromIntent = data.getIntExtra(Constant.EXTRA_REQUEST, -1);
+            if (requestCodeFromIntent == REQUEST_REMOVE_MEDIA) {
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getContext(), "Media is deleted successfully", Toast.LENGTH_SHORT).show();
+                    try {
+                        loadView();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Failed to delete media", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCodeFromIntent == REQUEST_MOVE_VAULT) {
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getContext(), "Moved to vault", Toast.LENGTH_SHORT).show();
+                    try {
+                        loadView();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Failed to move to vault", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCodeFromIntent == REQUEST_REMOVE_VAULT) {
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getContext(), "Removed from vault", Toast.LENGTH_SHORT).show();
+                    try {
+                        loadView();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Failed to remove from vault", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+
+    private void loadView() throws IOException {
         layout.setRefreshing(true);
 
         // THIS LINE CAUSES BUG, IT DIRECTS THE APPLICATION TO NON ARGUMENT CONSTRUCTOR
@@ -227,7 +308,11 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
             }
         });
         if (albumName != null) {
-            mediaViewModel.callServiceForAlbum(getContext(), albumName);
+            if (albumName.equals("e9569439466b447c2678d48306e433f9")) {
+                mediaViewModel.callServiceForVaultAlbum(getContext());
+            } else {
+                mediaViewModel.callServiceForAlbum(getContext(), albumName);
+            }
         } else {
             mediaViewModel.callServiceForFavoriteAlbum(getContext());
         }

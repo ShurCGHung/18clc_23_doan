@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.progallery.model.models.Media;
 import com.example.progallery.model.services.MediaFetchService;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -46,6 +47,15 @@ public class MediaViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getMediasObserverRx());
     }
+
+    public void callServiceForVaultAlbum(Context context) throws IOException {
+        MediaFetchService service = MediaFetchService.getInstance();
+        service.getMediaListForVaultAlbum(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(getMediasObserverRx());
+    }
+
 
     public MutableLiveData<List<Media>> getMediasObserver() {
         return allMedias;

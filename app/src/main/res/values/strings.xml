@@ -94,6 +94,7 @@
     <!-- Preference Titles -->
     <string name="preferences_category_general">General</string>
     <string name="preferences_language">Language</string>
+    <string name="remove_from_vault">Remove from Vault</string>
 
     <!-- NOTE: Has to correspond to array "locales" in locales.xml (elements in same orderwith) -->
     <string-array name="settings_language_values">
