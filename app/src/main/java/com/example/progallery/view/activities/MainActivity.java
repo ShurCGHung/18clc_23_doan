@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,16 +25,10 @@ import com.example.progallery.view.fragments.RootAlbumFragment;
 import com.example.progallery.view.fragments.RootHighlightFragment;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String MyPreference = "pref_key_language";
-    private static final String language = "language";
     private static final int MY_READWRITE_PERMISSION_CODE = 101;
 
     public static int displayOption;
@@ -83,9 +78,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             init();
         }
-        sharedPreferences = getSharedPreferences(MyPreference, Context.MODE_PRIVATE);
-        if (sharedPreferences.contains(language)) {
-            initialLocale = sharedPreferences.getString(language, "");
+        sharedPreferences = getSharedPreferences(Constant.KEY_PREF_LANGUAGE, Context.MODE_PRIVATE);
+        if (sharedPreferences.contains(Constant.language)) {
+            initialLocale = sharedPreferences.getString(Constant.language, "");
         }
     }
 
@@ -166,5 +161,15 @@ public class MainActivity extends AppCompatActivity {
         if (initialLocale != null && !initialLocale.equals(LocaleHelpers.getPersistedLocale(this))) {
             recreate();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

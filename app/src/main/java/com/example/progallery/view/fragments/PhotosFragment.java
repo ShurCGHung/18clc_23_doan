@@ -121,9 +121,6 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         } else if (id == R.id.take_video) {
             dispatchTakeVideoIntent();
             return true;
-        } else if (id == R.id.settings) {
-            Intent intent = new Intent(getActivity(), SettingsActivity.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

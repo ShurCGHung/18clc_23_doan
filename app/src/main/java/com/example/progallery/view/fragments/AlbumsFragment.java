@@ -1,6 +1,7 @@
 package com.example.progallery.view.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.AlbumFetchService;
+import com.example.progallery.view.activities.SettingsActivity;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
