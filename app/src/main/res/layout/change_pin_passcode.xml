@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center_vertical"
+    tools:context=".view.activities.SetPasscode">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_40sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_old_pin"
+            android:textSize="@dimen/_25ssp"
+            android:textStyle="bold"/>
+
+        <com.chaos.view.PinView
+            android:id="@+id/enterOldPINView"
+            style="@style/PinWidget.PinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:inputType="numberPassword"
+            android:itemBackground="@color/purple_200"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            app:cursorColor="@color/black"
+            app:cursorWidth="@dimen/_2sdp"
+            app:hideLineWhenFilled="true"
+            app:itemCount="4"
+            app:itemHeight="@dimen/_40sdp"
+            app:itemRadius="@dimen/_4sdp"
+            app:itemSpacing="@dimen/_5sdp"
+            app:itemWidth="@dimen/_40sdp"
+            app:lineColor="@color/white"
+            app:lineWidth="@dimen/_2sdp"
+            app:viewType="rectangle"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_new_pin"
+            android:textSize="@dimen/_25ssp"
+            android:textStyle="bold"/>
+
+        <com.chaos.view.PinView
+            android:id="@+id/changePINView"
+            style="@style/PinWidget.PinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:inputType="numberPassword"
+            android:itemBackground="@color/purple_200"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            app:cursorColor="@color/black"
+            app:cursorWidth="@dimen/_2sdp"
+            app:hideLineWhenFilled="true"
+            app:itemCount="4"
+            app:itemHeight="@dimen/_40sdp"
+            app:itemRadius="@dimen/_4sdp"
+            app:itemSpacing="@dimen/_5sdp"
+            app:itemWidth="@dimen/_40sdp"
+            app:lineColor="@color/white"
+            app:lineWidth="@dimen/_2sdp"
+            app:viewType="rectangle"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_pin"
+            android:textSize="@dimen/_25ssp"
+            android:textStyle="bold"/>
+
+        <com.chaos.view.PinView
+            android:id="@+id/confirmChangePINView"
+            style="@style/PinWidget.PinView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:cursorVisible="true"
+            android:inputType="numberPassword"
+            android:itemBackground="@color/purple_200"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18ssp"
+            android:textStyle="bold"
+            app:cursorColor="@color/black"
+            app:cursorWidth="@dimen/_2sdp"
+            app:hideLineWhenFilled="true"
+            app:itemCount="4"
+            app:itemHeight="@dimen/_40sdp"
+            app:itemRadius="@dimen/_4sdp"
+            app:itemSpacing="@dimen/_5sdp"
+            app:itemWidth="@dimen/_40sdp"
+            app:lineColor="@color/white"
+            app:lineWidth="@dimen/_2sdp"
+            app:viewType="rectangle"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/btnChangePin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/change_pin"/>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

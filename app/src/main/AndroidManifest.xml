@@ -50,6 +50,19 @@
                 android:value="AIzaSyAnv3pro-eHXb_Ftv-wrDH1ozREmflAa68" />
         </activity>
 
+        <activity android:name=".view.activities.SetPasscode" >
+            <intent-filter>
+                <action android:name="pin.action.set_pin"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".view.activities.ChangePasscode" >
+            <intent-filter>
+                <action android:name="pin.action.change_pin"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".view.activities.SlideshowActivity" />
         <activity android:name=".view.activities.RootViewMediaActivity" />
         <activity android:name=".view.activities.ViewVideoActivity" />

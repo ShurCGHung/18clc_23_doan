@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.example.progallery.R;
+import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.LocaleHelpers;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -29,8 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
-        public static final String KEY_PREF_LANGUAGE = "pref_key_language";
-        private static final String language = "language";
+
         ListPreference languagePreference;
         SharedPreferences preferences;
         SharedPreferences.OnSharedPreferenceChangeListener listener;
@@ -43,10 +43,10 @@ public class SettingsActivity extends AppCompatActivity {
             preferences.registerOnSharedPreferenceChangeListener(listener);
 
             try {
-                languagePreference = findPreference(KEY_PREF_LANGUAGE);
+                languagePreference = findPreference(Constant.KEY_PREF_LANGUAGE);
                 languagePreference.setOnPreferenceChangeListener((preference, newValue) -> {
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(language, newValue.toString());
+                    editor.putString(Constant.language, newValue.toString());
                     editor.commit();
                     editor.apply();
                     LocaleHelpers.setLocale(getContext(), newValue.toString());

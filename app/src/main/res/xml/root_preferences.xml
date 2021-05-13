@@ -24,4 +24,22 @@
             app:defaultValue="false"
             />
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/vault">
+        <PreferenceScreen
+            android:title="@string/set_pin"
+            android:summary="@string/set_pin_passcode">
+
+            <intent android:action="pin.action.set_pin"/>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:title="@string/change_pin"
+            android:summary="@string/change_pin_passcode">
+
+            <intent android:action="pin.action.change_pin"/>
+        </PreferenceScreen>
+    </PreferenceCategory>
+
 </PreferenceScreen>

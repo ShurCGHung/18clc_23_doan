@@ -56,6 +56,7 @@
     <string name="image_source">Đường dẫn</string>
     <string name="image_length">Chiều dài</string>
     <string name="image_width">Chiều rộng</string>
+    <string name="image_height">Chiều cao</string>
     <string name="datetime">Ngày tháng</string>
     <string name="orientation">Chiều xoay</string>
     <string name="latitude">Vĩ độ</string>
@@ -74,6 +75,17 @@
     <string name="title_activity_settings">@string/settings</string>
     <string name="choose_an_album">Chọn bộ sưu tập</string>
     <string name="set_location">Chọn vị trí</string>
+    <string name="duration">Thời gian</string>
+    <string name="verify_pin">Xác nhận PIN</string>
+    <string name="set_pin">Đặt PIN</string>
+    <string name="set_pin_passcode">Đặt mã PIN</string>
+    <string name="enter_pin">Nhập PIN</string>
+    <string name="re_enter_pin">Nhập lại PIN</string>
+    <string name="confirm_pin">Xác nhận PIN</string>
+    <string name="change_pin">Đổi PIN</string>
+    <string name="change_pin_passcode">Đổi mã PIN</string>
+    <string name="enter_new_pin">Nhập PIN mới</string>
+    <string name="enter_old_pin">Nhập PIN cũ</string>
 
     <!-- Night mode -->
     <string name="night_mode">Night mode</string>

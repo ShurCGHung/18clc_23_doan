@@ -40,9 +40,6 @@ dependencies {
     implementation 'com.github.GoodieBag:Pinview:v1.4'
     implementation 'androidx.preference:preference:1.1.1'
 
-    // Rotate Image
-    implementation 'com.github.yalantis:ucrop:2.2.2-native'
-
     // Responsive screen unit
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
@@ -80,12 +77,12 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:3.0.12"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
-    // Crop Image
-    implementation 'com.github.yalantis:ucrop:2.2.6-native'
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     //noinspection GradleDependency
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.6';
 
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.libraries.places:places:2.4.0'
+
+    // PinView
+    implementation 'io.github.chaosleung:pinview:1.4.4'
 }
