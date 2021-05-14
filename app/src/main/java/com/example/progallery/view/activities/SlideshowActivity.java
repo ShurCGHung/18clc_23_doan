@@ -32,22 +32,30 @@ public class SlideshowActivity extends AppCompatActivity {
         MediaFetchService service = MediaFetchService.getInstance();
         List<Media> mediaArrayList = service.getMediaList(SlideshowActivity.this).toList().blockingGet().get(0);
 
+        for (Media media : mediaArrayList) {
+            if (media.getMediaType().equals(Integer.toString(2))) {
+                mediaArrayList.remove(media);
+            }
+        }
+
         Intent intent = getIntent();
         startImage = intent.getStringExtra(Constant.EXTRA_PATH);
 
         slideModelArrayList = new ArrayList<>();
         int indexToSplit = -1;
+        int i = 0;
 
         for (Media media : mediaArrayList) {
             if (media.getMediaPath().equals(startImage)) {
-                indexToSplit = mediaArrayList.indexOf(media);
+                indexToSplit = i;
             }
             if (media.getMediaType().equals(Integer.toString(1))) {
                 slideModelArrayList.add(new SlideModel("file://" + media.getMediaPath()));
+                i++;
             }
         }
 
-        if(indexToSplit != 0){
+        if (indexToSplit != 0) {
             List<SlideModel> first = slideModelArrayList.subList(0, indexToSplit);
             List<SlideModel> last = slideModelArrayList.subList(indexToSplit, slideModelArrayList.size());
             slideModelArrayList = Stream.concat(last.stream(), first.stream())
