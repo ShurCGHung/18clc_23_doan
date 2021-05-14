@@ -47,7 +47,7 @@ public class VideoInfoFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.video_details, null);
 
         builder.setView(view)
-                .setTitle("Image Information")
+                .setTitle(R.string.video_info)
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -106,7 +106,7 @@ public class VideoInfoFragment extends DialogFragment {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "Failed to display video information", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getResources().getString(R.string.failed_to_display_video_info), Toast.LENGTH_SHORT).show();
         }
 
         return builder.create();

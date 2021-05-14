@@ -85,9 +85,9 @@ public class RootViewMediaActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(@NonNull Menu menu) {
         if (isFavorite) {
-            menu.findItem(R.id.btnFavorite).setTitle("Unfavorite");
+            menu.findItem(R.id.btnFavorite).setTitle(R.string.unfavorite);
         } else {
-            menu.findItem(R.id.btnFavorite).setTitle("Favorite");
+            menu.findItem(R.id.btnFavorite).setTitle(R.string.favorite);
         }
 
         if (isVault) {
@@ -218,10 +218,10 @@ public class RootViewMediaActivity extends AppCompatActivity {
     protected void moveToVault() {
         SharedPreferences preferences = getSharedPreferences(Constant.PIN, MODE_PRIVATE);
         if (!preferences.contains(Constant.PIN)) {
-            Toast.makeText(RootViewMediaActivity.this, "Set your PIN first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.set_pin_first), Toast.LENGTH_SHORT).show();
         } else {
             PasswordDialog.Builder builder = new PasswordDialog.Builder(RootViewMediaActivity.this)
-                    .setTitle("Please input password")
+                    .setTitle(R.string.please_input_password)
                     .setBoxCount(4)
                     .setBorderNotFocusedColor(R.color.colorSecondaryText)
                     .setDotNotFocusedColor(R.color.colorSecondaryText)
@@ -280,7 +280,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
         final View customDialog = getLayoutInflater().inflate(R.layout.confirm_delete_dialog, null);
 
         builder.setView(customDialog);
-        builder.setTitle("Delete media");
+        builder.setTitle(R.string.delete_media);
         builder.setPositiveButton("OK", (dialog, which) -> {
             Intent returnIntent = new Intent();
             returnIntent.putExtra(Constant.EXTRA_REQUEST, Constant.REQUEST_REMOVE_MEDIA);
@@ -343,9 +343,9 @@ public class RootViewMediaActivity extends AppCompatActivity {
 
                 // Show alert box with copy or move
                 AlertDialog.Builder builder = new AlertDialog.Builder(RootViewMediaActivity.this);
-                builder.setTitle("Choose a method");
+                builder.setTitle(R.string.choose_a_method);
 
-                String[] options = {"Move to album", "Copy to album"};
+                String[] options = {getString(R.string.move_to_album), getString(R.string.copy_to_album)};
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -427,7 +427,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.setDataAndType(Uri.parse(mediaPath), "image/jpeg");
         intent.putExtra("mimeType", "image/jpeg");
-        startActivity(Intent.createChooser(intent, "Set as:"));
+        startActivity(Intent.createChooser(intent, getString(R.string.set_as)));
     }
 
     public void shareMedia() {
@@ -439,7 +439,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
             } else if (isImageFile(mediaPath)) {
                 intent.setType("image/jpeg");
             }
-            startActivity(Intent.createChooser(intent, "Share via"));
+            startActivity(Intent.createChooser(intent, getString(R.string.share_via)));
             intent.putExtra(Intent.EXTRA_STREAM, shareMediaUri);
             List<ResolveInfo> resInfoList = getApplicationContext().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {

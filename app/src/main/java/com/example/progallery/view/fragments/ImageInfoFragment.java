@@ -38,7 +38,7 @@ public class ImageInfoFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.image_details, null);
 
         builder.setView(view)
-                .setTitle("Image Information")
+                .setTitle(R.string.image_info)
                 .setNegativeButton(getResources().getString(R.string.close), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

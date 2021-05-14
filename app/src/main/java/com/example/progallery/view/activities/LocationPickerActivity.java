@@ -3,7 +3,6 @@ package com.example.progallery.view.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,7 +64,7 @@ public class LocationPickerActivity extends AppCompatActivity implements OnMapRe
         googleMap.setOnMapLongClickListener(latLng -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(LocationPickerActivity.this);
 
-            builder.setTitle("Pick this location?");
+            builder.setTitle(R.string.pick_this_location);
             builder.setPositiveButton("OK", (dialog, which) -> {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("lat", latLng.latitude);
@@ -73,7 +72,7 @@ public class LocationPickerActivity extends AppCompatActivity implements OnMapRe
                 setResult(RESULT_OK, returnIntent);
                 finish();
             });
-            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+            builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
             dialog.show();
         });

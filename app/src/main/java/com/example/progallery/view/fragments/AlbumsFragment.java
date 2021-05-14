@@ -1,7 +1,6 @@
 package com.example.progallery.view.fragments;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -26,7 +25,6 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.model.models.Album;
 import com.example.progallery.model.services.AlbumFetchService;
-import com.example.progallery.view.activities.SettingsActivity;
 import com.example.progallery.view.adapters.AlbumAdapter;
 import com.example.progallery.view.listeners.AlbumListener;
 import com.example.progallery.viewmodel.AlbumViewModel;
@@ -71,7 +69,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         EditText editText = customDialog.findViewById(R.id.album_name_text);
 
         builder.setView(customDialog);
-        builder.setTitle("Create album");
+        builder.setTitle(R.string.create_album);
         builder.setPositiveButton("OK", (dialog, which) -> {
             String albumName = editText.getText().toString();
             File pictureFolder = Environment.getExternalStoragePublicDirectory(
@@ -136,9 +134,9 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onOptionAlbumClick(Album album) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
-                builder.setTitle("Choose an action");
+                builder.setTitle(R.string.choose_an_action);
 
-                String[] options = {"Remove album", "Rename album"};
+                String[] options = {getString(R.string.remove_album), getString(R.string.rename_album)};
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -170,7 +168,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         editText.setText(album.getAlbumName());
 
         builder.setView(customDialog);
-        builder.setTitle("Rename album");
+        builder.setTitle(R.string.rename_album);
         builder.setPositiveButton("OK", (dialog, which) -> {
             String albumName = editText.getText().toString();
             String newAlbumPath = album.getAlbumPath().replace(album.getAlbumName(), albumName);

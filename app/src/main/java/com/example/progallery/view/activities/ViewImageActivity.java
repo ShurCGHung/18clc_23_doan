@@ -115,7 +115,7 @@ public class ViewImageActivity extends RootViewMediaActivity {
 
             EditImageActivity.start(this, intent, ACTION_REQUEST_EDITIMAGE);
         } catch (Exception e) {
-            Toast.makeText(this, "Unexpected Error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.Error), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -59,7 +59,7 @@ public class HighlightsFragment extends Fragment implements SwipeRefreshLayout.O
 
         View vault = view.findViewById(R.id.vault_album);
         TextView vaultName = vault.findViewById(R.id.album_name);
-        vaultName.setText("Vault");
+        vaultName.setText(R.string.vault);
         ImageView vaultImage = vault.findViewById(R.id.album_thumbnail);
         Glide.with(requireContext())
                 .load(ResourcesCompat.getDrawable(getResources(), R.drawable.group_1, null))
@@ -76,7 +76,7 @@ public class HighlightsFragment extends Fragment implements SwipeRefreshLayout.O
                     Toast.makeText(getContext(), getResources().getString(R.string.set_pin_first), Toast.LENGTH_SHORT).show();
                 } else {
                     PasswordDialog.Builder builder = new PasswordDialog.Builder(requireContext())
-                            .setTitle("Please input password")
+                            .setTitle(getString(R.string.please_input_password))
                             .setBoxCount(4)
                             .setBorderNotFocusedColor(R.color.colorSecondaryText)
                             .setDotNotFocusedColor(R.color.colorSecondaryText)

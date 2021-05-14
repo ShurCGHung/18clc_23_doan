@@ -81,7 +81,7 @@
     <string name="enter_pin">Enter PIN</string>
     <string name="re_enter_pin">Re-enter PIN</string>
     <string name="confirm_pin">Confirm PIN</string>
-    <string name="change_pin">Change PIN</string>
+    <string name="change_pin">Change PIN</string>   
     <string name="change_pin_passcode">Change PIN passcode</string>
     <string name="enter_new_pin">Enter new PIN</string>
     <string name="enter_old_pin">Enter old PIN</string>
@@ -120,6 +120,20 @@
     <string name="lockscreen_not_set">Lock Screen not set</string>
     <string name="homescreen_set">Home Screen set</string>
     <string name="homescreen_not_set">Home Screen not set</string>
+    <string name="pick_this_location">Pick this location?</string>
+    <string name="delete_media">Delete media</string>
+    <string name="choose_a_method">Choose a method</string>
+    <string name="create_album">Create album</string>
+    <string name="choose_an_action">Choose an action</string>
+    <string name="please_input_password">Please input password</string>
+    <string name="image_info">Image Information</string>
+    <string name="video_info">Video Information</string>
+    <string name="failed_to_display_video_info">Failed to display video information</string>
+    <string name="share_via">Share via</string>
+    <string name="set_as">Set as</string>
+    <string name="remove_album">Remove album</string>
+    <string name="unfavorite">Unfavorite</string>
+    <string name="Error">Error</string>
 
     <!-- Night mode -->
     <string name="night_mode">Night mode</string>

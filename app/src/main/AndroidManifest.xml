@@ -38,7 +38,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAnv3pro-eHXb_Ftv-wrDH1ozREmflAa68" />
+            android:value="API KEY" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -47,7 +47,7 @@
         <activity android:name=".view.activities.LocationPickerActivity">
             <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyAnv3pro-eHXb_Ftv-wrDH1ozREmflAa68" />
+                android:value="API KEY" />
         </activity>
 
         <activity android:name=".view.activities.SetPasscode" >
