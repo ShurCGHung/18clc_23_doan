@@ -24,8 +24,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ethanco.lib.BuildConfig;
 import com.ethanco.lib.PasswordDialog;
-import com.example.progallery.BuildConfig;
 import com.example.progallery.R;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.helpers.CountCheckFilter;
@@ -133,8 +133,8 @@ public class RootViewMediaActivity extends AppCompatActivity {
             }
             isFavorite = !isFavorite;
         } else if (id == R.id.btnSetAs) {
-            //setImageForWallPaper();
-            setImageAsWallpaper();
+            setImageForWallPaper();
+            //setImageAsWallpaper();
         } else if (id == R.id.btnSlideshow) {
             Intent intent = new Intent(RootViewMediaActivity.this, SlideshowActivity.class);
             intent.putExtra(Constant.EXTRA_PATH, mediaPath);
