@@ -47,10 +47,12 @@ public class SlideshowActivity extends AppCompatActivity {
             }
         }
 
-        List<SlideModel> first = slideModelArrayList.subList(0, indexToSplit - 1);
-        List<SlideModel> last = slideModelArrayList.subList(indexToSplit - 1, slideModelArrayList.size());
-        slideModelArrayList = Stream.concat(last.stream(), first.stream())
-                .collect(Collectors.toList());
+        if(indexToSplit != 0){
+            List<SlideModel> first = slideModelArrayList.subList(0, indexToSplit - 1);
+            List<SlideModel> last = slideModelArrayList.subList(indexToSplit - 1, slideModelArrayList.size());
+            slideModelArrayList = Stream.concat(last.stream(), first.stream())
+                    .collect(Collectors.toList());
+        }
 
         imageSlider = findViewById(R.id.image_slider);
         imageSlider.setImageList(slideModelArrayList, true);
