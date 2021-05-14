@@ -47,6 +47,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 
+import static android.content.Intent.ACTION_ATTACH_DATA;
 import static com.example.progallery.helpers.Constant.REQUEST_GET_LOCATION;
 
 public class RootViewMediaActivity extends AppCompatActivity {
@@ -133,8 +134,8 @@ public class RootViewMediaActivity extends AppCompatActivity {
             }
             isFavorite = !isFavorite;
         } else if (id == R.id.btnSetAs) {
-            setImageForWallPaper();
-            //setImageAsWallpaper();
+            // setImageForWallPaper();
+            setImageAsWallpaper();
         } else if (id == R.id.btnSlideshow) {
             Intent intent = new Intent(RootViewMediaActivity.this, SlideshowActivity.class);
             intent.putExtra(Constant.EXTRA_PATH, mediaPath);
@@ -423,24 +424,26 @@ public class RootViewMediaActivity extends AppCompatActivity {
     }
 
     private void setImageAsWallpaper() {
-        Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+        Intent intent = new Intent(ACTION_ATTACH_DATA);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
-        intent.setDataAndType(Uri.parse(mediaPath), "image/jpeg");
-        intent.putExtra("mimeType", "image/jpeg");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        Uri shareMediaUri = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()), com.example.progallery.BuildConfig.APPLICATION_ID + ".provider", new File(mediaPath));
+        intent.setDataAndType(shareMediaUri, "image/*");
+        intent.putExtra("mimeType", "image/*");
         startActivity(Intent.createChooser(intent, getString(R.string.set_as)));
     }
 
     public void shareMedia() {
         try {
-            Uri shareMediaUri = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()), BuildConfig.APPLICATION_ID + ".provider", new File(mediaPath));
+            Uri shareMediaUri = FileProvider.getUriForFile(Objects.requireNonNull(getApplicationContext()), com.example.progallery.BuildConfig.APPLICATION_ID + ".provider", new File(mediaPath));
             Intent intent = new Intent(Intent.ACTION_SEND);
             if (isVideoFile(mediaPath)) {
                 intent.setType("video/mp4");
             } else if (isImageFile(mediaPath)) {
                 intent.setType("image/jpeg");
             }
-            startActivity(Intent.createChooser(intent, getString(R.string.share_via)));
             intent.putExtra(Intent.EXTRA_STREAM, shareMediaUri);
+            startActivity(Intent.createChooser(intent, getString(R.string.share_via)));
             List<ResolveInfo> resInfoList = getApplicationContext().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             for (ResolveInfo resolveInfo : resInfoList) {
                 String packageName = resolveInfo.activityInfo.packageName;

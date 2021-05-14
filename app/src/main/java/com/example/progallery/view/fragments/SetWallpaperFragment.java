@@ -18,6 +18,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -53,7 +54,7 @@ public class SetWallpaperFragment extends BottomSheetDialogFragment {
                 File imgFile = new File(mediaPath);
                 if (imgFile.exists()) {
                     Bitmap imgBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
+                    WallpaperManager wallpaperManager = WallpaperManager.getInstance(requireActivity().getApplicationContext());
                     try {
                         wallpaperManager.setBitmap(imgBitmap, null, false, WallpaperManager.FLAG_LOCK);
                         Toast.makeText(getActivity(), getResources().getString(R.string.lockscreen_set), Toast.LENGTH_SHORT).show();
@@ -70,7 +71,7 @@ public class SetWallpaperFragment extends BottomSheetDialogFragment {
                 File imgFile = new File(mediaPath);
                 if (imgFile.exists()) {
                     Bitmap imgBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
+                    WallpaperManager wallpaperManager = WallpaperManager.getInstance(requireActivity().getApplicationContext());
                     try {
                         wallpaperManager.setBitmap(imgBitmap, null, false, WallpaperManager.FLAG_SYSTEM);
                         Toast.makeText(getActivity(), getResources().getString(R.string.homescreen_set), Toast.LENGTH_SHORT).show();
