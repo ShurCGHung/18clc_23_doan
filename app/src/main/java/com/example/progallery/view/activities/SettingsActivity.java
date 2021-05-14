@@ -85,7 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 });
             } catch (NullPointerException e) {
-                Toast.makeText(getActivity(), "Set Language Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.set_language_error), Toast.LENGTH_SHORT).show();
             }
 
             setPIN.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

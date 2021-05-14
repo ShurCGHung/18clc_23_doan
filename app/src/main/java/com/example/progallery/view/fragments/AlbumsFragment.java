@@ -81,12 +81,12 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             boolean check = imagesFolder.mkdirs();
             if (check) {
                 loadView();
-                Toast.makeText(getContext(), "Album is created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.album_created), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "Album is already existed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.album_existed), Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getResources().getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -179,7 +179,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 Files.move(source, source.resolveSibling(newAlbumPath));
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), "Unable to rename album", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.unable_to_rename_album), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -187,12 +187,12 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             boolean check = service.changeMediaPath(getContext(), album.getAlbumName(), albumName);
             if (check) {
                 loadView();
-                Toast.makeText(getContext(), "Album name is renamed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.album_renamed), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "Unable to rename album", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.unable_to_rename_album), Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getResources().getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -207,13 +207,13 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             boolean check = service.deleteAlbum(getContext(), album.getAlbumName());
             if (check) {
                 loadView();
-                Toast.makeText(getContext(), "Album is removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.album_removed), Toast.LENGTH_SHORT).show();
             } else {
                 Log.d("MY_APP", "block here");
-                Toast.makeText(getContext(), "Unable to remove album", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.unable_to_remove_album), Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getContext(), "Unable to remove album", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.unable_to_remove_album), Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -254,7 +254,7 @@ public class AlbumsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
         albumViewModel.getAlbumsObserver().observe(getViewLifecycleOwner(), albumList -> {
             if (albumList == null) {
-                Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.error_fetching_data), Toast.LENGTH_SHORT).show();
             } else {
                 albumAdapter.setAlbumList(albumList);
             }

@@ -261,36 +261,36 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
             int requestCodeFromIntent = data.getIntExtra(Constant.EXTRA_REQUEST, -1);
             if (requestCodeFromIntent == REQUEST_REMOVE_MEDIA) {
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getContext(), "Media is deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.media_deleted_success), Toast.LENGTH_SHORT).show();
                     try {
                         loadView();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(getContext(), "Failed to delete media", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.failed_delete_media), Toast.LENGTH_SHORT).show();
                 }
             } else if (requestCodeFromIntent == REQUEST_MOVE_VAULT) {
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getContext(), "Moved to vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.moved_to_vault), Toast.LENGTH_SHORT).show();
                     try {
                         loadView();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(getContext(), "Failed to move to vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.failed_to_move_to_vault), Toast.LENGTH_SHORT).show();
                 }
             } else if (requestCodeFromIntent == REQUEST_REMOVE_VAULT) {
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getContext(), "Removed from vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.remove_from_vault), Toast.LENGTH_SHORT).show();
                     try {
                         loadView();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(getContext(), "Failed to remove from vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.failed_to_remove_from_vault), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -307,7 +307,7 @@ public class PhotoForAlbumFragment extends Fragment implements SwipeRefreshLayou
         mediaViewModel = new ViewModelProvider(this, factory).get(MediaViewModel.class);
         mediaViewModel.getMediasObserver().observe(getViewLifecycleOwner(), mediaList -> {
             if (mediaList == null) {
-                Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.error_fetching_data), Toast.LENGTH_SHORT).show();
             } else {
                 photoAdapter.setMediaList(mediaList);
             }

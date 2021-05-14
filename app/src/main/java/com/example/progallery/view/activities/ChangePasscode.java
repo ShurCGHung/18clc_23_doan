@@ -176,17 +176,17 @@ public class ChangePasscode extends AppCompatActivity {
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.putString(Constant.PIN, newPinInput.toString());
                                 editor.commit();
-                                Toast.makeText(ChangePasscode.this, "Passcode Changed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChangePasscode.this, getResources().getString(R.string.passcode_changed), Toast.LENGTH_SHORT).show();
                                 finish();
                             } else {
-                                Toast.makeText(ChangePasscode.this, "Unmatched PIN", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChangePasscode.this, getResources().getString(R.string.unmatched_pin), Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Toast.makeText(ChangePasscode.this, "Failed to change password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangePasscode.this, getResources().getString(R.string.failed_change_password), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(ChangePasscode.this, "Old Passcode Unmatched", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChangePasscode.this, getResources().getString(R.string.old_passcode_unmatched), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

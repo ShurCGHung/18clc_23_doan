@@ -73,7 +73,7 @@ public class HighlightsFragment extends Fragment implements SwipeRefreshLayout.O
             public void onClick(View v) {
                 SharedPreferences preferences = requireContext().getSharedPreferences(Constant.PIN, MODE_PRIVATE);
                 if (!preferences.contains(Constant.PIN)) {
-                    Toast.makeText(getContext(), "Set your PIN first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.set_pin_first), Toast.LENGTH_SHORT).show();
                 } else {
                     PasswordDialog.Builder builder = new PasswordDialog.Builder(requireContext())
                             .setTitle("Please input password")
@@ -92,7 +92,7 @@ public class HighlightsFragment extends Fragment implements SwipeRefreshLayout.O
                                     trans.addToBackStack(null);
                                     trans.commit();
                                 } else {
-                                    Toast.makeText(getContext(), "Wrong password", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getResources().getString(R.string.wrong_password), Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .setNegativeListener((dialogInterface, i) -> {
@@ -157,7 +157,7 @@ public class HighlightsFragment extends Fragment implements SwipeRefreshLayout.O
         albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
         albumViewModel.getFavoriteObserver().observe(getViewLifecycleOwner(), album -> {
             if (album == null) {
-                Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.error_fetching_data), Toast.LENGTH_SHORT).show();
             } else {
                 setView(view, album);
             }

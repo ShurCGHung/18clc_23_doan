@@ -24,7 +24,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class VideoInfoFragment extends DialogFragment {
@@ -49,7 +48,7 @@ public class VideoInfoFragment extends DialogFragment {
 
         builder.setView(view)
                 .setTitle("Image Information")
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 

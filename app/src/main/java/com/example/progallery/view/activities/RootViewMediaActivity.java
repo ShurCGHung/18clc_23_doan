@@ -126,10 +126,10 @@ public class RootViewMediaActivity extends AppCompatActivity {
             MediaFetchService service = MediaFetchService.getInstance();
             if (isFavorite) {
                 service.removeFavorite(RootViewMediaActivity.this, mediaPath);
-                Toast.makeText(RootViewMediaActivity.this, "Unfavorited", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.unfavorited), Toast.LENGTH_SHORT).show();
             } else {
                 service.addFavorite(RootViewMediaActivity.this, mediaPath);
-                Toast.makeText(RootViewMediaActivity.this, "Favorited", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.favorited), Toast.LENGTH_SHORT).show();
             }
             isFavorite = !isFavorite;
         } else if (id == R.id.btnSetAs) {
@@ -157,7 +157,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
         builder.setView(customDialog);
         builder.setTitle(R.string.choose_an_album);
 
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getResources().getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
         RecyclerView recyclerView = customDialog.findViewById(R.id.album_pick_view);
         recyclerView.setHasFixedSize(true);
@@ -170,7 +170,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
         albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
         albumViewModel.getAlbumsObserver().observe(this, albumList -> {
             if (albumList == null) {
-                Toast.makeText(RootViewMediaActivity.this, "Error in fetching data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.error_fetching_data), Toast.LENGTH_SHORT).show();
             } else {
                 albumAdapter.setAlbumList(albumList);
             }
@@ -254,7 +254,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
                                 finish();
                             }
                         } else {
-                            Toast.makeText(RootViewMediaActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.wrong_password), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeListener((dialogInterface, i) -> {
@@ -301,7 +301,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
                 finish();
             }
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getResources().getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -313,7 +313,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
         builder.setView(customDialog);
         builder.setTitle(R.string.choose_an_album);
 
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(getResources().getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
         RecyclerView recyclerView = customDialog.findViewById(R.id.album_pick_view);
         recyclerView.setHasFixedSize(true);
@@ -326,7 +326,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
         albumViewModel = new ViewModelProvider(this, factory).get(AlbumViewModel.class);
         albumViewModel.getAlbumsObserver().observe(this, albumList -> {
             if (albumList == null) {
-                Toast.makeText(RootViewMediaActivity.this, "Error in fetching data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.error_fetching_data), Toast.LENGTH_SHORT).show();
             } else {
                 albumAdapter.setAlbumList(albumList);
             }
@@ -386,9 +386,9 @@ public class RootViewMediaActivity extends AppCompatActivity {
             MediaFetchService service = MediaFetchService.getInstance();
             boolean updateMediaStore = service.updateMediaAlbum(RootViewMediaActivity.this, mediaPath, newPath);
             if (updateMediaStore) {
-                Toast.makeText(RootViewMediaActivity.this, "Moved to album", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.moved_to_album), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(RootViewMediaActivity.this, "Failed to move to media", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.failed_to_move), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -410,9 +410,9 @@ public class RootViewMediaActivity extends AppCompatActivity {
             MediaFetchService service = MediaFetchService.getInstance();
             boolean addToMediaStore = service.addNewMedia(RootViewMediaActivity.this, newPath, newTitle);
             if (addToMediaStore) {
-                Toast.makeText(RootViewMediaActivity.this, "Copied to album", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.copied_to_album), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(RootViewMediaActivity.this, "Failed to copy to media", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.failed_to_copy), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -448,7 +448,7 @@ public class RootViewMediaActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Share error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.share_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -471,10 +471,10 @@ public class RootViewMediaActivity extends AppCompatActivity {
                     exif.saveAttributes();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(RootViewMediaActivity.this, "Set location failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.set_location_failed), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(RootViewMediaActivity.this, "Set location successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RootViewMediaActivity.this, getResources().getString(R.string.set_location_success), Toast.LENGTH_SHORT).show();
             }
         }
     }

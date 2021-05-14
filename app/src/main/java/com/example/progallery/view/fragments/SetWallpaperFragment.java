@@ -56,9 +56,9 @@ public class SetWallpaperFragment extends BottomSheetDialogFragment {
                     WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
                     try {
                         wallpaperManager.setBitmap(imgBitmap, null, false, WallpaperManager.FLAG_LOCK);
-                        Toast.makeText(getActivity(), "Lock Screen set", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getResources().getString(R.string.lockscreen_set), Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        Toast.makeText(getActivity(), "Lock Screen not set", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getResources().getString(R.string.lockscreen_not_set), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -73,9 +73,9 @@ public class SetWallpaperFragment extends BottomSheetDialogFragment {
                     WallpaperManager wallpaperManager = WallpaperManager.getInstance(getContext());
                     try {
                         wallpaperManager.setBitmap(imgBitmap, null, false, WallpaperManager.FLAG_SYSTEM);
-                        Toast.makeText(getActivity(), "Home Screen set", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getResources().getString(R.string.homescreen_set), Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
-                        Toast.makeText(getActivity(), "Home Screen not set", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getResources().getString(R.string.homescreen_not_set), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

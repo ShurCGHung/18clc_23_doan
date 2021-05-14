@@ -16,11 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +26,6 @@ import com.example.progallery.R;
 import com.example.progallery.helpers.ColumnCalculator;
 import com.example.progallery.helpers.Constant;
 import com.example.progallery.view.activities.MainActivity;
-import com.example.progallery.view.activities.SettingsActivity;
 import com.example.progallery.view.activities.ViewImageActivity;
 import com.example.progallery.view.activities.ViewVideoActivity;
 import com.example.progallery.view.adapters.PhotoAdapter;
@@ -40,8 +35,6 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
-
-import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.progallery.helpers.Constant.FLEX;
@@ -119,9 +112,6 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             recreateFragment();
         } else if (id == R.id.take_media) {
             dispatchTakePictureIntent();
-            return true;
-        } else if (id == R.id.take_video) {
-            dispatchTakeVideoIntent();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -228,26 +218,26 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
             Log.d("MY_APP", String.valueOf(requestCodeFromIntent));
             if (requestCodeFromIntent == REQUEST_REMOVE_MEDIA) {
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getContext(), "Media is deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.media_deleted_success), Toast.LENGTH_SHORT).show();
                     loadView();
                 } else {
-                    Toast.makeText(getContext(), "Failed to delete media", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.failed_delete_media), Toast.LENGTH_SHORT).show();
                 }
             }
             else if (requestCodeFromIntent == REQUEST_MOVE_VAULT) {
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getContext(), "Moved to vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.moved_to_vault), Toast.LENGTH_SHORT).show();
                     loadView();
                 } else {
-                    Toast.makeText(getContext(), "Failed to move to vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.failed_to_move_to_vault), Toast.LENGTH_SHORT).show();
                 }
             }
             else if (requestCodeFromIntent == REQUEST_REMOVE_VAULT) {
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getContext(), "Removed from vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.remove_from_vault), Toast.LENGTH_SHORT).show();
                     loadView();
                 } else {
-                    Toast.makeText(getContext(), "Failed to remove from vault", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.failed_to_remove_from_vault), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -264,7 +254,7 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mediaViewModel = new ViewModelProvider(this, factory).get(MediaViewModel.class);
         mediaViewModel.getMediasObserver().observe(getViewLifecycleOwner(), mediaList -> {
             if (mediaList == null) {
-                Toast.makeText(getContext(), "Error in fetching data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(R.string.error_fetching_data), Toast.LENGTH_SHORT).show();
             } else {
                 if (MainActivity.showDatesBool) {
                     photoAdapterByDate.setImageList(mediaList);
@@ -282,13 +272,6 @@ public class PhotosFragment extends Fragment implements SwipeRefreshLayout.OnRef
         Intent takePictureIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
         if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
             startActivity(takePictureIntent);
-        }
-    }
-
-    private void dispatchTakeVideoIntent() {
-        Intent takeVideoIntent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
-        if (takeVideoIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            startActivity(takeVideoIntent);
         }
     }
 }

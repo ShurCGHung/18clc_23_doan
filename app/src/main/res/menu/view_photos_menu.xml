@@ -2,26 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/take_media_menu"
+        android:id="@+id/take_media"
         android:icon="@drawable/ic_camera"
         android:title="@string/media_capture"
         app:showAsAction="ifRoom" >
-
-        <menu>
-
-            <item
-                android:id="@+id/take_media"
-                android:title="@string/camera_capture"
-                android:icon="@drawable/ic_camera"
-                android:iconTint="@color/black"/>
-
-            <item
-                android:id="@+id/take_video"
-                android:title="@string/camera_video"
-                android:icon="@drawable/ic_video"
-                android:iconTint="@color/black"/>
-
-        </menu>
 
     </item>
 

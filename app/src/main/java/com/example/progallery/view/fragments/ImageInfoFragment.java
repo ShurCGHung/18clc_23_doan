@@ -39,7 +39,7 @@ public class ImageInfoFragment extends DialogFragment {
 
         builder.setView(view)
                 .setTitle("Image Information")
-                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.close), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 

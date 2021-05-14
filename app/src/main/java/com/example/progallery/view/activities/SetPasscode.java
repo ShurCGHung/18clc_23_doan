@@ -133,14 +133,14 @@ public class SetPasscode extends AppCompatActivity {
                         if (!file.exists()) {
                             file.mkdirs();
                         }
-                        Toast.makeText(SetPasscode.this, "Hidden Directory created", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetPasscode.this, getResources().getString(R.string.hidden_directory_created), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Toast.makeText(SetPasscode.this, "Unmatched PIN", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetPasscode.this, getResources().getString(R.string.unmatched_pin), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(SetPasscode.this, "Failed to set passcode", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetPasscode.this, getResources().getString(R.string.failed_to_set_passcode), Toast.LENGTH_SHORT).show();
                 }
             }
         });

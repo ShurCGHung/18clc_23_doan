@@ -86,6 +86,41 @@
     <string name="change_pin_passcode">Đổi mã PIN</string>
     <string name="enter_new_pin">Nhập PIN mới</string>
     <string name="enter_old_pin">Nhập PIN cũ</string>
+    <string name="remove_from_vault">Xóa khỏi Kho bí mật</string>
+    <string name="moved_to_vault">Đã di chuyển đến kho bí mật</string>
+    <string name="moved_to_album">Đã di chuyển đến bộ sưu tập</string>
+    <string name="failed_to_move_to_vault">Lỗi di chuyển đến kho bí mật</string>
+    <string name="failed_to_remove_from_vault">Lỗi xóa khỏi kho bí mật</string>
+    <string name="failed_to_move">Lỗi di chuyển media</string>
+    <string name="copied_to_album">Đã sao chép đến bộ sưu tập</string>
+    <string name="failed_to_copy">Lỗi sao chép media</string>
+    <string name="share_error">Lỗi chia sẻ</string>
+    <string name="set_location_failed">Lỗi chọn ví trí</string>
+    <string name="set_location_success">Chọn vị trí thành công</string>
+    <string name="unfavorited">Đã bỏ thích</string>
+    <string name="favorited">Đã thích</string>
+    <string name="error_fetching_data">Lỗi lấy dữ liệu</string>
+    <string name="wrong_password">Sai mật khẩu</string>
+    <string name="passcode_changed">Mật khẩu thay đổi</string>
+    <string name="unmatched_pin">PIN không trùng khớp</string>
+    <string name="failed_change_password">Không thể đổi mật khẩu</string>
+    <string name="old_passcode_unmatched">Mật khẩu cũ không trùng khớp</string>
+    <string name="failed_to_set_passcode">Lỗi đặt mật khẩu</string>
+    <string name="hidden_directory_created">Thu mục ẩn được khởi tạo</string>
+    <string name="set_language_error">Lỗi đặt ngôn ngữ</string>
+    <string name="album_created">Bộ sưu tập được khởi tạo</string>
+    <string name="album_existed">Bộ sưu tập đã tồn tại</string>
+    <string name="unable_to_rename_album">Không thể đổi tên bộ sưu tập</string>
+    <string name="album_renamed">Bộ sưu tập đã được đổi tên</string>
+    <string name="album_removed">Bộ sưu tập đã được xóa</string>
+    <string name="unable_to_remove_album">Không thể xóa bộ sưu tập</string>
+    <string name="set_pin_first">Hãy khởi tạo PIN trước</string>
+    <string name="failed_delete_media">Không thể xóa media</string>
+    <string name="media_deleted_success">Media đã được xóa</string>
+    <string name="lockscreen_set">Đã đặt màn hình khóa</string>
+    <string name="lockscreen_not_set">Không thể đặt màn hình khóa</string>
+    <string name="homescreen_set">Đã đặt màn hình chính</string>
+    <string name="homescreen_not_set">Không thể đặt màn hình chính</string>
 
     <!-- Night mode -->
     <string name="night_mode">Night mode</string>
@@ -95,10 +130,11 @@
     <!-- Preference Titles -->
     <string name="preferences_category_general">General</string>
     <string name="preferences_language">Ngôn ngữ</string>
+
     <!-- NOTE: Has to correspond to array "locales" in locales.xml (elements in same orderwith) -->
     <string-array name="settings_language_values">
-        <item>Default (System setting)</item>
-        <item>English</item>
-        <item>Vietnamese</item>
+        <item>Mặc định (Cài đặt hệ thống)</item>
+        <item>Tiếng Anh</item>
+        <item>Tiếng Việt</item>
     </string-array>
 </resources>

@@ -85,6 +85,41 @@
     <string name="change_pin_passcode">Change PIN passcode</string>
     <string name="enter_new_pin">Enter new PIN</string>
     <string name="enter_old_pin">Enter old PIN</string>
+    <string name="remove_from_vault">Remove from Vault</string>
+    <string name="moved_to_vault">Moved to vault</string>
+    <string name="moved_to_album">Moved to album</string>
+    <string name="failed_to_move_to_vault">Failed to move to vault</string>
+    <string name="failed_to_remove_from_vault">Failed to remove from vault</string>
+    <string name="failed_to_move">Failed to move to media</string>
+    <string name="copied_to_album">Copied to album</string>
+    <string name="failed_to_copy">Failed to copy to media</string>
+    <string name="share_error">Share error</string>
+    <string name="set_location_failed">Set location failed</string>
+    <string name="set_location_success">Set location successfully</string>
+    <string name="unfavorited">Unfavorited</string>
+    <string name="favorited">Favorited</string>
+    <string name="error_fetching_data">Error in fetching data</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="passcode_changed">Passcode Changed</string>
+    <string name="unmatched_pin">Unmatched PIN</string>
+    <string name="failed_change_password">Failed to change password</string>
+    <string name="old_passcode_unmatched">Old Passcode Unmatched</string>
+    <string name="failed_to_set_passcode">Failed to set passcode</string>
+    <string name="hidden_directory_created">Hidden Directory created</string>
+    <string name="set_language_error">Set Language Error</string>
+    <string name="album_created">Album is created</string>
+    <string name="album_existed">Album is already existed</string>
+    <string name="unable_to_rename_album">Unable to rename album</string>
+    <string name="album_renamed">Album name is renamed</string>
+    <string name="album_removed">Album is removed</string>
+    <string name="unable_to_remove_album">Unable to remove album</string>
+    <string name="set_pin_first">Set your PIN first</string>
+    <string name="failed_delete_media">Failed to delete media</string>
+    <string name="media_deleted_success">Media is deleted successfully</string>
+    <string name="lockscreen_set">Lock Screen set</string>
+    <string name="lockscreen_not_set">Lock Screen not set</string>
+    <string name="homescreen_set">Home Screen set</string>
+    <string name="homescreen_not_set">Home Screen not set</string>
 
     <!-- Night mode -->
     <string name="night_mode">Night mode</string>
@@ -94,7 +129,6 @@
     <!-- Preference Titles -->
     <string name="preferences_category_general">General</string>
     <string name="preferences_language">Language</string>
-    <string name="remove_from_vault">Remove from Vault</string>
 
     <!-- NOTE: Has to correspond to array "locales" in locales.xml (elements in same orderwith) -->
     <string-array name="settings_language_values">
